@@ -514,6 +514,31 @@ function updatePreview(){
     preview.innerHTML = renderCvHtml(getFormData(), currentTemplate);
 }
 
+/* Mobil-dostu universal fayl yükləmə: bir neçə fallback üsulu sınayır */
+function downloadBlob(blob, filename){
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, filename);
+        return;
+    }
+    const url = URL.createObjectURL(blob);
+    const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent);
+    if (isIOS) {
+        window.open(url, '_blank');
+        setTimeout(()=>URL.revokeObjectURL(url), 60000);
+        return;
+    }
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 1000);
+}
+
 function exportPDF(){
     const btn = document.getElementById('btnPdf');
     const x = t();
@@ -528,9 +553,14 @@ function exportPDF(){
         jsPDF: { unit:'pt', format:'a4', orientation:'portrait' }
     };
     setTimeout(function(){
-        html2pdf().set(opt).from(node).save().then(function(){
+        html2pdf().set(opt).from(node).outputPdf('blob').then(function(blob){
+            downloadBlob(blob, 'CV.pdf');
             btn.disabled = false; btn.textContent = original;
-        }).catch(function(){ btn.disabled = false; btn.textContent = original; });
+        }).catch(function(err){
+            console.error(err);
+            btn.disabled = false; btn.textContent = original;
+            alert('PDF generasiyasında xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.');
+        });
     }, 150);
 }
 
@@ -554,13 +584,9 @@ function exportWord(){
         'td.cv-sidebar .cv-section h4{color:#cfd9f5;border-bottom:1px solid #44507a;}' +
         'td.cv-main{padding:20px;vertical-align:top;}' +
         '.cv-tags span{background:#eef1f7;padding:3px 10px;border-radius:10px;font-size:9pt;margin:0 4px 4px 0;display:inline-block;}';
-    const full = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' + wordCss + '</style></head><body>' + bodyHtml + '</body></html>';
-    const blob = new Blob(['\ufeff', full], { type: 'application/msword' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'CV.doc';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    const full = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>' + wordCss + '</style></head><body>' + bodyHtml + '</body></html>';
+    const blob = new Blob(['\ufeff', full], { type: 'application/vnd.ms-word;charset=utf-8' });
+    downloadBlob(blob, 'CV.doc');
 }
 
 function clearAll(){
