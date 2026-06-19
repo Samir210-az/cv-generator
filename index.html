@@ -115,9 +115,11 @@ body {
 
 .tpl-sidebar { font-family:'Inter', sans-serif; }
 .tpl-sidebar table.cv-shell { width:100%; border-collapse:collapse; }
-.tpl-sidebar td.cv-sidebar { background:#1f2a44; color:#fff; padding:34px 24px; width:34%; vertical-align:top; }
-.tpl-sidebar td.cv-main { padding:34px 28px; vertical-align:top; }
-.tpl-sidebar .cv-avatar, .tpl-sidebar .cv-avatar-placeholder { width:104px; height:104px; border-radius:50%; object-fit:cover; border:4px solid rgba(255,255,255,0.25); margin:0 auto 16px; display:block; }
+.tpl-sidebar td.cv-sidebar { background:#1f2a44; color:#fff; padding:34px 24px; width:34%; vertical-align:top; position:relative; }
+.tpl-sidebar td.cv-main { padding:34px 30px; vertical-align:top; position:relative; }
+.tpl-sidebar .cv-diag { position:absolute; top:0; left:0; width:100%; height:120px; background:linear-gradient(135deg,#3a6df0 0%,#1f2a44 70%); clip-path:polygon(0 0, 100% 0, 100% 55%, 0 100%); z-index:0; }
+.tpl-sidebar td.cv-main > *:not(.cv-diag) { position:relative; z-index:1; }
+.tpl-sidebar .cv-avatar, .tpl-sidebar .cv-avatar-placeholder { width:112px; height:112px; border-radius:50%; object-fit:cover; border:5px solid rgba(255,255,255,0.9); margin:0 auto 16px; display:block; box-shadow:0 4px 14px rgba(0,0,0,0.25); }
 .tpl-sidebar .cv-avatar-placeholder { display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.1); color:#c4cee0; font-size:0.7rem; }
 .tpl-sidebar .cv-name { font-size:1.3rem; font-weight:800; text-align:center; }
 .tpl-sidebar .cv-title { font-size:0.85rem; text-align:center; color:#9fb0d6; margin-bottom:18px; }
@@ -125,11 +127,20 @@ body {
 .tpl-sidebar td.cv-sidebar .cv-section h4 { font-size:0.74rem; text-transform:uppercase; letter-spacing:1px; color:#9fb0d6; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:5px; margin-bottom:10px; font-weight:700; }
 .tpl-sidebar td.cv-sidebar .cv-item { font-size:0.85rem; margin-bottom:7px; color:#dde3f0; }
 .tpl-sidebar td.cv-sidebar .cv-item strong { color:#fff; }
-.tpl-sidebar td.cv-main .cv-section h4 { font-size:0.82rem; text-transform:uppercase; letter-spacing:0.8px; color:#1f2a44; border-bottom:2px solid #1f2a44; padding-bottom:5px; margin-bottom:10px; font-weight:700; }
+.tpl-sidebar td.cv-main .cv-section h4, .tpl-sidebar td.cv-main .tl-h4 { font-size:0.82rem; text-transform:uppercase; letter-spacing:0.8px; color:#1f2a44; border-bottom:2px solid #1f2a44; padding-bottom:5px; margin-bottom:14px; font-weight:700; }
 .tpl-sidebar td.cv-main .cv-item { margin-bottom:8px; }
 .tpl-sidebar td.cv-main .cv-item strong { color:#111; }
 .tpl-sidebar td.cv-main .cv-item .meta { color:#7c8aab; font-size:0.82rem; }
 .tpl-sidebar td.cv-sidebar .cv-tags span { background:rgba(255,255,255,0.12); padding:4px 12px; border-radius:30px; font-size:0.78rem; margin:0 5px 5px 0; display:inline-block; }
+/* Timeline (iş təcrübəsi) */
+.tpl-sidebar .cv-timeline { position:relative; padding-left:20px; border-left:2px solid #dbe4f0; margin-bottom:8px; }
+.tpl-sidebar .tl-item { position:relative; margin-bottom:16px; }
+.tpl-sidebar .tl-dot { position:absolute; left:-26px; top:4px; width:11px; height:11px; border-radius:50%; background:#3a6df0; border:2px solid #fff; box-shadow:0 0 0 2px #3a6df0; }
+.tpl-sidebar .tl-row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.tpl-sidebar .tl-row strong { font-size:0.95rem; color:#111; }
+.tpl-sidebar .tl-date { font-size:0.78rem; color:#7c8aab; white-space:nowrap; }
+.tpl-sidebar .tl-role { font-size:0.85rem; color:#3a6df0; font-style:italic; margin-top:1px; }
+.tpl-sidebar .tl-desc { font-size:0.8rem; color:#666; margin-top:3px; }
 
 .text-muted { color:#8b9bb8; font-size:0.8rem; }
 .mt-1 { margin-top:8px; }
@@ -197,6 +208,10 @@ body {
             <div id="certificateContainer"></div>
         </div>
         <div class="dynamic-section">
+            <div class="section-title"><span id="projTitle">🏗 Layihələr</span><button class="add-btn" id="projAddBtn">+ Əlavə et</button></div>
+            <div id="projectContainer"></div>
+        </div>
+        <div class="dynamic-section">
             <div class="section-title"><span id="skillTitle">⭐ Bacarıq / Keyfiyyət</span></div>
             <div class="form-group">
                 <div class="tag-group">
@@ -232,9 +247,9 @@ body {
 
 <script>
 const LANG = {
-    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'🎓 Təhsil', cvExperience:'💼 İş təcrübəsi', cvLanguages:'🌐 Dillər', cvCertificates:'📜 Sertifikatlar', cvSkills:'⭐ Bacarıqlar', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Creative', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...' },
-    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'🎓 Education', cvExperience:'💼 Work Experience', cvLanguages:'🌐 Languages', cvCertificates:'📜 Certificates', cvSkills:'⭐ Skills', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Creative', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...' },
-    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'🎓 Образование', cvExperience:'💼 Опыт работы', cvLanguages:'🌐 Языки', cvCertificates:'📜 Сертификаты', cvSkills:'⭐ Навыки', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Креатив', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...' }
+    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'🎓 Təhsil', cvExperience:'💼 İş təcrübəsi', cvLanguages:'🌐 Dillər', cvCertificates:'📜 Sertifikatlar', cvSkills:'⭐ Bacarıqlar', cvProjects:'🏗 Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...' },
+    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'🎓 Education', cvExperience:'💼 Work Experience', cvLanguages:'🌐 Languages', cvCertificates:'📜 Certificates', cvSkills:'⭐ Skills', cvProjects:'🏗 Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...' },
+    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'🎓 Образование', cvExperience:'💼 Опыт работы', cvLanguages:'🌐 Языки', cvCertificates:'📜 Сертификаты', cvSkills:'⭐ Навыки', cvProjects:'🏗 Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...' }
 };
 
 let currentLang = 'az';
@@ -290,6 +305,10 @@ function refreshDynamicPlaceholders(){
         el.querySelector('.cert-name').placeholder = x.certName;
         el.querySelector('.cert-org').placeholder = x.certOrg;
         el.querySelector('.cert-year').placeholder = x.certYear;
+    });
+    document.querySelectorAll('#projectContainer .dynamic-entry').forEach(el=>{
+        el.querySelector('.proj-company').placeholder = x.projCompany;
+        el.querySelector('.proj-list').placeholder = x.projList;
     });
 }
 
@@ -360,11 +379,23 @@ function addCertificate(data, save=true){
     document.getElementById('certificateContainer').appendChild(el);
     if (save) { saveToStorage(); updatePreview(); }
 }
+function addProject(data, save=true){
+    const x = t();
+    const el = document.createElement('div');
+    el.className = 'dynamic-entry';
+    el.innerHTML = '<button class="remove-btn">✕</button>' +
+        '<div class="form-group"><label>' + x.projCompany + '</label><input class="proj-company" value="' + (data?.company||'') + '" placeholder="' + x.projCompany + '"></div>' +
+        '<div class="form-group"><label>' + x.projList + '</label><textarea class="proj-list" rows="2" placeholder="' + x.projList + '">' + (data?.list||'') + '</textarea></div>';
+    wireEntry(el);
+    document.getElementById('projectContainer').appendChild(el);
+    if (save) { saveToStorage(); updatePreview(); }
+}
 
 function getEducations(){ return Array.from(document.querySelectorAll('#educationContainer .dynamic-entry')).map(el=>({school:el.querySelector('.edu-school').value, major:el.querySelector('.edu-major').value, start:el.querySelector('.edu-start').value, end:el.querySelector('.edu-end').value})); }
 function getExperiences(){ return Array.from(document.querySelectorAll('#experienceContainer .dynamic-entry')).map(el=>({company:el.querySelector('.exp-company').value, role:el.querySelector('.exp-role').value, start:el.querySelector('.exp-start').value, end:el.querySelector('.exp-end').value, desc:el.querySelector('.exp-desc').value})); }
 function getLanguages(){ return Array.from(document.querySelectorAll('#languageContainer .dynamic-entry')).map(el=>({name:el.querySelector('.lang-name').value, level:el.querySelector('.lang-level').value})); }
 function getCertificates(){ return Array.from(document.querySelectorAll('#certificateContainer .dynamic-entry')).map(el=>({name:el.querySelector('.cert-name').value, org:el.querySelector('.cert-org').value, year:el.querySelector('.cert-year').value})); }
+function getProjects(){ return Array.from(document.querySelectorAll('#projectContainer .dynamic-entry')).map(el=>({company:el.querySelector('.proj-company').value, list:el.querySelector('.proj-list').value})); }
 
 function renderSkillTags(){
     const c = document.getElementById('skillTagsContainer');
@@ -399,6 +430,7 @@ function getFormData(){
         avatar: window.avatarData || null,
         educations: getEducations(), experiences: getExperiences(),
         languages: getLanguages(), certificates: getCertificates(),
+        projects: getProjects(),
         skills: window.skills || []
     };
 }
@@ -426,6 +458,7 @@ function loadFromStorage(){
             (d.experiences||[]).forEach(e=>addExperience(e,false));
             (d.languages||[]).forEach(e=>addLanguage(e,false));
             (d.certificates||[]).forEach(e=>addCertificate(e,false));
+            (d.projects||[]).forEach(e=>addProject(e,false));
             window.skills = d.skills||[];
             currentTemplate = d.template||'modern';
             currentLang = d.lang||'az';
@@ -436,6 +469,7 @@ function loadFromStorage(){
         addExperience({company:'INPROCON – Crescent SOCAR', role:'HSE Manager', start:'2026', end:'present', desc:'ADEC 048-049 Restaurant Project'}, false);
         addLanguage({name:'Azərbaycan', level:'Ana dili'}, false);
         addCertificate({name:'IOSH International OHS', org:'IOSH', year:'2023'}, false);
+        addProject({company:'PMD Project (Regional)', list:'Ganja Ramada Plaza Hotel, Gabala Caravanserai Hotel, Shamakhi Sharadil Hotel'}, false);
     }
     document.querySelectorAll('.lang-selector button').forEach(b=>b.classList.toggle('active', b.dataset.lang===currentLang));
     document.querySelectorAll('.template-switch button').forEach(b=>b.classList.toggle('active', b.dataset.tpl===currentTemplate));
@@ -469,9 +503,20 @@ function renderCvHtml(d, tpl){
 
     const certBlock = d.certificates.filter(c=>c.name).length ? ('<div class="cv-section"><h4>' + x.cvCertificates + '</h4>' + d.certificates.map(c=> c.name ? ('<div class="cv-item"><strong>' + escapeHtml(c.name) + '</strong>' + (c.org?', '+escapeHtml(c.org):'') + (c.year?(' (' + escapeHtml(c.year) + ')'):'') + '</div>') : '').join('') + '</div>') : '';
 
+    const projList = (d.projects||[]).filter(p=>p.company||p.list);
+    const projBlock = projList.length ? ('<div class="cv-section"><h4>' + x.cvProjects + '</h4>' + projList.map(p=> '<div class="cv-item"><strong>' + escapeHtml(p.company) + '</strong>' + (p.list?('<div class="meta" style="margin-top:2px;">' + escapeHtml(p.list).split(',').map(s=>s.trim()).filter(Boolean).join(' • ') + '</div>'):'') + '</div>').join('') + '</div>') : '';
+
     const skillBlock = (d.skills||[]).length ? ('<div class="cv-section"><h4>' + x.cvSkills + '</h4><div class="cv-tags">' + d.skills.map(s=>('<span>' + escapeHtml(s) + '</span>')).join('') + '</div></div>') : '';
 
     if (tpl === 'sidebar'){
+        const timelineExp = d.experiences.filter(e=>e.company||e.role).length ? ('<h4 class="tl-h4">' + x.cvExperience + '</h4><div class="cv-timeline">' + d.experiences.map(e=> (e.company||e.role) ? (
+            '<div class="tl-item"><div class="tl-dot"></div><div class="tl-content">' +
+                '<div class="tl-row"><strong>' + escapeHtml(e.company) + '</strong>' + ((e.start||e.end)?('<span class="tl-date">' + escapeHtml(e.start) + (e.start&&e.end?' – ':'') + escapeHtml(e.end) + '</span>'):'') + '</div>' +
+                '<div class="tl-role">' + escapeHtml(e.role) + '</div>' +
+                (e.desc?('<div class="tl-desc">' + escapeHtml(e.desc) + '</div>'):'') +
+            '</div></div>'
+        ) : '').join('') + '</div>') : '';
+
         return '<table class="cv-shell" cellpadding="0" cellspacing="0"><tr>' +
             '<td class="cv-sidebar">' + avatarImg +
                 '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
@@ -479,8 +524,9 @@ function renderCvHtml(d, tpl){
                 contactBlock + langBlock + skillBlock +
             '</td>' +
             '<td class="cv-main">' +
+                '<div class="cv-diag"></div>' +
                 (d.birthDate?('<div class="meta" style="margin-bottom:10px;">📅 ' + escapeHtml(d.birthDate) + '</div>'):'') +
-                expBlock + eduBlock + certBlock +
+                timelineExp + eduBlock + certBlock + projBlock +
             '</td>' +
         '</tr></table>';
     }
@@ -492,7 +538,7 @@ function renderCvHtml(d, tpl){
                 (d.birthDate?('<div class="meta" style="margin-top:4px;">📅 ' + escapeHtml(d.birthDate) + '</div>'):'') +
             '</div>' +
             '<div class="cv-body">' +
-                contactBlock + eduBlock + expBlock + langBlock + certBlock + skillBlock +
+                contactBlock + eduBlock + expBlock + langBlock + certBlock + projBlock + skillBlock +
             '</div>';
     }
 
@@ -505,7 +551,7 @@ function renderCvHtml(d, tpl){
             '</div>' +
         '</div>' +
         '<div class="cv-body">' +
-            contactBlock + eduBlock + expBlock + langBlock + certBlock + skillBlock +
+            contactBlock + eduBlock + expBlock + langBlock + certBlock + projBlock + skillBlock +
         '</div>';
 }
 
@@ -561,9 +607,9 @@ function exportPDF(){
     setTimeout(function(){ window.print(); }, 100);
 }
 
-/* ---------- WORD: əsl .docx faylı (docx.js ilə) — Word tətbiqi ilə tam uyğun ---------- */
-function buildDocxParagraphs(d, accentHex){
-    const { Paragraph, TextRun, HeadingLevel, BorderStyle } = docx;
+/* ---------- WORD: əsl .docx faylı (docx.js ilə) — Word tətbiqi ilə tam uyğun, şəkil və layihələrlə ---------- */
+function buildDocxParagraphs(d, accentHex, imageData){
+    const { Paragraph, TextRun, ImageRun, BorderStyle, AlignmentType } = docx;
     const x = t();
     const first = d.firstName || x.defaultFirst;
     const last = d.lastName || x.defaultLast;
@@ -572,9 +618,20 @@ function buildDocxParagraphs(d, accentHex){
     const cleanLabel = (s) => s.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim();
 
     const paras = [];
-    paras.push(new Paragraph({ children: [ new TextRun({ text: first + ' ' + last + (father?(' '+father):''), bold:true, size:44, color:'0C1526' }) ], spacing:{after:60} }));
-    paras.push(new Paragraph({ children: [ new TextRun({ text: job, bold:true, size:28, color:accentHex }) ], spacing:{after:160} }));
-    if (d.birthDate) paras.push(new Paragraph({ children:[ new TextRun({ text:'Doğum tarixi: ' + d.birthDate, size:22 }) ], spacing:{after:120} }));
+
+    if (imageData) {
+        try {
+            paras.push(new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [ new ImageRun({ data: imageData.bytes, transformation: { width: 110, height: 110 }, type: imageData.type }) ],
+                spacing: { after: 160 }
+            }));
+        } catch(e){ console.warn('Şəkil docx-ə əlavə olunmadı', e); }
+    }
+
+    paras.push(new Paragraph({ alignment: AlignmentType.CENTER, children: [ new TextRun({ text: first + ' ' + last + (father?(' '+father):''), bold:true, size:44, color:'0C1526' }) ], spacing:{after:60} }));
+    paras.push(new Paragraph({ alignment: AlignmentType.CENTER, children: [ new TextRun({ text: job, bold:true, size:28, color:accentHex }) ], spacing:{after:160} }));
+    if (d.birthDate) paras.push(new Paragraph({ alignment: AlignmentType.CENTER, children:[ new TextRun({ text:'Doğum tarixi: ' + d.birthDate, size:22 }) ], spacing:{after:120} }));
 
     function sectionHeader(label){
         paras.push(new Paragraph({
@@ -611,10 +668,10 @@ function buildDocxParagraphs(d, accentHex){
     if (exps.length){
         sectionHeader(x.cvExperience);
         exps.forEach(e=>{
-            const runs = [ new TextRun({ text:e.company, bold:true, size:22 }), new TextRun({ text:' - ' + e.role, size:22 }) ];
-            if (e.start||e.end) runs.push(new TextRun({ text:' (' + e.start + (e.start&&e.end?' - ':'') + e.end + ')', size:20, color:'666666' }));
+            const runs = [ new TextRun({ text:'● ', bold:true, size:22, color:accentHex }), new TextRun({ text:e.company, bold:true, size:22 }), new TextRun({ text:' - ' + e.role, size:22, italics:true }) ];
+            if (e.start||e.end) runs.push(new TextRun({ text:'   (' + e.start + (e.start&&e.end?' - ':'') + e.end + ')', size:20, color:'666666' }));
             lineP(runs);
-            if (e.desc) lineP([ new TextRun({ text:e.desc, size:20, color:'555555', italics:true }) ]);
+            if (e.desc) lineP([ new TextRun({ text:'      ' + e.desc, size:20, color:'555555', italics:true }) ]);
         });
     }
 
@@ -635,6 +692,15 @@ function buildDocxParagraphs(d, accentHex){
         });
     }
 
+    const projs = (d.projects||[]).filter(p=>p.company||p.list);
+    if (projs.length){
+        sectionHeader(x.cvProjects);
+        projs.forEach(p=>{
+            lineP([ new TextRun({ text:p.company, bold:true, size:22 }) ]);
+            if (p.list) lineP([ new TextRun({ text:'      ' + p.list.split(',').map(s=>s.trim()).filter(Boolean).join('  •  '), size:20, color:'555555' }) ]);
+        });
+    }
+
     const skills = d.skills||[];
     if (skills.length){
         sectionHeader(x.cvSkills);
@@ -644,26 +710,46 @@ function buildDocxParagraphs(d, accentHex){
     return paras;
 }
 
-function exportWord(){
+function dataUrlToUint8(dataUrl){
+    const match = /^data:image\/(\w+);base64,/.exec(dataUrl);
+    let type = match ? match[1].toLowerCase() : 'png';
+    if (type === 'jpg') type = 'jpeg';
+    if (!['png','jpeg','gif','bmp'].includes(type)) type = 'png';
+    const base64 = dataUrl.split(',')[1];
+    const bin = atob(base64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return { bytes: arr, type: type };
+}
+
+async function exportWord(){
     if (typeof docx === 'undefined') {
         alert('Word kitabxanası yüklənmədi. İnternet bağlantınızı yoxlayıb səhifəni yeniləyin.');
         return;
     }
-    const d = getFormData();
-    const accentHex = currentTemplate === 'sidebar' ? '1F2A44' : (currentTemplate === 'classic' ? '000000' : '2C4DC9');
-    const { Document, Packer } = docx;
-    const doc = new Document({
-        sections: [{
-            properties: {},
-            children: buildDocxParagraphs(d, accentHex)
-        }]
-    });
-    Packer.toBlob(doc).then(function(blob){
+    const btn = document.getElementById('btnWord');
+    const x = t();
+    const original = btn.textContent;
+    btn.disabled = true; btn.textContent = '⏳ ' + x.generating;
+    try {
+        const d = getFormData();
+        const accentHex = currentTemplate === 'sidebar' ? '1F2A44' : (currentTemplate === 'classic' ? '000000' : '2C4DC9');
+        let imageData = null;
+        if (d.avatar) {
+            try { imageData = dataUrlToUint8(d.avatar); } catch(e){ console.warn('avatar decode xetasi', e); }
+        }
+        const { Document, Packer } = docx;
+        const doc = new Document({
+            sections: [{ properties: {}, children: buildDocxParagraphs(d, accentHex, imageData) }]
+        });
+        const blob = await Packer.toBlob(doc);
         downloadBlob(blob, 'CV.docx');
-    }).catch(function(err){
+    } catch(err) {
         console.error(err);
         alert('Word sənədi yaradılarkən xəta baş verdi.');
-    });
+    } finally {
+        btn.disabled = false; btn.textContent = original;
+    }
 }
 
 function clearAll(){
@@ -675,6 +761,7 @@ function clearAll(){
     document.getElementById('experienceContainer').innerHTML='';
     document.getElementById('languageContainer').innerHTML='';
     document.getElementById('certificateContainer').innerHTML='';
+    document.getElementById('projectContainer').innerHTML='';
     window.skills = [];
     renderSkillTags();
     document.getElementById('avatarUpload').value='';
@@ -688,6 +775,7 @@ document.getElementById('eduAddBtn').addEventListener('click', function(){ addEd
 document.getElementById('expAddBtn').addEventListener('click', function(){ addExperience(); });
 document.getElementById('langAddBtn').addEventListener('click', function(){ addLanguage(); });
 document.getElementById('certAddBtn').addEventListener('click', function(){ addCertificate(); });
+document.getElementById('projAddBtn').addEventListener('click', function(){ addProject(); });
 document.getElementById('skillAddBtn').addEventListener('click', addSkill);
 document.getElementById('skillInput').addEventListener('keypress', function(e){ if(e.key==='Enter'){ e.preventDefault(); addSkill(); } });
 document.getElementById('btnWord').addEventListener('click', exportWord);
