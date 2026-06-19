@@ -286,8 +286,7 @@ function hasAnyContent(){
 /* ---------- Avtomatik tərcümə (MyMemory pulsuz API) ---------- */
 function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
 
-async function translateText(text, fromLang, toLang){
-    if (!text || !text.trim()) return text;
+async function translateOnce(text, fromLang, toLang){
     let result = text;
     try {
         const res = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + fromLang + '&tl=' + toLang + '&dt=t&q=' + encodeURIComponent(text));
@@ -299,7 +298,21 @@ async function translateText(text, fromLang, toLang){
             }
         }
     } catch(e){
-        console.warn('Google tərcümə xətası, MyMemory-yə keçirik:', e);
+        console.warn('Google tərcümə xətası:', e);
+    }
+    return result;
+}
+
+async function translateText(text, fromLang, toLang){
+    if (!text || !text.trim()) return text;
+    let result = await translateOnce(text, fromLang, toLang);
+    // Nəticə dəyişməyibsə (uğursuz cəhd ehtimalı) — bir az gözləyib yenidən cəhd et
+    if (result.trim().toLowerCase() === text.trim().toLowerCase()) {
+        await sleep(250);
+        result = await translateOnce(text, fromLang, toLang);
+    }
+    // Hələ də dəyişməyibsə — MyMemory ilə son cəhd
+    if (result.trim().toLowerCase() === text.trim().toLowerCase()) {
         try {
             const res2 = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=' + fromLang + '|' + toLang);
             const data2 = await res2.json();
@@ -327,7 +340,10 @@ function hideTranslateOverlay(){
     if (ov) ov.style.display = 'none';
 }
 
+let translationInProgress = false;
 async function translateAllFields(fromLang, toLang){
+    if (translationInProgress) return;
+    translationInProgress = true;
     const x = t();
     showTranslateOverlay();
     document.body.style.cursor = 'wait';
@@ -392,6 +408,7 @@ async function translateAllFields(fromLang, toLang){
     } finally {
         document.body.style.cursor = 'default';
         hideTranslateOverlay();
+        translationInProgress = false;
     }
 }
 
