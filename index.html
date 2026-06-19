@@ -164,6 +164,12 @@ body {
     .tpl-sidebar td.cv-sidebar { display:table-cell !important; width:34% !important; }
     .tpl-sidebar td.cv-main { display:table-cell !important; }
     .tpl-sidebar table.cv-shell { display:table !important; width:100% !important; }
+    /* Brauzer defolt olaraq çapda fon rənglərini söndürür — bunu məcburi aktiv edirik */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
 }
 </style>
 </head>
