@@ -539,53 +539,81 @@ function downloadBlob(blob, filename){
     }, 1000);
 }
 
+/* ---------- PDF: brauzerin öz "Çap et / PDF kimi saxla" funksiyası (100% mobil-uyğun) ---------- */
 function exportPDF(){
-    const btn = document.getElementById('btnPdf');
     const x = t();
-    const original = btn.textContent;
-    btn.disabled = true; btn.textContent = '⏳ ' + x.generating;
-    const node = document.getElementById('cvPreview');
-    const opt = {
-        margin: 0,
-        filename: 'CV.pdf',
-        image: { type:'jpeg', quality:0.98 },
-        html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
-        jsPDF: { unit:'pt', format:'a4', orientation:'portrait' }
-    };
-    setTimeout(function(){
-        html2pdf().set(opt).from(node).outputPdf('blob').then(function(blob){
-            downloadBlob(blob, 'CV.pdf');
-            btn.disabled = false; btn.textContent = original;
-        }).catch(function(err){
-            console.error(err);
-            btn.disabled = false; btn.textContent = original;
-            alert('PDF generasiyasında xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.');
-        });
-    }, 150);
+    // print-only əlavə stil: yalnız CV önizləməsini göstər, A4 ölçüsündə
+    let styleTag = document.getElementById('printOnlyStyle');
+    if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = 'printOnlyStyle';
+        document.head.appendChild(styleTag);
+    }
+    styleTag.textContent = `
+        @media print {
+            @page { margin: 12mm; size: A4; }
+            body * { visibility: hidden !important; }
+            #cvPreviewWrap, #cvPreviewWrap * { visibility: visible !important; }
+            #cvPreviewWrap { position: absolute !important; left: 0; top: 0; width: 100% !important; box-shadow: none !important; }
+        }
+    `;
+    setTimeout(function(){ window.print(); }, 100);
+}
+
+/* ---------- WORD: tam inline-style, sadə HTML (mobil sənəd baxıcıları üçün ən etibarlı format) ---------- */
+function buildWordHtml(d, tpl){
+    const x = t();
+    const first = escapeHtml(d.firstName)||x.defaultFirst;
+    const last = escapeHtml(d.lastName)||x.defaultLast;
+    const father = escapeHtml(d.fatherName);
+    const job = escapeHtml(d.jobTitle)||x.defaultJob;
+
+    const accent = tpl === 'sidebar' ? '#1f2a44' : (tpl === 'classic' ? '#000000' : '#2c4dc9');
+    const sectionTitle = (label) => '<p style="font-size:13pt;font-weight:bold;color:' + accent + ';border-bottom:1px solid #cccccc;padding-bottom:3px;margin:14px 0 8px 0;">' + label + '</p>';
+    const item = (html) => '<p style="margin:0 0 6px 0;font-size:11pt;color:#222222;">' + html + '</p>';
+
+    let body = '';
+    body += '<h1 style="font-size:22pt;color:#0c1526;margin:0 0 2px 0;">' + first + ' ' + last + (father?(' '+father):'') + '</h1>';
+    body += '<p style="font-size:13pt;color:' + accent + ';font-weight:bold;margin:0 0 10px 0;">' + job + '</p>';
+    if (d.birthDate) body += item('Dogum tarixi: ' + escapeHtml(d.birthDate));
+
+    const contactLines = [];
+    if (d.phone) contactLines.push('Tel: ' + escapeHtml(d.phone));
+    if (d.email) contactLines.push('Email: ' + escapeHtml(d.email));
+    if (d.address) contactLines.push('Unvan: ' + escapeHtml(d.address));
+    if (contactLines.length){ body += sectionTitle(x.cvContact); contactLines.forEach(l=> body += item(l)); }
+
+    const edus = d.educations.filter(e=>e.school||e.major);
+    if (edus.length){ body += sectionTitle(x.cvEducation.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
+        edus.forEach(e=> body += item('<b>' + escapeHtml(e.school) + '</b>' + (e.major?', '+escapeHtml(e.major):'') + ((e.start||e.end)?(' (' + escapeHtml(e.start) + (e.start&&e.end?' - ':'') + escapeHtml(e.end) + ')'):''))); }
+
+    const exps = d.experiences.filter(e=>e.company||e.role);
+    if (exps.length){ body += sectionTitle(x.cvExperience.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
+        exps.forEach(e=>{ body += item('<b>' + escapeHtml(e.company) + '</b> - ' + escapeHtml(e.role) + ((e.start||e.end)?(' (' + escapeHtml(e.start) + (e.start&&e.end?' - ':'') + escapeHtml(e.end) + ')'):''));
+            if (e.desc) body += '<p style="margin:0 0 8px 0;font-size:10pt;color:#555555;">' + escapeHtml(e.desc) + '</p>'; }); }
+
+    const langs = d.languages.filter(l=>l.name);
+    if (langs.length){ body += sectionTitle(x.cvLanguages.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
+        langs.forEach(l=> body += item('<b>' + escapeHtml(l.name) + '</b> - ' + escapeHtml(l.level))); }
+
+    const certs = d.certificates.filter(c=>c.name);
+    if (certs.length){ body += sectionTitle(x.cvCertificates.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
+        certs.forEach(c=> body += item('<b>' + escapeHtml(c.name) + '</b>' + (c.org?', '+escapeHtml(c.org):'') + (c.year?(' (' + escapeHtml(c.year) + ')'):''))); }
+
+    const skills = d.skills||[];
+    if (skills.length){ body += sectionTitle(x.cvSkills.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
+        body += '<p style="font-size:11pt;color:#222222;">' + skills.map(escapeHtml).join(' &nbsp;|&nbsp; ') + '</p>'; }
+
+    return '<div style="font-family:Calibri,Arial,sans-serif;padding:10px;">' + body + '</div>';
 }
 
 function exportWord(){
     const d = getFormData();
-    const tpl = currentTemplate;
-    const bodyHtml = renderCvHtml(d, tpl);
-    const wordCss =
-        'body{font-family:Calibri,Arial,sans-serif;color:#1a1a1a;}' +
-        '.cv-topbar{background:#16213f;height:10px;}' +
-        '.cv-header{padding:18px 0;}' +
-        '.cv-avatar,.cv-avatar-placeholder{width:80px;height:80px;border-radius:50%;}' +
-        '.cv-name{font-size:22pt;font-weight:bold;color:#0c1526;}' +
-        '.cv-title{font-size:13pt;color:#2c4dc9;font-weight:bold;}' +
-        '.cv-section{margin-top:14px;}' +
-        '.cv-section h4{font-size:11pt;color:#2c4dc9;border-bottom:1px solid #cfd9f5;padding-bottom:4px;}' +
-        '.cv-item{margin-bottom:6px;font-size:11pt;}' +
-        '.meta{color:#666;font-size:10pt;}' +
-        'table.cv-shell{width:100%;}' +
-        'td.cv-sidebar{background:#1f2a44;color:#fff;padding:20px;width:34%;vertical-align:top;}' +
-        'td.cv-sidebar .cv-section h4{color:#cfd9f5;border-bottom:1px solid #44507a;}' +
-        'td.cv-main{padding:20px;vertical-align:top;}' +
-        '.cv-tags span{background:#eef1f7;padding:3px 10px;border-radius:10px;font-size:9pt;margin:0 4px 4px 0;display:inline-block;}';
-    const full = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>' + wordCss + '</style></head><body>' + bodyHtml + '</body></html>';
-    const blob = new Blob(['\ufeff', full], { type: 'application/vnd.ms-word;charset=utf-8' });
+    const bodyHtml = buildWordHtml(d, currentTemplate);
+    const full = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+        '<head><meta charset="utf-8"><title>CV</title></head>' +
+        '<body>' + bodyHtml + '</body></html>';
+    const blob = new Blob([full], { type: 'application/msword' });
     downloadBlob(blob, 'CV.doc');
 }
 
