@@ -160,6 +160,10 @@ body {
 @media print {
     .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer { display:none !important; }
     .preview-panel { border:none !important; box-shadow:none !important; padding:0 !important; }
+    /* Mobil ekran-genişliyi əsaslı kiçildilmiş düzülüşü çap zamanı ləğv edirik ki, sidebar/2-sütun şablonları düzgün çapa getsin */
+    .tpl-sidebar td.cv-sidebar { display:table-cell !important; width:34% !important; }
+    .tpl-sidebar td.cv-main { display:table-cell !important; }
+    .tpl-sidebar table.cv-shell { display:table !important; width:100% !important; }
 }
 </style>
 </head>
@@ -699,6 +703,124 @@ function exportPDF(){
 }
 
 /* ---------- WORD: əsl .docx faylı (docx.js ilə) — Word tətbiqi ilə tam uyğun, şəkil və layihələrlə ---------- */
+function buildDocxSidebarTable(d, accentHex, imageData){
+    const { Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, VerticalAlign } = docx;
+    const x = t();
+    const first = d.firstName || x.defaultFirst;
+    const last = d.lastName || x.defaultLast;
+    const father = d.fatherName;
+    const job = d.jobTitle || x.defaultJob;
+    const cleanLabel = (s) => s.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim();
+
+    const sideChildren = [];
+    if (imageData) {
+        try {
+            sideChildren.push(new Paragraph({ alignment: AlignmentType.CENTER, children:[ new ImageRun({ data: imageData.bytes, transformation:{width:90,height:90}, type: imageData.type }) ], spacing:{after:120} }));
+        } catch(e){ console.warn(e); }
+    }
+    sideChildren.push(new Paragraph({ alignment: AlignmentType.CENTER, children:[ new TextRun({ text:first+' '+last+(father?(' '+father):''), bold:true, size:30, color:'FFFFFF' }) ], spacing:{after:40} }));
+    sideChildren.push(new Paragraph({ alignment: AlignmentType.CENTER, children:[ new TextRun({ text:job, size:20, color:'CFD9F5' }) ], spacing:{after:200} }));
+
+    function sideHeader(label){
+        sideChildren.push(new Paragraph({ children:[ new TextRun({ text:cleanLabel(label).toUpperCase(), bold:true, size:18, color:'CFD9F5' }) ], spacing:{before:160, after:80} }));
+    }
+    function sideLine(text){
+        sideChildren.push(new Paragraph({ children:[ new TextRun({ text:text, size:19, color:'FFFFFF' }) ], spacing:{after:50} }));
+    }
+
+    const contactRuns = [];
+    if (d.phone) contactRuns.push('Tel: ' + d.phone);
+    if (d.email) contactRuns.push('Email: ' + d.email);
+    if (d.address) contactRuns.push('Ünvan: ' + d.address);
+    if (contactRuns.length){ sideHeader(x.cvContact); contactRuns.forEach(sideLine); }
+
+    const langs = d.languages.filter(l=>l.name);
+    if (langs.length){ sideHeader(x.cvLanguages); langs.forEach(l=> sideLine(l.name + (l.level?(' - '+l.level):''))); }
+
+    const skills = d.skills||[];
+    if (skills.length){ sideHeader(x.cvSkills); sideLine(skills.join(' • ')); }
+
+    const mainChildren = [];
+    if (d.birthDate) mainChildren.push(new Paragraph({ children:[ new TextRun({ text:'Doğum tarixi: '+d.birthDate, size:19, color:'666666' }) ], spacing:{after:120} }));
+
+    function mainHeader(label){
+        mainChildren.push(new Paragraph({
+            children:[ new TextRun({ text:cleanLabel(label), bold:true, size:24, color:accentHex }) ],
+            spacing:{before:160, after:90},
+            border:{ bottom:{ color:accentHex, space:2, style:BorderStyle.SINGLE, size:6 } }
+        }));
+    }
+    function mainLine(runs, after){ mainChildren.push(new Paragraph({ children:runs, spacing:{after: after||80} })); }
+
+    const exps = d.experiences.filter(e=>e.company||e.role);
+    if (exps.length){
+        mainHeader(x.cvExperience);
+        exps.forEach(e=>{
+            const runs = [ new TextRun({ text:'● ', bold:true, size:22, color:accentHex }), new TextRun({ text:e.company, bold:true, size:22 }) ];
+            if (e.start||e.end) runs.push(new TextRun({ text:'   ('+e.start+(e.start&&e.end?' - ':'')+e.end+')', size:18, color:'999999' }));
+            mainLine(runs, 20);
+            mainLine([ new TextRun({ text:'      '+e.role, italics:true, size:20, color:accentHex }) ], e.desc?20:90);
+            if (e.desc) mainLine([ new TextRun({ text:'      '+e.desc, size:18, color:'666666' }) ], 90);
+        });
+    }
+
+    const edus = d.educations.filter(e=>e.school||e.major);
+    if (edus.length){
+        mainHeader(x.cvEducation);
+        edus.forEach(e=>{
+            const runs = [ new TextRun({ text:e.school, bold:true, size:22 }) ];
+            if (e.major) runs.push(new TextRun({ text:', '+e.major, size:22 }));
+            if (e.start||e.end) runs.push(new TextRun({ text:' ('+e.start+(e.start&&e.end?' - ':'')+e.end+')', size:18, color:'999999' }));
+            mainLine(runs);
+        });
+    }
+
+    const certs = d.certificates.filter(c=>c.name);
+    if (certs.length){
+        mainHeader(x.cvCertificates);
+        certs.forEach(c=>{
+            const runs = [ new TextRun({ text:c.name, bold:true, size:22 }) ];
+            if (c.org) runs.push(new TextRun({ text:', '+c.org, size:22 }));
+            if (c.year) runs.push(new TextRun({ text:' ('+c.year+')', size:18, color:'999999' }));
+            mainLine(runs);
+        });
+    }
+
+    const projs = (d.projects||[]).filter(p=>p.company||p.list);
+    if (projs.length){
+        mainHeader(x.cvProjects);
+        projs.forEach(p=>{
+            mainLine([ new TextRun({ text:p.company, bold:true, size:22 }) ], 20);
+            if (p.list) mainLine([ new TextRun({ text:'      '+p.list.split(',').map(s=>s.trim()).filter(Boolean).join('  •  '), size:18, color:'666666' }) ]);
+        });
+    }
+
+    const table = new Table({
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        rows: [
+            new TableRow({
+                children: [
+                    new TableCell({
+                        width: { size: 34, type: WidthType.PERCENTAGE },
+                        shading: { fill: accentHex },
+                        verticalAlign: VerticalAlign.TOP,
+                        margins: { top:200, bottom:200, left:200, right:200 },
+                        children: sideChildren
+                    }),
+                    new TableCell({
+                        width: { size: 66, type: WidthType.PERCENTAGE },
+                        verticalAlign: VerticalAlign.TOP,
+                        margins: { top:200, bottom:200, left:240, right:200 },
+                        children: mainChildren
+                    })
+                ]
+            })
+        ]
+    });
+
+    return [table];
+}
+
 function buildDocxParagraphs(d, accentHex, imageData){
     const { Paragraph, TextRun, ImageRun, BorderStyle, AlignmentType } = docx;
     const x = t();
@@ -830,8 +952,11 @@ async function exportWord(){
             try { imageData = dataUrlToUint8(d.avatar); } catch(e){ console.warn('avatar decode xetasi', e); }
         }
         const { Document, Packer } = docx;
+        const bodyChildren = currentTemplate === 'sidebar'
+            ? buildDocxSidebarTable(d, accentHex, imageData)
+            : buildDocxParagraphs(d, accentHex, imageData);
         const doc = new Document({
-            sections: [{ properties: {}, children: buildDocxParagraphs(d, accentHex, imageData) }]
+            sections: [{ properties: {}, children: bodyChildren }]
         });
         const blob = await Packer.toBlob(doc);
         downloadBlob(blob, 'CV.docx');
