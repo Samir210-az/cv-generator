@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Lora:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -560,61 +561,109 @@ function exportPDF(){
     setTimeout(function(){ window.print(); }, 100);
 }
 
-/* ---------- WORD: tam inline-style, sadə HTML (mobil sənəd baxıcıları üçün ən etibarlı format) ---------- */
-function buildWordHtml(d, tpl){
+/* ---------- WORD: əsl .docx faylı (docx.js ilə) — Word tətbiqi ilə tam uyğun ---------- */
+function buildDocxParagraphs(d, accentHex){
+    const { Paragraph, TextRun, HeadingLevel, BorderStyle } = docx;
     const x = t();
-    const first = escapeHtml(d.firstName)||x.defaultFirst;
-    const last = escapeHtml(d.lastName)||x.defaultLast;
-    const father = escapeHtml(d.fatherName);
-    const job = escapeHtml(d.jobTitle)||x.defaultJob;
+    const first = d.firstName || x.defaultFirst;
+    const last = d.lastName || x.defaultLast;
+    const father = d.fatherName;
+    const job = d.jobTitle || x.defaultJob;
+    const cleanLabel = (s) => s.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim();
 
-    const accent = tpl === 'sidebar' ? '#1f2a44' : (tpl === 'classic' ? '#000000' : '#2c4dc9');
-    const sectionTitle = (label) => '<p style="font-size:13pt;font-weight:bold;color:' + accent + ';border-bottom:1px solid #cccccc;padding-bottom:3px;margin:14px 0 8px 0;">' + label + '</p>';
-    const item = (html) => '<p style="margin:0 0 6px 0;font-size:11pt;color:#222222;">' + html + '</p>';
+    const paras = [];
+    paras.push(new Paragraph({ children: [ new TextRun({ text: first + ' ' + last + (father?(' '+father):''), bold:true, size:44, color:'0C1526' }) ], spacing:{after:60} }));
+    paras.push(new Paragraph({ children: [ new TextRun({ text: job, bold:true, size:28, color:accentHex }) ], spacing:{after:160} }));
+    if (d.birthDate) paras.push(new Paragraph({ children:[ new TextRun({ text:'Doğum tarixi: ' + d.birthDate, size:22 }) ], spacing:{after:120} }));
 
-    let body = '';
-    body += '<h1 style="font-size:22pt;color:#0c1526;margin:0 0 2px 0;">' + first + ' ' + last + (father?(' '+father):'') + '</h1>';
-    body += '<p style="font-size:13pt;color:' + accent + ';font-weight:bold;margin:0 0 10px 0;">' + job + '</p>';
-    if (d.birthDate) body += item('Dogum tarixi: ' + escapeHtml(d.birthDate));
+    function sectionHeader(label){
+        paras.push(new Paragraph({
+            children: [ new TextRun({ text: cleanLabel(label), bold:true, size:24, color:accentHex }) ],
+            spacing: { before:200, after:100 },
+            border: { bottom: { color:'CCCCCC', space:2, style: BorderStyle.SINGLE, size:4 } }
+        }));
+    }
+    function lineP(runs){
+        paras.push(new Paragraph({ children: runs, spacing:{after:80} }));
+    }
 
-    const contactLines = [];
-    if (d.phone) contactLines.push('Tel: ' + escapeHtml(d.phone));
-    if (d.email) contactLines.push('Email: ' + escapeHtml(d.email));
-    if (d.address) contactLines.push('Unvan: ' + escapeHtml(d.address));
-    if (contactLines.length){ body += sectionTitle(x.cvContact); contactLines.forEach(l=> body += item(l)); }
+    const contactRuns = [];
+    if (d.phone) contactRuns.push('Tel: ' + d.phone);
+    if (d.email) contactRuns.push('Email: ' + d.email);
+    if (d.address) contactRuns.push('Ünvan: ' + d.address);
+    if (contactRuns.length){
+        sectionHeader(x.cvContact);
+        contactRuns.forEach(c => lineP([ new TextRun({ text:c, size:22 }) ]));
+    }
 
     const edus = d.educations.filter(e=>e.school||e.major);
-    if (edus.length){ body += sectionTitle(x.cvEducation.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
-        edus.forEach(e=> body += item('<b>' + escapeHtml(e.school) + '</b>' + (e.major?', '+escapeHtml(e.major):'') + ((e.start||e.end)?(' (' + escapeHtml(e.start) + (e.start&&e.end?' - ':'') + escapeHtml(e.end) + ')'):''))); }
+    if (edus.length){
+        sectionHeader(x.cvEducation);
+        edus.forEach(e=>{
+            const runs = [ new TextRun({ text:e.school, bold:true, size:22 }) ];
+            if (e.major) runs.push(new TextRun({ text:', ' + e.major, size:22 }));
+            if (e.start||e.end) runs.push(new TextRun({ text:' (' + e.start + (e.start&&e.end?' - ':'') + e.end + ')', size:20, color:'666666' }));
+            lineP(runs);
+        });
+    }
 
     const exps = d.experiences.filter(e=>e.company||e.role);
-    if (exps.length){ body += sectionTitle(x.cvExperience.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
-        exps.forEach(e=>{ body += item('<b>' + escapeHtml(e.company) + '</b> - ' + escapeHtml(e.role) + ((e.start||e.end)?(' (' + escapeHtml(e.start) + (e.start&&e.end?' - ':'') + escapeHtml(e.end) + ')'):''));
-            if (e.desc) body += '<p style="margin:0 0 8px 0;font-size:10pt;color:#555555;">' + escapeHtml(e.desc) + '</p>'; }); }
+    if (exps.length){
+        sectionHeader(x.cvExperience);
+        exps.forEach(e=>{
+            const runs = [ new TextRun({ text:e.company, bold:true, size:22 }), new TextRun({ text:' - ' + e.role, size:22 }) ];
+            if (e.start||e.end) runs.push(new TextRun({ text:' (' + e.start + (e.start&&e.end?' - ':'') + e.end + ')', size:20, color:'666666' }));
+            lineP(runs);
+            if (e.desc) lineP([ new TextRun({ text:e.desc, size:20, color:'555555', italics:true }) ]);
+        });
+    }
 
     const langs = d.languages.filter(l=>l.name);
-    if (langs.length){ body += sectionTitle(x.cvLanguages.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
-        langs.forEach(l=> body += item('<b>' + escapeHtml(l.name) + '</b> - ' + escapeHtml(l.level))); }
+    if (langs.length){
+        sectionHeader(x.cvLanguages);
+        langs.forEach(l=> lineP([ new TextRun({ text:l.name, bold:true, size:22 }), new TextRun({ text:' - ' + l.level, size:22 }) ]));
+    }
 
     const certs = d.certificates.filter(c=>c.name);
-    if (certs.length){ body += sectionTitle(x.cvCertificates.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
-        certs.forEach(c=> body += item('<b>' + escapeHtml(c.name) + '</b>' + (c.org?', '+escapeHtml(c.org):'') + (c.year?(' (' + escapeHtml(c.year) + ')'):''))); }
+    if (certs.length){
+        sectionHeader(x.cvCertificates);
+        certs.forEach(c=>{
+            const runs = [ new TextRun({ text:c.name, bold:true, size:22 }) ];
+            if (c.org) runs.push(new TextRun({ text:', ' + c.org, size:22 }));
+            if (c.year) runs.push(new TextRun({ text:' (' + c.year + ')', size:20, color:'666666' }));
+            lineP(runs);
+        });
+    }
 
     const skills = d.skills||[];
-    if (skills.length){ body += sectionTitle(x.cvSkills.replace(/[^\w\sƏəĞğİıÖöŞşÜüÇç]/g,'').trim());
-        body += '<p style="font-size:11pt;color:#222222;">' + skills.map(escapeHtml).join(' &nbsp;|&nbsp; ') + '</p>'; }
+    if (skills.length){
+        sectionHeader(x.cvSkills);
+        lineP([ new TextRun({ text: skills.join('   •   '), size:22 }) ]);
+    }
 
-    return '<div style="font-family:Calibri,Arial,sans-serif;padding:10px;">' + body + '</div>';
+    return paras;
 }
 
 function exportWord(){
+    if (typeof docx === 'undefined') {
+        alert('Word kitabxanası yüklənmədi. İnternet bağlantınızı yoxlayıb səhifəni yeniləyin.');
+        return;
+    }
     const d = getFormData();
-    const bodyHtml = buildWordHtml(d, currentTemplate);
-    const full = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
-        '<head><meta charset="utf-8"><title>CV</title></head>' +
-        '<body>' + bodyHtml + '</body></html>';
-    const blob = new Blob([full], { type: 'application/msword' });
-    downloadBlob(blob, 'CV.doc');
+    const accentHex = currentTemplate === 'sidebar' ? '1F2A44' : (currentTemplate === 'classic' ? '000000' : '2C4DC9');
+    const { Document, Packer } = docx;
+    const doc = new Document({
+        sections: [{
+            properties: {},
+            children: buildDocxParagraphs(d, accentHex)
+        }]
+    });
+    Packer.toBlob(doc).then(function(blob){
+        downloadBlob(blob, 'CV.docx');
+    }).catch(function(err){
+        console.error(err);
+        alert('Word sənədi yaradılarkən xəta baş verdi.');
+    });
 }
 
 function clearAll(){
