@@ -294,42 +294,54 @@ async function translateText(text, fromLang, toLang){
 }
 
 async function translateAllFields(fromLang, toLang){
-    const btn = document.querySelector('.lang-selector button.active');
     const x = t();
     document.body.style.cursor = 'wait';
     try {
         const jobEl = document.getElementById('jobTitle');
         if (jobEl.value) jobEl.value = await translateText(jobEl.value, fromLang, toLang);
 
+        const addrEl = document.getElementById('address');
+        if (addrEl.value) addrEl.value = await translateText(addrEl.value, fromLang, toLang);
+
         const expEntries = Array.from(document.querySelectorAll('#experienceContainer .dynamic-entry'));
         for (const el of expEntries) {
+            const companyEl = el.querySelector('.exp-company');
             const roleEl = el.querySelector('.exp-role');
             const descEl = el.querySelector('.exp-desc');
+            if (companyEl.value) companyEl.value = await translateText(companyEl.value, fromLang, toLang);
             if (roleEl.value) roleEl.value = await translateText(roleEl.value, fromLang, toLang);
             if (descEl.value) descEl.value = await translateText(descEl.value, fromLang, toLang);
         }
 
         const eduEntries = Array.from(document.querySelectorAll('#educationContainer .dynamic-entry'));
         for (const el of eduEntries) {
+            const schoolEl = el.querySelector('.edu-school');
             const majorEl = el.querySelector('.edu-major');
+            if (schoolEl.value) schoolEl.value = await translateText(schoolEl.value, fromLang, toLang);
             if (majorEl.value) majorEl.value = await translateText(majorEl.value, fromLang, toLang);
         }
 
         const langEntries = Array.from(document.querySelectorAll('#languageContainer .dynamic-entry'));
         for (const el of langEntries) {
+            const nameEl = el.querySelector('.lang-name');
             const levelEl = el.querySelector('.lang-level');
+            if (nameEl.value) nameEl.value = await translateText(nameEl.value, fromLang, toLang);
             if (levelEl.value) levelEl.value = await translateText(levelEl.value, fromLang, toLang);
         }
 
         const certEntries = Array.from(document.querySelectorAll('#certificateContainer .dynamic-entry'));
         for (const el of certEntries) {
             const nameEl = el.querySelector('.cert-name');
+            const orgEl = el.querySelector('.cert-org');
             if (nameEl.value) nameEl.value = await translateText(nameEl.value, fromLang, toLang);
+            if (orgEl.value) orgEl.value = await translateText(orgEl.value, fromLang, toLang);
         }
 
         const projEntries = Array.from(document.querySelectorAll('#projectContainer .dynamic-entry'));
         for (const el of projEntries) {
+            const companyEl = el.querySelector('.proj-company');
             const listEl = el.querySelector('.proj-list');
+            if (companyEl.value) companyEl.value = await translateText(companyEl.value, fromLang, toLang);
             if (listEl.value) listEl.value = await translateText(listEl.value, fromLang, toLang);
         }
 
