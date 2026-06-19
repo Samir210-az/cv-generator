@@ -284,21 +284,52 @@ function hasAnyContent(){
 }
 
 /* ---------- Avtomatik tərcümə (MyMemory pulsuz API) ---------- */
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
 async function translateText(text, fromLang, toLang){
     if (!text || !text.trim()) return text;
+    let result = text;
     try {
-        const res = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=' + fromLang + '|' + toLang);
-        const data = await res.json();
-        const translated = data && data.responseData && data.responseData.translatedText;
-        return translated || text;
+        const res = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=' + fromLang + '&tl=' + toLang + '&dt=t&q=' + encodeURIComponent(text));
+        if (res.ok) {
+            const data = await res.json();
+            if (data && Array.isArray(data[0])) {
+                const merged = data[0].map(seg => seg[0]).join('');
+                if (merged && merged.trim()) result = merged;
+            }
+        }
     } catch(e){
-        console.warn('Tərcümə xətası:', e);
-        return text;
+        console.warn('Google tərcümə xətası, MyMemory-yə keçirik:', e);
+        try {
+            const res2 = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=' + fromLang + '|' + toLang);
+            const data2 = await res2.json();
+            const translated = data2 && data2.responseData && data2.responseData.translatedText;
+            if (translated) result = translated;
+        } catch(e2){ console.warn('MyMemory tərcümə xətası:', e2); }
     }
+    await sleep(60);
+    return result;
+}
+
+function showTranslateOverlay(){
+    let ov = document.getElementById('translateOverlay');
+    if (!ov) {
+        ov = document.createElement('div');
+        ov.id = 'translateOverlay';
+        ov.style.cssText = 'position:fixed;inset:0;background:rgba(12,21,38,0.55);z-index:9999;display:flex;align-items:center;justify-content:center;';
+        ov.innerHTML = '<div style="background:#fff;padding:22px 30px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);font-weight:700;color:#16213f;font-family:Inter,sans-serif;text-align:center;">🌐 Tərcümə edilir...<br><span style="font-size:0.8rem;color:#7c8db8;font-weight:500;">Zəhmət olmasa gözləyin</span></div>';
+        document.body.appendChild(ov);
+    }
+    ov.style.display = 'flex';
+}
+function hideTranslateOverlay(){
+    const ov = document.getElementById('translateOverlay');
+    if (ov) ov.style.display = 'none';
 }
 
 async function translateAllFields(fromLang, toLang){
     const x = t();
+    showTranslateOverlay();
     document.body.style.cursor = 'wait';
     try {
         const jobEl = document.getElementById('jobTitle');
@@ -360,6 +391,7 @@ async function translateAllFields(fromLang, toLang){
         updatePreview();
     } finally {
         document.body.style.cursor = 'default';
+        hideTranslateOverlay();
     }
 }
 
