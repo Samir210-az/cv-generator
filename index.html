@@ -1,1162 +1,606 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Professional CV Generator – 3 dil, 3 format</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            background: #f0f2f5;
-            padding: 20px;
-            color: #1e2a3a;
-        }
-        .app {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.1fr;
-            gap: 24px;
-            align-items: start;
-        }
-        .form-panel {
-            background: #fff;
-            border-radius: 20px;
-            padding: 24px 28px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-            border: 1px solid #e6edf4;
-            position: relative;
-        }
-        .lang-selector {
-            position: absolute;
-            top: 20px;
-            right: 24px;
-            display: flex;
-            gap: 6px;
-        }
-        .lang-selector button {
-            background: #eef4fc;
-            border: 1px solid #d0dbe8;
-            border-radius: 30px;
-            padding: 4px 14px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #2c3e5a;
-        }
-        .lang-selector button.active {
-            background: #1a3a6a;
-            color: #fff;
-            border-color: #1a3a6a;
-        }
-        .form-panel h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            margin-right: 120px;
-            color: #0b1a2e;
-        }
-        .form-group { margin-bottom: 18px; }
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            font-size: 0.85rem;
-            color: #2c3e5a;
-            margin-bottom: 4px;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d0dbe8;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            background: #fafcff;
-            transition: 0.2s;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #2a5c8a;
-            box-shadow: 0 0 0 3px rgba(42,92,138,0.1);
-        }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .dynamic-section {
-            border-top: 1px solid #e6edf4;
-            padding-top: 16px;
-            margin-top: 16px;
-        }
-        .dynamic-section .section-title {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #1a2a44;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dynamic-entry {
-            background: #f8faff;
-            padding: 16px 14px;
-            border-radius: 14px;
-            margin-bottom: 14px;
-            border: 1px solid #e6edf4;
-            position: relative;
-        }
-        .dynamic-entry .remove-btn {
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #b0c0d0;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .dynamic-entry .remove-btn:hover { color: #c0392b; }
-        .add-btn {
-            background: #e9eff6;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            color: #1a3a6a;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .add-btn:hover { background: #d0def0; }
-        .tag-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-        }
-        .tag-group .tag {
-            background: #e9eff6;
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .tag-group .tag .remove-tag { cursor: pointer; color: #888; font-weight: 700; }
-        .tag-group input {
-            flex: 1;
-            min-width: 120px;
-            padding: 6px 12px;
-            border: 1px solid #d0dbe8;
-            border-radius: 40px;
-            font-size: 0.85rem;
-        }
-        .tag-group .add-tag-btn {
-            background: #2a5c8a;
-            color: #fff;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 24px;
-            border-top: 1px solid #e6edf4;
-            padding-top: 20px;
-        }
-        .btn-group button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.95rem;
-        }
-        .btn-word { background: #2b5797; color: #fff; }
-        .btn-word:hover { background: #1d3f6e; }
-        .btn-pdf { background: #c0392b; color: #fff; }
-        .btn-pdf:hover { background: #922b21; }
-        .btn-clear { background: #e6edf4; color: #2c3e5a; }
-        .btn-clear:hover { background: #d0dbe8; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Professional CV Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Lora:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg,#f4f7fb 0%,#eef1f8 100%);
+    padding: 24px;
+    color: #1a2433;
+}
+.app {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 26px;
+    align-items: start;
+}
+.form-panel {
+    background: #fff;
+    border-radius: 22px;
+    padding: 28px 30px;
+    box-shadow: 0 10px 40px rgba(20,40,70,0.07);
+    border: 1px solid #e9eef5;
+    position: relative;
+}
+.lang-selector { position: absolute; top: 22px; right: 26px; display: flex; gap: 6px; }
+.lang-selector button {
+    background: #f0f4fa; border: 1px solid #dbe4f0; border-radius: 30px;
+    padding: 5px 14px; font-weight: 700; font-size: 0.78rem; cursor: pointer;
+    transition: 0.2s; color: #344b6e; letter-spacing: 0.5px;
+}
+.lang-selector button.active { background: #16213f; color: #fff; border-color: #16213f; }
+.form-panel h2 { font-size: 1.55rem; font-weight: 800; margin-bottom: 22px; margin-right: 120px; color: #0c1526; letter-spacing: -0.5px; }
+.form-group { margin-bottom: 18px; }
+.form-group label { display:block; font-weight: 600; font-size: 0.82rem; color: #45597c; margin-bottom: 5px; }
+.form-group input, .form-group textarea {
+    width: 100%; padding: 11px 13px; border: 1.5px solid #dbe4f0; border-radius: 11px;
+    font-size: 0.95rem; background: #fbfcfe; transition: 0.2s; font-family: inherit;
+}
+.form-group input:focus, .form-group textarea:focus {
+    outline: none; border-color: #3a6df0; box-shadow: 0 0 0 4px rgba(58,109,240,0.1);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.dynamic-section { border-top: 1px solid #eef1f7; padding-top: 18px; margin-top: 18px; }
+.dynamic-section .section-title { font-weight: 700; font-size: 1.02rem; color: #16213f; margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center; }
+.dynamic-entry { background: #f7f9fd; padding: 18px 16px; border-radius: 16px; margin-bottom: 14px; border: 1px solid #e9eef5; position: relative; }
+.dynamic-entry .remove-btn { position:absolute; top:10px; right:12px; background:none; border:none; color:#b3c0d4; font-size:1.2rem; cursor:pointer; }
+.dynamic-entry .remove-btn:hover { color:#e0524a; }
+.add-btn { background:#e8edfb; border:none; padding:7px 18px; border-radius:40px; font-weight:600; color:#2c4dc9; cursor:pointer; font-size:0.88rem; transition:0.2s; }
+.add-btn:hover { background:#d7dffa; }
+.tag-group { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.tag-group .tag { background:#e8edfb; padding:5px 14px; border-radius:40px; font-size:0.85rem; display:flex; align-items:center; gap:6px; color:#2c4dc9; font-weight:500; }
+.tag-group .tag .remove-tag { cursor:pointer; color:#7c8db8; font-weight:700; }
+.tag-group input { flex:1; min-width:120px; padding:7px 14px; border:1.5px solid #dbe4f0; border-radius:40px; font-size:0.85rem; }
+.tag-group .add-tag-btn { background:#16213f; color:#fff; border:none; padding:7px 18px; border-radius:40px; cursor:pointer; font-size:0.85rem; font-weight:600; }
+.btn-group { display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; border-top:1px solid #eef1f7; padding-top:22px; }
+.btn-group button { padding:12px 26px; border:none; border-radius:40px; font-weight:700; cursor:pointer; transition:0.2s; font-size:0.92rem; display:flex; align-items:center; gap:6px; }
+.btn-word { background:#2c4dc9; color:#fff; box-shadow:0 6px 16px rgba(44,77,201,0.25); }
+.btn-word:hover { background:#21399c; }
+.btn-pdf { background:#d1372f; color:#fff; box-shadow:0 6px 16px rgba(209,55,47,0.25); }
+.btn-pdf:hover { background:#aa2b25; }
+.btn-clear { background:#eef1f7; color:#45597c; }
+.btn-clear:hover { background:#dde4f0; }
+.btn-group button:disabled { opacity:0.6; cursor:wait; }
 
-        .preview-panel {
-            background: #fff;
-            border-radius: 20px;
-            padding: 20px 24px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-            border: 1px solid #e6edf4;
-            position: sticky;
-            top: 20px;
-            max-height: calc(100vh - 40px);
-            overflow-y: auto;
-        }
-        .preview-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        .preview-panel h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #0b1a2e;
-        }
+.preview-panel {
+    background:#fff; border-radius:22px; padding:22px 26px;
+    box-shadow:0 10px 40px rgba(20,40,70,0.07); border:1px solid #e9eef5;
+    position:sticky; top:24px; max-height: calc(100vh - 48px); overflow-y:auto;
+}
+.preview-panel-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.preview-panel h2 { font-size:1.15rem; font-weight:800; color:#0c1526; }
+.template-switch { display:flex; gap:6px; background:#f0f4fa; border-radius:40px; padding:4px; }
+.template-switch button { border:none; background:transparent; padding:8px 16px; border-radius:30px; font-size:0.8rem; font-weight:700; cursor:pointer; color:#45597c; transition:0.2s; white-space:nowrap; }
+.template-switch button.active { background:#16213f; color:#fff; }
 
-        /* ---- Format seçici (1 düymə ilə keçid) ---- */
-        .template-switch {
-            display: flex;
-            gap: 6px;
-            background: #eef2f7;
-            border-radius: 40px;
-            padding: 4px;
-        }
-        .template-switch button {
-            border: none;
-            background: transparent;
-            padding: 7px 14px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #3d5570;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-        .template-switch button.active {
-            background: #1a3a6a;
-            color: #fff;
-        }
+#cvPreviewWrap { border-radius:14px; overflow:hidden; box-shadow:0 2px 18px rgba(20,40,70,0.08); }
+#cvPreview { background:#fff; font-size:0.92rem; line-height:1.55; }
 
-        #cvPreview {
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #e6edf4;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            overflow: hidden;
-        }
+.tpl-modern { font-family:'Poppins', sans-serif; }
+.tpl-modern .cv-topbar { background:#16213f; height:14px; }
+.tpl-modern .cv-header { display:flex; gap:22px; align-items:center; padding:26px 30px 20px; }
+.tpl-modern .cv-avatar, .tpl-modern .cv-avatar-placeholder { width:92px; height:92px; border-radius:50%; object-fit:cover; border:4px solid #eef1f7; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#eef1f7; color:#8b9bb8; font-size:0.7rem; }
+.tpl-modern .cv-name { font-size:1.7rem; font-weight:800; color:#0c1526; }
+.tpl-modern .cv-title { color:#2c4dc9; font-weight:600; font-size:1rem; margin-top:2px; }
+.tpl-modern .cv-body { padding:6px 30px 28px; }
+.tpl-modern .cv-section { margin-top:18px; }
+.tpl-modern .cv-section h4 { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#2c4dc9; border-bottom:2px solid #e8edfb; padding-bottom:6px; margin-bottom:10px; }
+.tpl-modern .cv-item { margin-bottom:8px; }
+.tpl-modern .cv-item strong { color:#0c1526; font-size:0.96rem; }
+.tpl-modern .cv-item .meta { color:#8b9bb8; font-size:0.82rem; }
+.tpl-modern .cv-tags span { background:#eef1f7; padding:5px 14px; border-radius:40px; font-size:0.82rem; color:#16213f; font-weight:500; margin:0 6px 6px 0; display:inline-block; }
 
-        /* =========================================================
-           TEMPLATE 1 — MODERN (rəngli, dəyirmi avatar)
-           ========================================================= */
-        #cvPreview.tpl-modern { padding: 20px; }
-        #cvPreview.tpl-modern .cv-header {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            border-bottom: 2px solid #e6edf4;
-            padding-bottom: 16px;
-            margin-bottom: 16px;
-        }
-        #cvPreview.tpl-modern .cv-avatar,
-        #cvPreview.tpl-modern .cv-avatar-placeholder {
-            width: 80px; height: 80px; border-radius: 50%;
-            object-fit: cover; background: #e6edf4;
-            border: 2px solid #c0d0e0; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            color: #5d7188; font-size: 0.7rem;
-        }
-        #cvPreview.tpl-modern .cv-name { font-size: 1.6rem; font-weight: 700; color: #0b1a2e; }
-        #cvPreview.tpl-modern .cv-title { color: #2a5c8a; font-weight: 500; }
-        #cvPreview.tpl-modern .cv-section { margin-top: 14px; }
-        #cvPreview.tpl-modern .cv-section h4 {
-            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;
-            color: #5d7188; border-bottom: 1px solid #e6edf4;
-            padding-bottom: 4px; margin-bottom: 8px;
-        }
-        #cvPreview.tpl-modern .cv-item { margin-bottom: 6px; }
-        #cvPreview.tpl-modern .cv-item strong { color: #0b1a2e; }
-        #cvPreview.tpl-modern .cv-tags { display: flex; flex-wrap: wrap; gap: 4px 8px; }
-        #cvPreview.tpl-modern .cv-tags span {
-            background: #eef4fc; padding: 0 12px; border-radius: 40px;
-            font-size: 0.8rem; color: #1a3a6a;
-        }
+.tpl-classic { font-family:'Lora', Georgia, serif; color:#1a1a1a; }
+.tpl-classic .cv-header { text-align:center; padding:34px 36px 18px; border-bottom:3px solid #1a1a1a; }
+.tpl-classic .cv-name { font-family:'Playfair Display', serif; font-size:2rem; font-weight:700; letter-spacing:1px; }
+.tpl-classic .cv-title { font-size:1rem; color:#444; margin-top:4px; letter-spacing:0.5px; text-transform:uppercase; }
+.tpl-classic .cv-body { padding:22px 36px 32px; }
+.tpl-classic .cv-section { margin-top:18px; }
+.tpl-classic .cv-section h4 { font-size:0.86rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; border-bottom:1.5px solid #1a1a1a; padding-bottom:4px; margin-bottom:10px; }
+.tpl-classic .cv-item { margin-bottom:8px; }
+.tpl-classic .cv-item strong { color:#000; }
+.tpl-classic .cv-item .meta { color:#555; font-size:0.85rem; font-style:italic; }
+.tpl-classic .cv-tags span { font-size:0.92rem; }
+.tpl-classic .cv-tags span:not(:last-child)::after { content:" •  "; color:#999; }
 
-        /* =========================================================
-           TEMPLATE 2 — KLASSİK / ATS-FRIENDLY (ağ-qara, 1 sütun, serif)
-           Ən çox HR sistemlərində seçilən, tarama-dostu format
-           ========================================================= */
-        #cvPreview.tpl-classic { padding: 28px 32px; font-family: 'Georgia', 'Times New Roman', serif; color: #111; }
-        #cvPreview.tpl-classic .cv-header {
-            text-align: center;
-            border-bottom: 2px solid #111;
-            padding-bottom: 12px;
-            margin-bottom: 16px;
-        }
-        #cvPreview.tpl-classic .cv-avatar,
-        #cvPreview.tpl-classic .cv-avatar-placeholder { display: none; }
-        #cvPreview.tpl-classic .cv-name { font-size: 1.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-        #cvPreview.tpl-classic .cv-title { font-size: 0.95rem; color: #333; margin-top: 2px; }
-        #cvPreview.tpl-classic .cv-section { margin-top: 14px; }
-        #cvPreview.tpl-classic .cv-section h4 {
-            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;
-            border-bottom: 1px solid #111; padding-bottom: 3px; margin-bottom: 8px; font-weight: 700;
-        }
-        #cvPreview.tpl-classic .cv-item { margin-bottom: 6px; }
-        #cvPreview.tpl-classic .cv-item strong { color: #000; }
-        #cvPreview.tpl-classic .cv-tags { display: block; }
-        #cvPreview.tpl-classic .cv-tags span {
-            display: inline; background: none; padding: 0; border-radius: 0;
-            font-size: 0.9rem; color: #111;
-        }
-        #cvPreview.tpl-classic .cv-tags span::after { content: " • "; color: #888; }
-        #cvPreview.tpl-classic .cv-tags span:last-child::after { content: ""; }
+.tpl-sidebar { font-family:'Inter', sans-serif; }
+.tpl-sidebar table.cv-shell { width:100%; border-collapse:collapse; }
+.tpl-sidebar td.cv-sidebar { background:#1f2a44; color:#fff; padding:34px 24px; width:34%; vertical-align:top; }
+.tpl-sidebar td.cv-main { padding:34px 28px; vertical-align:top; }
+.tpl-sidebar .cv-avatar, .tpl-sidebar .cv-avatar-placeholder { width:104px; height:104px; border-radius:50%; object-fit:cover; border:4px solid rgba(255,255,255,0.25); margin:0 auto 16px; display:block; }
+.tpl-sidebar .cv-avatar-placeholder { display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.1); color:#c4cee0; font-size:0.7rem; }
+.tpl-sidebar .cv-name { font-size:1.3rem; font-weight:800; text-align:center; }
+.tpl-sidebar .cv-title { font-size:0.85rem; text-align:center; color:#9fb0d6; margin-bottom:18px; }
+.tpl-sidebar .cv-section { margin-top:20px; }
+.tpl-sidebar td.cv-sidebar .cv-section h4 { font-size:0.74rem; text-transform:uppercase; letter-spacing:1px; color:#9fb0d6; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:5px; margin-bottom:10px; font-weight:700; }
+.tpl-sidebar td.cv-sidebar .cv-item { font-size:0.85rem; margin-bottom:7px; color:#dde3f0; }
+.tpl-sidebar td.cv-sidebar .cv-item strong { color:#fff; }
+.tpl-sidebar td.cv-main .cv-section h4 { font-size:0.82rem; text-transform:uppercase; letter-spacing:0.8px; color:#1f2a44; border-bottom:2px solid #1f2a44; padding-bottom:5px; margin-bottom:10px; font-weight:700; }
+.tpl-sidebar td.cv-main .cv-item { margin-bottom:8px; }
+.tpl-sidebar td.cv-main .cv-item strong { color:#111; }
+.tpl-sidebar td.cv-main .cv-item .meta { color:#7c8aab; font-size:0.82rem; }
+.tpl-sidebar td.cv-sidebar .cv-tags span { background:rgba(255,255,255,0.12); padding:4px 12px; border-radius:30px; font-size:0.78rem; margin:0 5px 5px 0; display:inline-block; }
 
-        /* =========================================================
-           TEMPLATE 3 — CREATIVE / SIDEBAR (yan panel rəngli)
-           ========================================================= */
-        #cvPreview.tpl-sidebar { display: grid; grid-template-columns: 34% 66%; min-height: 100%; }
-        #cvPreview.tpl-sidebar .cv-sidebar {
-            background: #243b53; color: #fff; padding: 26px 20px;
-        }
-        #cvPreview.tpl-sidebar .cv-main { padding: 26px 22px; }
-        #cvPreview.tpl-sidebar .cv-avatar,
-        #cvPreview.tpl-sidebar .cv-avatar-placeholder {
-            width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
-            border: 3px solid rgba(255,255,255,0.3); margin: 0 auto 14px;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.1); color: #cfd8e3; font-size: 0.7rem;
-        }
-        #cvPreview.tpl-sidebar .cv-name { font-size: 1.25rem; font-weight: 700; text-align: center; }
-        #cvPreview.tpl-sidebar .cv-title { font-size: 0.85rem; text-align: center; color: #9fb3c8; margin-bottom: 14px; }
-        #cvPreview.tpl-sidebar .cv-section { margin-top: 16px; }
-        #cvPreview.tpl-sidebar .cv-sidebar .cv-section h4 {
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
-            color: #9fb3c8; border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding-bottom: 4px; margin-bottom: 8px;
-        }
-        #cvPreview.tpl-sidebar .cv-sidebar .cv-item { font-size: 0.85rem; margin-bottom: 6px; color: #e8edf2; }
-        #cvPreview.tpl-sidebar .cv-sidebar .cv-item strong { color: #fff; }
-        #cvPreview.tpl-sidebar .cv-main .cv-section h4 {
-            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;
-            color: #243b53; border-bottom: 2px solid #243b53;
-            padding-bottom: 4px; margin-bottom: 8px;
-        }
-        #cvPreview.tpl-sidebar .cv-main .cv-item { margin-bottom: 6px; }
-        #cvPreview.tpl-sidebar .cv-main .cv-item strong { color: #111; }
-        #cvPreview.tpl-sidebar .cv-tags { display: flex; flex-wrap: wrap; gap: 4px 6px; }
-        #cvPreview.tpl-sidebar .cv-sidebar .cv-tags span {
-            background: rgba(255,255,255,0.12); padding: 2px 10px; border-radius: 30px; font-size: 0.75rem;
-        }
+.text-muted { color:#8b9bb8; font-size:0.8rem; }
+.mt-1 { margin-top:8px; }
 
-        .text-muted { color: #6a7e99; font-size: 0.8rem; }
-        .mt-1 { margin-top: 6px; }
-        .flex { display: flex; gap: 8px; align-items: center; }
-        .flex-wrap { flex-wrap: wrap; }
-        .gap-2 { gap: 12px; }
+.site-footer { max-width:1440px; margin:30px auto 0; text-align:center; font-size:0.85rem; color:#7c8db8; padding-top:18px; border-top:1px solid #e2e8f2; }
+.site-footer a { color:#16213f; font-weight:700; text-decoration:none; }
+.site-footer a:hover { text-decoration:underline; }
 
-        /* ---- Footer ---- */
-        .site-footer {
-            max-width: 1400px;
-            margin: 28px auto 0;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #6a7e99;
-            padding-top: 16px;
-            border-top: 1px solid #e0e6ed;
-        }
-        .site-footer a {
-            color: #1a3a6a;
-            font-weight: 600;
-            text-decoration: none;
-        }
-        .site-footer a:hover { text-decoration: underline; }
-
-        @media (max-width: 900px) {
-            .app { grid-template-columns: 1fr; gap: 20px; }
-            .preview-panel { position: static; max-height: none; }
-            .form-row { grid-template-columns: 1fr; }
-            .lang-selector { top: 16px; right: 16px; }
-            .form-panel h2 { margin-right: 100px; }
-            #cvPreview.tpl-sidebar { grid-template-columns: 1fr; }
-        }
-        @media print {
-            .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer { display: none !important; }
-            .preview-panel { border: none !important; box-shadow: none !important; padding: 0 !important; }
-            #cvPreview { border: none !important; }
-        }
-    </style>
+@media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; gap: 20px; }
+    .preview-panel { position: static; max-height: none; }
+    .form-row { grid-template-columns: 1fr; }
+    .lang-selector { top: 16px; right: 16px; }
+    .form-panel h2 { margin-right: 100px; }
+    .tpl-sidebar td.cv-sidebar, .tpl-sidebar td.cv-main { display:block; width:100%; }
+}
+@media print {
+    .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer { display:none !important; }
+    .preview-panel { border:none !important; box-shadow:none !important; padding:0 !important; }
+}
+</style>
 </head>
 <body>
 
 <div class="app">
     <div class="form-panel">
-        <!-- Dil seçicisi -->
         <div class="lang-selector">
-            <button data-lang="az" class="active" onclick="setLanguage('az')">AZ</button>
-            <button data-lang="en" onclick="setLanguage('en')">EN</button>
-            <button data-lang="ru" onclick="setLanguage('ru')">RU</button>
+            <button data-lang="az" class="active">AZ</button>
+            <button data-lang="en">EN</button>
+            <button data-lang="ru">RU</button>
         </div>
 
         <h2 id="formTitle">📝 CV Məlumatları</h2>
 
-        <!-- Şəxsi məlumatlar -->
         <div class="form-row">
-            <div class="form-group">
-                <label id="lblFirstName">Ad</label>
-                <input type="text" id="firstName" placeholder="Ad" />
-            </div>
-            <div class="form-group">
-                <label id="lblLastName">Soyad</label>
-                <input type="text" id="lastName" placeholder="Soyad" />
-            </div>
+            <div class="form-group"><label id="lblFirstName">Ad</label><input type="text" id="firstName" /></div>
+            <div class="form-group"><label id="lblLastName">Soyad</label><input type="text" id="lastName" /></div>
         </div>
-        <div class="form-group">
-            <label id="lblFatherName">Ata adı (isteğe bağlı)</label>
-            <input type="text" id="fatherName" placeholder="Ata adı" />
+        <div class="form-group"><label id="lblFatherName">Ata adı (isteğe bağlı)</label><input type="text" id="fatherName" /></div>
+        <div class="form-row">
+            <div class="form-group"><label id="lblJobTitle">Vəzifə / Başlıq</label><input type="text" id="jobTitle" /></div>
+            <div class="form-group"><label id="lblBirthDate">Doğum tarixi</label><input type="date" id="birthDate" /></div>
         </div>
         <div class="form-row">
-            <div class="form-group">
-                <label id="lblJobTitle">Vəzifə / Başlıq</label>
-                <input type="text" id="jobTitle" placeholder="Məs. HSE Manager" />
-            </div>
-            <div class="form-group">
-                <label id="lblBirthDate">Doğum tarixi</label>
-                <input type="date" id="birthDate" />
-            </div>
+            <div class="form-group"><label id="lblPhone">Telefon</label><input type="text" id="phone" /></div>
+            <div class="form-group"><label id="lblEmail">Email</label><input type="email" id="email" /></div>
         </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label id="lblPhone">Telefon</label>
-                <input type="text" id="phone" placeholder="+994 55 555 55 55" />
-            </div>
-            <div class="form-group">
-                <label id="lblEmail">Email</label>
-                <input type="email" id="email" placeholder="email@example.com" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label id="lblAddress">Ünvan</label>
-            <input type="text" id="address" placeholder="Baku, Azərbaycan" />
-        </div>
-        <div class="form-group">
-            <label id="lblAvatar">Şəkil yüklə (PNG, JPG)</label>
-            <input type="file" id="avatarUpload" accept="image/*" />
-        </div>
+        <div class="form-group"><label id="lblAddress">Ünvan</label><input type="text" id="address" /></div>
+        <div class="form-group"><label id="lblAvatar">Şəkil yüklə (PNG, JPG)</label><input type="file" id="avatarUpload" accept="image/*" /></div>
 
-        <!-- Təhsil -->
-        <div class="dynamic-section" id="educationSection">
-            <div class="section-title">
-                <span id="eduTitle">🎓 Təhsil</span>
-                <button class="add-btn" onclick="addEducation()" id="eduAddBtn">+ Əlavə et</button>
-            </div>
+        <div class="dynamic-section">
+            <div class="section-title"><span id="eduTitle">🎓 Təhsil</span><button class="add-btn" id="eduAddBtn">+ Əlavə et</button></div>
             <div id="educationContainer"></div>
         </div>
-
-        <!-- İş təcrübəsi -->
-        <div class="dynamic-section" id="experienceSection">
-            <div class="section-title">
-                <span id="expTitle">💼 İş təcrübəsi</span>
-                <button class="add-btn" onclick="addExperience()" id="expAddBtn">+ Əlavə et</button>
-            </div>
+        <div class="dynamic-section">
+            <div class="section-title"><span id="expTitle">💼 İş təcrübəsi</span><button class="add-btn" id="expAddBtn">+ Əlavə et</button></div>
             <div id="experienceContainer"></div>
         </div>
-
-        <!-- Dillər -->
-        <div class="dynamic-section" id="languageSection">
-            <div class="section-title">
-                <span id="langTitle">🌐 Dillər</span>
-                <button class="add-btn" onclick="addLanguage()" id="langAddBtn">+ Əlavə et</button>
-            </div>
+        <div class="dynamic-section">
+            <div class="section-title"><span id="langTitle">🌐 Dillər</span><button class="add-btn" id="langAddBtn">+ Əlavə et</button></div>
             <div id="languageContainer"></div>
         </div>
-
-        <!-- Sertifikatlar -->
-        <div class="dynamic-section" id="certificateSection">
-            <div class="section-title">
-                <span id="certTitle">📜 Sertifikatlar</span>
-                <button class="add-btn" onclick="addCertificate()" id="certAddBtn">+ Əlavə et</button>
-            </div>
+        <div class="dynamic-section">
+            <div class="section-title"><span id="certTitle">📜 Sertifikatlar</span><button class="add-btn" id="certAddBtn">+ Əlavə et</button></div>
             <div id="certificateContainer"></div>
         </div>
-
-        <!-- Bacarıqlar -->
         <div class="dynamic-section">
-            <div class="section-title">
-                <span id="skillTitle">⭐ Bacarıq / Keyfiyyət</span>
-            </div>
+            <div class="section-title"><span id="skillTitle">⭐ Bacarıq / Keyfiyyət</span></div>
             <div class="form-group">
-                <div class="tag-group" id="skillsGroup">
+                <div class="tag-group">
                     <input type="text" id="skillInput" placeholder="Yeni bacarıq..." />
-                    <button class="add-tag-btn" onclick="addSkill()" id="skillAddBtn">Əlavə et</button>
+                    <button class="add-tag-btn" id="skillAddBtn">Əlavə et</button>
                 </div>
-                <div class="flex flex-wrap gap-2" id="skillTagsContainer" style="margin-top:8px;"></div>
+                <div class="tag-group" id="skillTagsContainer" style="margin-top:10px;"></div>
             </div>
         </div>
 
-        <!-- Düymələr -->
         <div class="btn-group">
-            <button class="btn-word" onclick="exportWord()" id="btnWord">📄 Word yüklə</button>
-            <button class="btn-pdf" onclick="exportPDF()" id="btnPdf">📑 PDF yüklə</button>
-            <button class="btn-clear" onclick="clearAll()" id="btnClear">🗑 Bütün məlumatları təmizlə</button>
+            <button class="btn-word" id="btnWord">📄 Word yüklə</button>
+            <button class="btn-pdf" id="btnPdf">📑 PDF yüklə</button>
+            <button class="btn-clear" id="btnClear">🗑 Bütün məlumatları təmizlə</button>
         </div>
         <div class="text-muted mt-1" id="storageInfo">Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.</div>
     </div>
 
-    <!-- Önizləmə -->
     <div class="preview-panel">
         <div class="preview-panel-header">
             <h2 id="previewTitle">👁 Canlı Önizləmə</h2>
-            <div class="template-switch" id="templateSwitch">
-                <button data-tpl="modern" class="active" onclick="setTemplate('modern')" id="tplBtnModern">Modern</button>
-                <button data-tpl="classic" onclick="setTemplate('classic')" id="tplBtnClassic">Klassik</button>
-                <button data-tpl="sidebar" onclick="setTemplate('sidebar')" id="tplBtnSidebar">Creative</button>
+            <div class="template-switch">
+                <button data-tpl="modern" class="active" id="tplBtnModern">Modern</button>
+                <button data-tpl="classic" id="tplBtnClassic">Klassik</button>
+                <button data-tpl="sidebar" id="tplBtnSidebar">Creative</button>
             </div>
         </div>
-        <div id="cvPreview" class="tpl-modern"></div>
+        <div id="cvPreviewWrap"><div id="cvPreview" class="tpl-modern"></div></div>
     </div>
 </div>
 
-<div class="site-footer">
-    By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">@s_akhundoff</a>
-</div>
+<div class="site-footer">By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">@s_akhundoff</a></div>
 
 <script>
-    // ----- DİL TƏRCÜMƏLƏRİ -----
-    const LANG = {
-        az: {
-            formTitle: '📝 CV Məlumatları',
-            lblFirstName: 'Ad',
-            lblLastName: 'Soyad',
-            lblFatherName: 'Ata adı (isteğe bağlı)',
-            lblJobTitle: 'Vəzifə / Başlıq',
-            lblBirthDate: 'Doğum tarixi',
-            lblPhone: 'Telefon',
-            lblEmail: 'Email',
-            lblAddress: 'Ünvan',
-            lblAvatar: 'Şəkil yüklə (PNG, JPG)',
-            eduTitle: '🎓 Təhsil',
-            eduAddBtn: '+ Əlavə et',
-            expTitle: '💼 İş təcrübəsi',
-            expAddBtn: '+ Əlavə et',
-            langTitle: '🌐 Dillər',
-            langAddBtn: '+ Əlavə et',
-            certTitle: '📜 Sertifikatlar',
-            certAddBtn: '+ Əlavə et',
-            skillTitle: '⭐ Bacarıq / Keyfiyyət',
-            skillAddBtn: 'Əlavə et',
-            skillPlaceholder: 'Yeni bacarıq...',
-            btnWord: '📄 Word yüklə',
-            btnPdf: '📑 PDF yüklə',
-            btnClear: '🗑 Bütün məlumatları təmizlə',
-            storageInfo: 'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.',
-            previewTitle: '👁 Canlı Önizləmə',
-            cvContact: 'Əlaqə',
-            cvEducation: '🎓 Təhsil',
-            cvExperience: '💼 İş təcrübəsi',
-            cvLanguages: '🌐 Dillər',
-            cvCertificates: '📜 Sertifikatlar',
-            cvSkills: '⭐ Bacarıqlar',
-            eduSchool: 'Məktəb / Universitet',
-            eduMajor: 'İxtisas',
-            eduStart: 'Başlama ili',
-            eduEnd: 'Bitmə ili',
-            expCompany: 'Şirkət adı',
-            expRole: 'Vəzifə',
-            expStart: 'Başlama',
-            expEnd: 'Bitmə',
-            expDesc: 'Layihə və ya məsuliyyətlər',
-            langName: 'Dil',
-            langLevel: 'Səviyyə (məs. Sərbəst)',
-            certName: 'Sertifikat adı',
-            certOrg: 'Təşkilat',
-            certYear: 'İl',
-            tplModern: 'Modern', tplClassic: 'Klassik', tplSidebar: 'Creative',
-        },
-        en: {
-            formTitle: '📝 CV Information',
-            lblFirstName: 'First Name',
-            lblLastName: 'Last Name',
-            lblFatherName: 'Father\'s name (optional)',
-            lblJobTitle: 'Job Title / Position',
-            lblBirthDate: 'Date of Birth',
-            lblPhone: 'Phone',
-            lblEmail: 'Email',
-            lblAddress: 'Address',
-            lblAvatar: 'Upload photo (PNG, JPG)',
-            eduTitle: '🎓 Education',
-            eduAddBtn: '+ Add',
-            expTitle: '💼 Work Experience',
-            expAddBtn: '+ Add',
-            langTitle: '🌐 Languages',
-            langAddBtn: '+ Add',
-            certTitle: '📜 Certificates',
-            certAddBtn: '+ Add',
-            skillTitle: '⭐ Skills / Qualities',
-            skillAddBtn: 'Add',
-            skillPlaceholder: 'New skill...',
-            btnWord: '📄 Download Word',
-            btnPdf: '📑 Download PDF',
-            btnClear: '🗑 Clear all data',
-            storageInfo: 'Data is automatically saved in local storage.',
-            previewTitle: '👁 Live Preview',
-            cvContact: 'Contact',
-            cvEducation: '🎓 Education',
-            cvExperience: '💼 Work Experience',
-            cvLanguages: '🌐 Languages',
-            cvCertificates: '📜 Certificates',
-            cvSkills: '⭐ Skills',
-            eduSchool: 'School / University',
-            eduMajor: 'Major / Field',
-            eduStart: 'Start year',
-            eduEnd: 'End year',
-            expCompany: 'Company',
-            expRole: 'Role',
-            expStart: 'Start',
-            expEnd: 'End',
-            expDesc: 'Project or responsibilities',
-            langName: 'Language',
-            langLevel: 'Level (e.g. Fluent)',
-            certName: 'Certificate name',
-            certOrg: 'Organization',
-            certYear: 'Year',
-            tplModern: 'Modern', tplClassic: 'Classic', tplSidebar: 'Creative',
-        },
-        ru: {
-            formTitle: '📝 Данные резюме',
-            lblFirstName: 'Имя',
-            lblLastName: 'Фамилия',
-            lblFatherName: 'Отчество (необязательно)',
-            lblJobTitle: 'Должность',
-            lblBirthDate: 'Дата рождения',
-            lblPhone: 'Телефон',
-            lblEmail: 'Email',
-            lblAddress: 'Адрес',
-            lblAvatar: 'Загрузить фото (PNG, JPG)',
-            eduTitle: '🎓 Образование',
-            eduAddBtn: '+ Добавить',
-            expTitle: '💼 Опыт работы',
-            expAddBtn: '+ Добавить',
-            langTitle: '🌐 Языки',
-            langAddBtn: '+ Добавить',
-            certTitle: '📜 Сертификаты',
-            certAddBtn: '+ Добавить',
-            skillTitle: '⭐ Навыки / Качества',
-            skillAddBtn: 'Добавить',
-            skillPlaceholder: 'Новый навык...',
-            btnWord: '📄 Скачать Word',
-            btnPdf: '📑 Скачать PDF',
-            btnClear: '🗑 Очистить все данные',
-            storageInfo: 'Данные автоматически сохраняются в локальном хранилище.',
-            previewTitle: '👁 Предпросмотр',
-            cvContact: 'Контакты',
-            cvEducation: '🎓 Образование',
-            cvExperience: '💼 Опыт работы',
-            cvLanguages: '🌐 Языки',
-            cvCertificates: '📜 Сертификаты',
-            cvSkills: '⭐ Навыки',
-            eduSchool: 'Школа / Университет',
-            eduMajor: 'Специальность',
-            eduStart: 'Год начала',
-            eduEnd: 'Год окончания',
-            expCompany: 'Компания',
-            expRole: 'Должность',
-            expStart: 'Начало',
-            expEnd: 'Окончание',
-            expDesc: 'Проект или обязанности',
-            langName: 'Язык',
-            langLevel: 'Уровень (напр. Свободно)',
-            certName: 'Название сертификата',
-            certOrg: 'Организация',
-            certYear: 'Год',
-            tplModern: 'Модерн', tplClassic: 'Классика', tplSidebar: 'Креатив',
-        }
+const LANG = {
+    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'🎓 Təhsil', cvExperience:'💼 İş təcrübəsi', cvLanguages:'🌐 Dillər', cvCertificates:'📜 Sertifikatlar', cvSkills:'⭐ Bacarıqlar', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Creative', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...' },
+    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'🎓 Education', cvExperience:'💼 Work Experience', cvLanguages:'🌐 Languages', cvCertificates:'📜 Certificates', cvSkills:'⭐ Skills', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Creative', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...' },
+    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'🎓 Образование', cvExperience:'💼 Опыт работы', cvLanguages:'🌐 Языки', cvCertificates:'📜 Сертификаты', cvSkills:'⭐ Навыки', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Креатив', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...' }
+};
+
+let currentLang = 'az';
+let currentTemplate = 'modern';
+window.skills = [];
+window.avatarData = null;
+
+function t(){ return LANG[currentLang]; }
+
+function setLanguage(lang){
+    currentLang = lang;
+    document.querySelectorAll('.lang-selector button').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+    updateAllLabels();
+    refreshDynamicPlaceholders();
+    saveToStorage();
+    updatePreview();
+}
+
+function setTemplate(tpl){
+    currentTemplate = tpl;
+    document.querySelectorAll('.template-switch button').forEach(b=>b.classList.toggle('active', b.dataset.tpl===tpl));
+    saveToStorage();
+    updatePreview();
+}
+
+function updateAllLabels(){
+    const x = t();
+    const map = {formTitle:'formTitle',lblFirstName:'lblFirstName',lblLastName:'lblLastName',lblFatherName:'lblFatherName',lblJobTitle:'lblJobTitle',lblBirthDate:'lblBirthDate',lblPhone:'lblPhone',lblEmail:'lblEmail',lblAddress:'lblAddress',lblAvatar:'lblAvatar',eduTitle:'eduTitle',eduAddBtn:'eduAddBtn',expTitle:'expTitle',expAddBtn:'expAddBtn',langTitle:'langTitle',langAddBtn:'langAddBtn',certTitle:'certTitle',certAddBtn:'certAddBtn',skillTitle:'skillTitle',skillAddBtn:'skillAddBtn',btnWord:'btnWord',btnPdf:'btnPdf',btnClear:'btnClear',storageInfo:'storageInfo',previewTitle:'previewTitle',tplBtnModern:'tplModern',tplBtnClassic:'tplClassic',tplBtnSidebar:'tplSidebar'};
+    for (const id in map) { const el = document.getElementById(id); if (el) el.textContent = x[map[id]]; }
+    document.getElementById('skillInput').placeholder = x.skillPlaceholder;
+}
+
+function refreshDynamicPlaceholders(){
+    const x = t();
+    document.querySelectorAll('#educationContainer .dynamic-entry').forEach(el=>{
+        el.querySelector('.edu-school').placeholder = x.eduSchool;
+        el.querySelector('.edu-major').placeholder = x.eduMajor;
+        el.querySelector('.edu-start').placeholder = x.eduStart;
+        el.querySelector('.edu-end').placeholder = x.eduEnd;
+    });
+    document.querySelectorAll('#experienceContainer .dynamic-entry').forEach(el=>{
+        el.querySelector('.exp-company').placeholder = x.expCompany;
+        el.querySelector('.exp-role').placeholder = x.expRole;
+        el.querySelector('.exp-start').placeholder = x.expStart;
+        el.querySelector('.exp-end').placeholder = x.expEnd;
+        el.querySelector('.exp-desc').placeholder = x.expDesc;
+    });
+    document.querySelectorAll('#languageContainer .dynamic-entry').forEach(el=>{
+        el.querySelector('.lang-name').placeholder = x.langName;
+        el.querySelector('.lang-level').placeholder = x.langLevel;
+    });
+    document.querySelectorAll('#certificateContainer .dynamic-entry').forEach(el=>{
+        el.querySelector('.cert-name').placeholder = x.certName;
+        el.querySelector('.cert-org').placeholder = x.certOrg;
+        el.querySelector('.cert-year').placeholder = x.certYear;
+    });
+}
+
+function wireEntry(el){
+    el.querySelectorAll('input, textarea').forEach(inp=>inp.addEventListener('input', ()=>{ saveToStorage(); updatePreview(); }));
+    el.querySelector('.remove-btn').addEventListener('click', ()=>{ el.remove(); saveToStorage(); updatePreview(); });
+}
+
+function addEducation(data, save=true){
+    const x = t();
+    const el = document.createElement('div');
+    el.className = 'dynamic-entry';
+    el.innerHTML = '<button class="remove-btn">✕</button>' +
+        '<div class="form-row">' +
+            '<div class="form-group"><label>' + x.eduSchool + '</label><input class="edu-school" value="' + (data?.school||'') + '" placeholder="' + x.eduSchool + '"></div>' +
+            '<div class="form-group"><label>' + x.eduMajor + '</label><input class="edu-major" value="' + (data?.major||'') + '" placeholder="' + x.eduMajor + '"></div>' +
+        '</div>' +
+        '<div class="form-row">' +
+            '<div class="form-group"><label>' + x.eduStart + '</label><input class="edu-start" value="' + (data?.start||'') + '" placeholder="' + x.eduStart + '"></div>' +
+            '<div class="form-group"><label>' + x.eduEnd + '</label><input class="edu-end" value="' + (data?.end||'') + '" placeholder="' + x.eduEnd + '"></div>' +
+        '</div>';
+    wireEntry(el);
+    document.getElementById('educationContainer').appendChild(el);
+    if (save) { saveToStorage(); updatePreview(); }
+}
+function addExperience(data, save=true){
+    const x = t();
+    const el = document.createElement('div');
+    el.className = 'dynamic-entry';
+    el.innerHTML = '<button class="remove-btn">✕</button>' +
+        '<div class="form-row">' +
+            '<div class="form-group"><label>' + x.expCompany + '</label><input class="exp-company" value="' + (data?.company||'') + '" placeholder="' + x.expCompany + '"></div>' +
+            '<div class="form-group"><label>' + x.expRole + '</label><input class="exp-role" value="' + (data?.role||'') + '" placeholder="' + x.expRole + '"></div>' +
+        '</div>' +
+        '<div class="form-row">' +
+            '<div class="form-group"><label>' + x.expStart + '</label><input class="exp-start" value="' + (data?.start||'') + '" placeholder="' + x.expStart + '"></div>' +
+            '<div class="form-group"><label>' + x.expEnd + '</label><input class="exp-end" value="' + (data?.end||'') + '" placeholder="' + x.expEnd + '"></div>' +
+        '</div>' +
+        '<div class="form-group"><label>' + x.expDesc + '</label><textarea class="exp-desc" rows="2" placeholder="' + x.expDesc + '">' + (data?.desc||'') + '</textarea></div>';
+    wireEntry(el);
+    document.getElementById('experienceContainer').appendChild(el);
+    if (save) { saveToStorage(); updatePreview(); }
+}
+function addLanguage(data, save=true){
+    const x = t();
+    const el = document.createElement('div');
+    el.className = 'dynamic-entry';
+    el.innerHTML = '<button class="remove-btn">✕</button>' +
+        '<div class="form-row">' +
+            '<div class="form-group"><label>' + x.langName + '</label><input class="lang-name" value="' + (data?.name||'') + '" placeholder="' + x.langName + '"></div>' +
+            '<div class="form-group"><label>' + x.langLevel + '</label><input class="lang-level" value="' + (data?.level||'') + '" placeholder="' + x.langLevel + '"></div>' +
+        '</div>';
+    wireEntry(el);
+    document.getElementById('languageContainer').appendChild(el);
+    if (save) { saveToStorage(); updatePreview(); }
+}
+function addCertificate(data, save=true){
+    const x = t();
+    const el = document.createElement('div');
+    el.className = 'dynamic-entry';
+    el.innerHTML = '<button class="remove-btn">✕</button>' +
+        '<div class="form-row">' +
+            '<div class="form-group"><label>' + x.certName + '</label><input class="cert-name" value="' + (data?.name||'') + '" placeholder="' + x.certName + '"></div>' +
+            '<div class="form-group"><label>' + x.certOrg + '</label><input class="cert-org" value="' + (data?.org||'') + '" placeholder="' + x.certOrg + '"></div>' +
+        '</div>' +
+        '<div class="form-group"><label>' + x.certYear + '</label><input class="cert-year" value="' + (data?.year||'') + '" placeholder="' + x.certYear + '"></div>';
+    wireEntry(el);
+    document.getElementById('certificateContainer').appendChild(el);
+    if (save) { saveToStorage(); updatePreview(); }
+}
+
+function getEducations(){ return Array.from(document.querySelectorAll('#educationContainer .dynamic-entry')).map(el=>({school:el.querySelector('.edu-school').value, major:el.querySelector('.edu-major').value, start:el.querySelector('.edu-start').value, end:el.querySelector('.edu-end').value})); }
+function getExperiences(){ return Array.from(document.querySelectorAll('#experienceContainer .dynamic-entry')).map(el=>({company:el.querySelector('.exp-company').value, role:el.querySelector('.exp-role').value, start:el.querySelector('.exp-start').value, end:el.querySelector('.exp-end').value, desc:el.querySelector('.exp-desc').value})); }
+function getLanguages(){ return Array.from(document.querySelectorAll('#languageContainer .dynamic-entry')).map(el=>({name:el.querySelector('.lang-name').value, level:el.querySelector('.lang-level').value})); }
+function getCertificates(){ return Array.from(document.querySelectorAll('#certificateContainer .dynamic-entry')).map(el=>({name:el.querySelector('.cert-name').value, org:el.querySelector('.cert-org').value, year:el.querySelector('.cert-year').value})); }
+
+function renderSkillTags(){
+    const c = document.getElementById('skillTagsContainer');
+    c.innerHTML = '';
+    window.skills.forEach((s,i)=>{
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.innerHTML = s + ' <span class="remove-tag" data-i="' + i + '">✕</span>';
+        span.querySelector('.remove-tag').addEventListener('click', function(){
+            window.skills.splice(parseInt(this.dataset.i),1);
+            renderSkillTags(); saveToStorage(); updatePreview();
+        });
+        c.appendChild(span);
+    });
+}
+function addSkill(){
+    const inp = document.getElementById('skillInput');
+    const v = inp.value.trim();
+    if (v){ window.skills.push(v); inp.value=''; renderSkillTags(); saveToStorage(); updatePreview(); }
+}
+
+function getFormData(){
+    return {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        fatherName: document.getElementById('fatherName').value,
+        jobTitle: document.getElementById('jobTitle').value,
+        birthDate: document.getElementById('birthDate').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        address: document.getElementById('address').value,
+        avatar: window.avatarData || null,
+        educations: getEducations(), experiences: getExperiences(),
+        languages: getLanguages(), certificates: getCertificates(),
+        skills: window.skills || []
     };
-
-    let currentLang = 'az';
-    let currentTemplate = 'modern'; // modern | classic | sidebar
-
-    function setLanguage(lang) {
-        currentLang = lang;
-        document.querySelectorAll('.lang-selector button').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === lang);
-        });
-        updateAllLabels();
-        updateDynamicPlaceholders();
-        saveToStorage();
-        updatePreview();
+}
+function saveToStorage(){
+    const data = getFormData();
+    data.lang = currentLang;
+    data.template = currentTemplate;
+    localStorage.setItem('cvData', JSON.stringify(data));
+}
+function loadFromStorage(){
+    const raw = localStorage.getItem('cvData');
+    if (raw){
+        try{
+            const d = JSON.parse(raw);
+            document.getElementById('firstName').value = d.firstName||'';
+            document.getElementById('lastName').value = d.lastName||'';
+            document.getElementById('fatherName').value = d.fatherName||'';
+            document.getElementById('jobTitle').value = d.jobTitle||'';
+            document.getElementById('birthDate').value = d.birthDate||'';
+            document.getElementById('phone').value = d.phone||'';
+            document.getElementById('email').value = d.email||'';
+            document.getElementById('address').value = d.address||'';
+            window.avatarData = d.avatar||null;
+            (d.educations||[]).forEach(e=>addEducation(e,false));
+            (d.experiences||[]).forEach(e=>addExperience(e,false));
+            (d.languages||[]).forEach(e=>addLanguage(e,false));
+            (d.certificates||[]).forEach(e=>addCertificate(e,false));
+            window.skills = d.skills||[];
+            currentTemplate = d.template||'modern';
+            currentLang = d.lang||'az';
+        } catch(e){ console.warn(e); }
+    } else {
+        window.skills = ['Məsuliyyətli','Komanda işi','Liderlik'];
+        addEducation({school:'Baku State University', major:'Geology', start:'2015', end:'2019'}, false);
+        addExperience({company:'INPROCON – Crescent SOCAR', role:'HSE Manager', start:'2026', end:'present', desc:'ADEC 048-049 Restaurant Project'}, false);
+        addLanguage({name:'Azərbaycan', level:'Ana dili'}, false);
+        addCertificate({name:'IOSH International OHS', org:'IOSH', year:'2023'}, false);
     }
+    document.querySelectorAll('.lang-selector button').forEach(b=>b.classList.toggle('active', b.dataset.lang===currentLang));
+    document.querySelectorAll('.template-switch button').forEach(b=>b.classList.toggle('active', b.dataset.tpl===currentTemplate));
+    renderSkillTags();
+    updateAllLabels();
+    refreshDynamicPlaceholders();
+    updatePreview();
+}
 
-    // ----- Format (template) seçimi: 1 düymə ilə keçid, məlumat itmir -----
-    function setTemplate(tpl) {
-        currentTemplate = tpl;
-        document.querySelectorAll('.template-switch button').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tpl === tpl);
-        });
-        saveToStorage();
-        updatePreview();
-    }
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-    function updateAllLabels() {
-        const t = LANG[currentLang];
-        document.getElementById('formTitle').textContent = t.formTitle;
-        document.getElementById('lblFirstName').textContent = t.lblFirstName;
-        document.getElementById('lblLastName').textContent = t.lblLastName;
-        document.getElementById('lblFatherName').textContent = t.lblFatherName;
-        document.getElementById('lblJobTitle').textContent = t.lblJobTitle;
-        document.getElementById('lblBirthDate').textContent = t.lblBirthDate;
-        document.getElementById('lblPhone').textContent = t.lblPhone;
-        document.getElementById('lblEmail').textContent = t.lblEmail;
-        document.getElementById('lblAddress').textContent = t.lblAddress;
-        document.getElementById('lblAvatar').textContent = t.lblAvatar;
-        document.getElementById('eduTitle').textContent = t.eduTitle;
-        document.getElementById('eduAddBtn').textContent = t.eduAddBtn;
-        document.getElementById('expTitle').textContent = t.expTitle;
-        document.getElementById('expAddBtn').textContent = t.expAddBtn;
-        document.getElementById('langTitle').textContent = t.langTitle;
-        document.getElementById('langAddBtn').textContent = t.langAddBtn;
-        document.getElementById('certTitle').textContent = t.certTitle;
-        document.getElementById('certAddBtn').textContent = t.certAddBtn;
-        document.getElementById('skillTitle').textContent = t.skillTitle;
-        document.getElementById('skillAddBtn').textContent = t.skillAddBtn;
-        document.getElementById('skillInput').placeholder = t.skillPlaceholder;
-        document.getElementById('btnWord').textContent = t.btnWord;
-        document.getElementById('btnPdf').textContent = t.btnPdf;
-        document.getElementById('btnClear').textContent = t.btnClear;
-        document.getElementById('storageInfo').textContent = t.storageInfo;
-        document.getElementById('previewTitle').textContent = t.previewTitle;
-        document.getElementById('tplBtnModern').textContent = t.tplModern;
-        document.getElementById('tplBtnClassic').textContent = t.tplClassic;
-        document.getElementById('tplBtnSidebar').textContent = t.tplSidebar;
-    }
+function renderCvHtml(d, tpl){
+    const x = t();
+    const first = escapeHtml(d.firstName)||x.defaultFirst;
+    const last = escapeHtml(d.lastName)||x.defaultLast;
+    const father = escapeHtml(d.fatherName);
+    const job = escapeHtml(d.jobTitle)||x.defaultJob;
+    const avatarImg = d.avatar ? ('<img src="' + d.avatar + '" class="cv-avatar"/>') : '<div class="cv-avatar-placeholder">📷</div>';
 
-    function updateDynamicPlaceholders() {
-        const t = LANG[currentLang];
-        document.querySelectorAll('#educationContainer .dynamic-entry').forEach(el => {
-            const inputs = el.querySelectorAll('input');
-            if (inputs[0]) inputs[0].placeholder = t.eduSchool;
-            if (inputs[1]) inputs[1].placeholder = t.eduMajor;
-            if (inputs[2]) inputs[2].placeholder = t.eduStart;
-            if (inputs[3]) inputs[3].placeholder = t.eduEnd;
-        });
-        document.querySelectorAll('#experienceContainer .dynamic-entry').forEach(el => {
-            const inputs = el.querySelectorAll('input, textarea');
-            if (inputs[0]) inputs[0].placeholder = t.expCompany;
-            if (inputs[1]) inputs[1].placeholder = t.expRole;
-            if (inputs[2]) inputs[2].placeholder = t.expStart;
-            if (inputs[3]) inputs[3].placeholder = t.expEnd;
-            if (inputs[4]) inputs[4].placeholder = t.expDesc;
-        });
-        document.querySelectorAll('#languageContainer .dynamic-entry').forEach(el => {
-            const inputs = el.querySelectorAll('input');
-            if (inputs[0]) inputs[0].placeholder = t.langName;
-            if (inputs[1]) inputs[1].placeholder = t.langLevel;
-        });
-        document.querySelectorAll('#certificateContainer .dynamic-entry').forEach(el => {
-            const inputs = el.querySelectorAll('input');
-            if (inputs[0]) inputs[0].placeholder = t.certName;
-            if (inputs[1]) inputs[1].placeholder = t.certOrg;
-            if (inputs[2]) inputs[2].placeholder = t.certYear;
-        });
+    const contactItems = [];
+    if (d.phone) contactItems.push('<div class="cv-item">📞 ' + escapeHtml(d.phone) + '</div>');
+    if (d.email) contactItems.push('<div class="cv-item">✉️ ' + escapeHtml(d.email) + '</div>');
+    if (d.address) contactItems.push('<div class="cv-item">📍 ' + escapeHtml(d.address) + '</div>');
+    const contactBlock = contactItems.length ? ('<div class="cv-section"><h4>' + x.cvContact + '</h4>' + contactItems.join('') + '</div>') : '';
+
+    const eduBlock = d.educations.filter(e=>e.school||e.major).length ? ('<div class="cv-section"><h4>' + x.cvEducation + '</h4>' + d.educations.map(e=> (e.school||e.major) ? ('<div class="cv-item"><strong>' + escapeHtml(e.school) + '</strong>' + (e.major?', '+escapeHtml(e.major):'') + ((e.start||e.end)?(' <span class="meta">(' + escapeHtml(e.start) + (e.start&&e.end?' – ':'') + escapeHtml(e.end) + ')</span>'):'') + '</div>') : '').join('') + '</div>') : '';
+
+    const expBlock = d.experiences.filter(e=>e.company||e.role).length ? ('<div class="cv-section"><h4>' + x.cvExperience + '</h4>' + d.experiences.map(e=> (e.company||e.role) ? ('<div class="cv-item"><strong>' + escapeHtml(e.company) + '</strong> – ' + escapeHtml(e.role) + ' ' + ((e.start||e.end)?('<span class="meta">(' + escapeHtml(e.start) + (e.start&&e.end?' – ':'') + escapeHtml(e.end) + ')</span>'):'') + '</div>' + (e.desc?('<div class="meta" style="margin-bottom:6px;">' + escapeHtml(e.desc) + '</div>'):'')) : '').join('') + '</div>') : '';
+
+    const langBlock = d.languages.filter(l=>l.name).length ? ('<div class="cv-section"><h4>' + x.cvLanguages + '</h4>' + d.languages.map(l=> l.name ? ('<div class="cv-item"><strong>' + escapeHtml(l.name) + '</strong> – ' + escapeHtml(l.level) + '</div>') : '').join('') + '</div>') : '';
+
+    const certBlock = d.certificates.filter(c=>c.name).length ? ('<div class="cv-section"><h4>' + x.cvCertificates + '</h4>' + d.certificates.map(c=> c.name ? ('<div class="cv-item"><strong>' + escapeHtml(c.name) + '</strong>' + (c.org?', '+escapeHtml(c.org):'') + (c.year?(' (' + escapeHtml(c.year) + ')'):'') + '</div>') : '').join('') + '</div>') : '';
+
+    const skillBlock = (d.skills||[]).length ? ('<div class="cv-section"><h4>' + x.cvSkills + '</h4><div class="cv-tags">' + d.skills.map(s=>('<span>' + escapeHtml(s) + '</span>')).join('') + '</div></div>') : '';
+
+    if (tpl === 'sidebar'){
+        return '<table class="cv-shell" cellpadding="0" cellspacing="0"><tr>' +
+            '<td class="cv-sidebar">' + avatarImg +
+                '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
+                '<div class="cv-title">' + job + '</div>' +
+                contactBlock + langBlock + skillBlock +
+            '</td>' +
+            '<td class="cv-main">' +
+                (d.birthDate?('<div class="meta" style="margin-bottom:10px;">📅 ' + escapeHtml(d.birthDate) + '</div>'):'') +
+                expBlock + eduBlock + certBlock +
+            '</td>' +
+        '</tr></table>';
     }
 
-    // ----- Yaddaş və məlumat idarəsi -----
-    function loadFromStorage() {
-        const data = localStorage.getItem('cvData');
-        if (data) {
-            try {
-                const parsed = JSON.parse(data);
-                document.getElementById('firstName').value = parsed.firstName || '';
-                document.getElementById('lastName').value = parsed.lastName || '';
-                document.getElementById('fatherName').value = parsed.fatherName || '';
-                document.getElementById('jobTitle').value = parsed.jobTitle || '';
-                document.getElementById('birthDate').value = parsed.birthDate || '';
-                document.getElementById('phone').value = parsed.phone || '';
-                document.getElementById('email').value = parsed.email || '';
-                document.getElementById('address').value = parsed.address || '';
-                if (parsed.avatar) window.avatarData = parsed.avatar;
-                if (parsed.educations) {
-                    document.getElementById('educationContainer').innerHTML = '';
-                    parsed.educations.forEach(edu => addEducation(edu, false));
-                }
-                if (parsed.experiences) {
-                    document.getElementById('experienceContainer').innerHTML = '';
-                    parsed.experiences.forEach(exp => addExperience(exp, false));
-                }
-                if (parsed.languages) {
-                    document.getElementById('languageContainer').innerHTML = '';
-                    parsed.languages.forEach(lang => addLanguage(lang, false));
-                }
-                if (parsed.certificates) {
-                    document.getElementById('certificateContainer').innerHTML = '';
-                    parsed.certificates.forEach(cert => addCertificate(cert, false));
-                }
-                if (parsed.skills) {
-                    window.skills = parsed.skills;
-                    renderSkillTags();
-                } else {
-                    window.skills = [];
-                }
-                if (parsed.template) {
-                    currentTemplate = parsed.template;
-                }
-                if (parsed.lang) setLanguage(parsed.lang);
-            } catch(e) { console.warn(e); }
-        } else {
-            window.skills = ['Məsuliyyətli', 'Komanda işi', 'Liderlik'];
-            renderSkillTags();
-            addEducation({ school: 'Baku State University', major: 'Geology', start: '2015', end: '2019' }, false);
-            addExperience({ company: 'INPROCON – Crescent SOCAR', role: 'HSE Manager', start: '2026', end: 'present', desc: 'ADEC 048-049 Restaurant Project' }, false);
-            addLanguage({ name: 'Azərbaycan', level: 'Ana dili' }, false);
-            addCertificate({ name: 'IOSH International OHS', org: 'IOSH', year: '2023' }, false);
-        }
-        // template düymələrini sinxronlaşdır
-        document.querySelectorAll('.template-switch button').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tpl === currentTemplate);
-        });
-        updateAllLabels();
-        updateDynamicPlaceholders();
-        updatePreview();
+    if (tpl === 'classic'){
+        return '<div class="cv-header">' +
+                '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
+                '<div class="cv-title">' + job + '</div>' +
+                (d.birthDate?('<div class="meta" style="margin-top:4px;">📅 ' + escapeHtml(d.birthDate) + '</div>'):'') +
+            '</div>' +
+            '<div class="cv-body">' +
+                contactBlock + eduBlock + expBlock + langBlock + certBlock + skillBlock +
+            '</div>';
     }
 
-    function saveToStorage() {
-        const data = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            fatherName: document.getElementById('fatherName').value,
-            jobTitle: document.getElementById('jobTitle').value,
-            birthDate: document.getElementById('birthDate').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            address: document.getElementById('address').value,
-            avatar: window.avatarData || null,
-            educations: getEducations(),
-            experiences: getExperiences(),
-            languages: getLanguages(),
-            certificates: getCertificates(),
-            skills: window.skills || [],
-            lang: currentLang,
-            template: currentTemplate
-        };
-        localStorage.setItem('cvData', JSON.stringify(data));
-    }
+    return '<div class="cv-topbar"></div>' +
+        '<div class="cv-header">' + avatarImg +
+            '<div>' +
+                '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
+                '<div class="cv-title">' + job + '</div>' +
+                (d.birthDate?('<div class="meta">📅 ' + escapeHtml(d.birthDate) + '</div>'):'') +
+            '</div>' +
+        '</div>' +
+        '<div class="cv-body">' +
+            contactBlock + eduBlock + expBlock + langBlock + certBlock + skillBlock +
+        '</div>';
+}
 
-    function getEducations() {
-        return Array.from(document.querySelectorAll('#educationContainer .dynamic-entry')).map(el => ({
-            school: el.querySelector('.edu-school')?.value || '',
-            major: el.querySelector('.edu-major')?.value || '',
-            start: el.querySelector('.edu-start')?.value || '',
-            end: el.querySelector('.edu-end')?.value || ''
-        }));
-    }
-    function getExperiences() {
-        return Array.from(document.querySelectorAll('#experienceContainer .dynamic-entry')).map(el => ({
-            company: el.querySelector('.exp-company')?.value || '',
-            role: el.querySelector('.exp-role')?.value || '',
-            start: el.querySelector('.exp-start')?.value || '',
-            end: el.querySelector('.exp-end')?.value || '',
-            desc: el.querySelector('.exp-desc')?.value || ''
-        }));
-    }
-    function getLanguages() {
-        return Array.from(document.querySelectorAll('#languageContainer .dynamic-entry')).map(el => ({
-            name: el.querySelector('.lang-name')?.value || '',
-            level: el.querySelector('.lang-level')?.value || ''
-        }));
-    }
-    function getCertificates() {
-        return Array.from(document.querySelectorAll('#certificateContainer .dynamic-entry')).map(el => ({
-            name: el.querySelector('.cert-name')?.value || '',
-            org: el.querySelector('.cert-org')?.value || '',
-            year: el.querySelector('.cert-year')?.value || ''
-        }));
-    }
+function updatePreview(){
+    const preview = document.getElementById('cvPreview');
+    preview.className = 'tpl-' + currentTemplate;
+    preview.innerHTML = renderCvHtml(getFormData(), currentTemplate);
+}
 
-    function createDynamicEntry(html, data, saveAndUpdate = true) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'dynamic-entry';
-        wrapper.innerHTML = html;
-        wrapper.querySelectorAll('input, textarea').forEach(inp => {
-            inp.addEventListener('input', () => { if (saveAndUpdate) { saveToStorage(); updatePreview(); } });
-        });
-        return wrapper;
-    }
-
-    window.addEducation = function(data, saveAndUpdate = true) {
-        const container = document.getElementById('educationContainer');
-        const html = `
-            <button class="remove-btn" onclick="this.parentElement.remove(); saveToStorage(); updatePreview();">✕</button>
-            <div class="form-row">
-                <div class="form-group"><label>${LANG[currentLang].eduSchool}</label><input class="edu-school" type="text" value="${data?.school || ''}" placeholder="${LANG[currentLang].eduSchool}" /></div>
-                <div class="form-group"><label>${LANG[currentLang].eduMajor}</label><input class="edu-major" type="text" value="${data?.major || ''}" placeholder="${LANG[currentLang].eduMajor}" /></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>${LANG[currentLang].eduStart}</label><input class="edu-start" type="text" value="${data?.start || ''}" placeholder="${LANG[currentLang].eduStart}" /></div>
-                <div class="form-group"><label>${LANG[currentLang].eduEnd}</label><input class="edu-end" type="text" value="${data?.end || ''}" placeholder="${LANG[currentLang].eduEnd}" /></div>
-            </div>
-        `;
-        const entry = createDynamicEntry(html, data, saveAndUpdate);
-        container.appendChild(entry);
-        if (saveAndUpdate) { saveToStorage(); updatePreview(); }
+function exportPDF(){
+    const btn = document.getElementById('btnPdf');
+    const x = t();
+    const original = btn.textContent;
+    btn.disabled = true; btn.textContent = '⏳ ' + x.generating;
+    const node = document.getElementById('cvPreview');
+    const opt = {
+        margin: 0,
+        filename: 'CV.pdf',
+        image: { type:'jpeg', quality:0.98 },
+        html2canvas: { scale:2, useCORS:true, backgroundColor:'#ffffff' },
+        jsPDF: { unit:'pt', format:'a4', orientation:'portrait' }
     };
+    setTimeout(function(){
+        html2pdf().set(opt).from(node).save().then(function(){
+            btn.disabled = false; btn.textContent = original;
+        }).catch(function(){ btn.disabled = false; btn.textContent = original; });
+    }, 150);
+}
 
-    window.addExperience = function(data, saveAndUpdate = true) {
-        const container = document.getElementById('experienceContainer');
-        const html = `
-            <button class="remove-btn" onclick="this.parentElement.remove(); saveToStorage(); updatePreview();">✕</button>
-            <div class="form-row">
-                <div class="form-group"><label>${LANG[currentLang].expCompany}</label><input class="exp-company" type="text" value="${data?.company || ''}" placeholder="${LANG[currentLang].expCompany}" /></div>
-                <div class="form-group"><label>${LANG[currentLang].expRole}</label><input class="exp-role" type="text" value="${data?.role || ''}" placeholder="${LANG[currentLang].expRole}" /></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>${LANG[currentLang].expStart}</label><input class="exp-start" type="text" value="${data?.start || ''}" placeholder="${LANG[currentLang].expStart}" /></div>
-                <div class="form-group"><label>${LANG[currentLang].expEnd}</label><input class="exp-end" type="text" value="${data?.end || ''}" placeholder="${LANG[currentLang].expEnd}" /></div>
-            </div>
-            <div class="form-group"><label>${LANG[currentLang].expDesc}</label><textarea class="exp-desc" rows="2" placeholder="${LANG[currentLang].expDesc}">${data?.desc || ''}</textarea></div>
-        `;
-        const entry = createDynamicEntry(html, data, saveAndUpdate);
-        container.appendChild(entry);
-        if (saveAndUpdate) { saveToStorage(); updatePreview(); }
-    };
+function exportWord(){
+    const d = getFormData();
+    const tpl = currentTemplate;
+    const bodyHtml = renderCvHtml(d, tpl);
+    const wordCss =
+        'body{font-family:Calibri,Arial,sans-serif;color:#1a1a1a;}' +
+        '.cv-topbar{background:#16213f;height:10px;}' +
+        '.cv-header{padding:18px 0;}' +
+        '.cv-avatar,.cv-avatar-placeholder{width:80px;height:80px;border-radius:50%;}' +
+        '.cv-name{font-size:22pt;font-weight:bold;color:#0c1526;}' +
+        '.cv-title{font-size:13pt;color:#2c4dc9;font-weight:bold;}' +
+        '.cv-section{margin-top:14px;}' +
+        '.cv-section h4{font-size:11pt;color:#2c4dc9;border-bottom:1px solid #cfd9f5;padding-bottom:4px;}' +
+        '.cv-item{margin-bottom:6px;font-size:11pt;}' +
+        '.meta{color:#666;font-size:10pt;}' +
+        'table.cv-shell{width:100%;}' +
+        'td.cv-sidebar{background:#1f2a44;color:#fff;padding:20px;width:34%;vertical-align:top;}' +
+        'td.cv-sidebar .cv-section h4{color:#cfd9f5;border-bottom:1px solid #44507a;}' +
+        'td.cv-main{padding:20px;vertical-align:top;}' +
+        '.cv-tags span{background:#eef1f7;padding:3px 10px;border-radius:10px;font-size:9pt;margin:0 4px 4px 0;display:inline-block;}';
+    const full = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' + wordCss + '</style></head><body>' + bodyHtml + '</body></html>';
+    const blob = new Blob(['\ufeff', full], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'CV.doc';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
 
-    window.addLanguage = function(data, saveAndUpdate = true) {
-        const container = document.getElementById('languageContainer');
-        const html = `
-            <button class="remove-btn" onclick="this.parentElement.remove(); saveToStorage(); updatePreview();">✕</button>
-            <div class="form-row">
-                <div class="form-group"><label>${LANG[currentLang].langName}</label><input class="lang-name" type="text" value="${data?.name || ''}" placeholder="${LANG[currentLang].langName}" /></div>
-                <div class="form-group"><label>${LANG[currentLang].langLevel}</label><input class="lang-level" type="text" value="${data?.level || ''}" placeholder="${LANG[currentLang].langLevel}" /></div>
-            </div>
-        `;
-        const entry = createDynamicEntry(html, data, saveAndUpdate);
-        container.appendChild(entry);
-        if (saveAndUpdate) { saveToStorage(); updatePreview(); }
-    };
-
-    window.addCertificate = function(data, saveAndUpdate = true) {
-        const container = document.getElementById('certificateContainer');
-        const html = `
-            <button class="remove-btn" onclick="this.parentElement.remove(); saveToStorage(); updatePreview();">✕</button>
-            <div class="form-row">
-                <div class="form-group"><label>${LANG[currentLang].certName}</label><input class="cert-name" type="text" value="${data?.name || ''}" placeholder="${LANG[currentLang].certName}" /></div>
-                <div class="form-group"><label>${LANG[currentLang].certOrg}</label><input class="cert-org" type="text" value="${data?.org || ''}" placeholder="${LANG[currentLang].certOrg}" /></div>
-            </div>
-            <div class="form-group"><label>${LANG[currentLang].certYear}</label><input class="cert-year" type="text" value="${data?.year || ''}" placeholder="${LANG[currentLang].certYear}" /></div>
-        `;
-        const entry = createDynamicEntry(html, data, saveAndUpdate);
-        container.appendChild(entry);
-        if (saveAndUpdate) { saveToStorage(); updatePreview(); }
-    };
-
+function clearAll(){
+    if (!confirm(t().btnClear + '?')) return;
+    localStorage.removeItem('cvData');
+    window.avatarData = null;
+    ['firstName','lastName','fatherName','jobTitle','birthDate','phone','email','address'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('educationContainer').innerHTML='';
+    document.getElementById('experienceContainer').innerHTML='';
+    document.getElementById('languageContainer').innerHTML='';
+    document.getElementById('certificateContainer').innerHTML='';
     window.skills = [];
-    function renderSkillTags() {
-        const container = document.getElementById('skillTagsContainer');
-        container.innerHTML = '';
-        window.skills.forEach((skill, index) => {
-            const span = document.createElement('span');
-            span.className = 'tag';
-            span.innerHTML = `${skill} <span class="remove-tag" data-index="${index}">✕</span>`;
-            span.querySelector('.remove-tag').addEventListener('click', function() {
-                const idx = parseInt(this.dataset.index);
-                window.skills.splice(idx, 1);
-                renderSkillTags();
-                saveToStorage();
-                updatePreview();
-            });
-            container.appendChild(span);
-        });
+    renderSkillTags();
+    document.getElementById('avatarUpload').value='';
+    saveToStorage();
+    updatePreview();
+}
+
+document.querySelectorAll('.lang-selector button').forEach(b=>b.addEventListener('click', function(){ setLanguage(b.dataset.lang); }));
+document.querySelectorAll('.template-switch button').forEach(b=>b.addEventListener('click', function(){ setTemplate(b.dataset.tpl); }));
+document.getElementById('eduAddBtn').addEventListener('click', function(){ addEducation(); });
+document.getElementById('expAddBtn').addEventListener('click', function(){ addExperience(); });
+document.getElementById('langAddBtn').addEventListener('click', function(){ addLanguage(); });
+document.getElementById('certAddBtn').addEventListener('click', function(){ addCertificate(); });
+document.getElementById('skillAddBtn').addEventListener('click', addSkill);
+document.getElementById('skillInput').addEventListener('keypress', function(e){ if(e.key==='Enter'){ e.preventDefault(); addSkill(); } });
+document.getElementById('btnWord').addEventListener('click', exportWord);
+document.getElementById('btnPdf').addEventListener('click', exportPDF);
+document.getElementById('btnClear').addEventListener('click', clearAll);
+document.querySelectorAll('#firstName,#lastName,#fatherName,#jobTitle,#birthDate,#phone,#email,#address').forEach(function(el){ el.addEventListener('input', function(){ saveToStorage(); updatePreview(); }); });
+document.getElementById('avatarUpload').addEventListener('change', function(e){
+    const file = e.target.files[0];
+    if (file){
+        const r = new FileReader();
+        r.onload = function(ev){ window.avatarData = ev.target.result; saveToStorage(); updatePreview(); };
+        r.readAsDataURL(file);
     }
+});
 
-    window.addSkill = function() {
-        const input = document.getElementById('skillInput');
-        const val = input.value.trim();
-        if (val) {
-            window.skills.push(val);
-            input.value = '';
-            renderSkillTags();
-            saveToStorage();
-            updatePreview();
-        }
-    };
-    document.getElementById('skillInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') { e.preventDefault(); window.addSkill(); }
-    });
-
-    document.getElementById('avatarUpload').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                window.avatarData = ev.target.result;
-                saveToStorage();
-                updatePreview();
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // ----- Önizləmə (3 formata uyğun render) -----
-    function buildAvatarHtml(avatar) {
-        return avatar
-            ? `<img src="${avatar}" class="cv-avatar" alt="avatar" />`
-            : `<div class="cv-avatar-placeholder">📷</div>`;
-    }
-
-    function updatePreview() {
-        const preview = document.getElementById('cvPreview');
-        preview.className = 'tpl-' + currentTemplate;
-        const t = LANG[currentLang];
-        const firstName = document.getElementById('firstName').value || 'Ad';
-        const lastName = document.getElementById('lastName').value || 'Soyad';
-        const fatherName = document.getElementById('fatherName').value;
-        const jobTitle = document.getElementById('jobTitle').value || 'Vəzifə';
-        const birthDate = document.getElementById('birthDate').value;
-        const phone = document.getElementById('phone').value || '';
-        const email = document.getElementById('email').value || '';
-        const address = document.getElementById('address').value || '';
-        const avatar = window.avatarData || null;
-
-        const educations = getEducations();
-        const experiences = getExperiences();
-        const languages = getLanguages();
-        const certificates = getCertificates();
-        const skills = window.skills || [];
-
-        const contactBlock = (phone || email || address) ? `
-            <div class="cv-section"><h4>${t.cvContact}</h4>
-                ${phone ? `<div class="cv-item">📞 ${phone}</div>` : ''}
-                ${email ? `<div class="cv-item">✉️ ${email}</div>` : ''}
-                ${address ? `<div class="cv-item">📍 ${address}</div>` : ''}
-            </div>` : '';
-
-        const educationBlock = educations.length ? `
-            <div class="cv-section"><h4>${t.cvEducation}</h4>
-                ${educations.map(edu => `
-                    <div class="cv-item"><strong>${edu.school || 'Məktəb'}</strong>${edu.major ? ', ' + edu.major : ''}${(edu.start || edu.end) ? ` (${edu.start || ''}${edu.start && edu.end ? ' – ' : ''}${edu.end || ''})` : ''}</div>
-                `).join('')}
-            </div>` : '';
-
-        const experienceBlock = experiences.length ? `
-            <div class="cv-section"><h4>${t.cvExperience}</h4>
-                ${experiences.map(exp => `
-                    <div class="cv-item"><strong>${exp.company || 'Şirkət'}</strong> – ${exp.role || 'Vəzifə'}${(exp.start || exp.end) ? ` (${exp.start || ''}${exp.start && exp.end ? ' – ' : ''}${exp.end || ''})` : ''}</div>
-                    ${exp.desc ? `<div style="font-size:0.85rem; margin-bottom:4px; opacity:0.85;">${exp.desc}</div>` : ''}
-                `).join('')}
-            </div>` : '';
-
-        const languagesBlock = languages.length ? `
-            <div class="cv-section"><h4>${t.cvLanguages}</h4>
-                ${languages.map(lang => `<div class="cv-item"><strong>${lang.name || 'Dil'}</strong> – ${lang.level || 'Səviyyə'}</div>`).join('')}
-            </div>` : '';
-
-        const certificatesBlock = certificates.length ? `
-            <div class="cv-section"><h4>${t.cvCertificates}</h4>
-                ${certificates.map(cert => `<div class="cv-item"><strong>${cert.name || 'Sertifikat'}</strong>${cert.org ? ', ' + cert.org : ''}${cert.year ? ` (${cert.year})` : ''}</div>`).join('')}
-            </div>` : '';
-
-        const skillsBlock = skills.length ? `
-            <div class="cv-section"><h4>${t.cvSkills}</h4>
-                <div class="cv-tags">${skills.map(s => `<span>${s}</span>`).join('')}</div>
-            </div>` : '';
-
-        let html = '';
-
-        if (currentTemplate === 'sidebar') {
-            // Creative — yan panel (əlaqə/dillər/bacarıqlar), sağda təcrübə/təhsil/sertifikat
-            html += `<div class="cv-sidebar">`;
-            html += buildAvatarHtml(avatar);
-            html += `<div class="cv-name">${firstName} ${lastName}${fatherName ? ' ' + fatherName : ''}</div>`;
-            html += `<div class="cv-title">${jobTitle}</div>`;
-            html += contactBlock;
-            html += languagesBlock;
-            html += skillsBlock;
-            html += `</div>`;
-            html += `<div class="cv-main">`;
-            if (birthDate) html += `<div class="text-muted" style="font-size:0.8rem;">📅 ${birthDate}</div>`;
-            html += experienceBlock;
-            html += educationBlock;
-            html += certificatesBlock;
-            html += `</div>`;
-        } else {
-            // Modern & Klassik — eyni struktur, fərqli CSS skin
-            html += `<div class="cv-header">`;
-            if (currentTemplate === 'modern') html += buildAvatarHtml(avatar);
-            html += `<div><div class="cv-name">${firstName} ${lastName}${fatherName ? ' ' + fatherName : ''}</div>`;
-            html += `<div class="cv-title">${jobTitle}</div>`;
-            if (birthDate) html += `<div class="text-muted" style="font-size:0.8rem;">📅 ${birthDate}</div>`;
-            html += `</div></div>`;
-            html += contactBlock;
-            html += educationBlock;
-            html += experienceBlock;
-            html += languagesBlock;
-            html += certificatesBlock;
-            html += skillsBlock;
-        }
-
-        preview.innerHTML = html;
-    }
-
-    // ----- İxrac -----
-    window.exportWord = function() {
-        const content = document.getElementById('cvPreview').outerHTML;
-        const style = document.querySelector('style').innerHTML;
-        const fullHtml = `
-            <!DOCTYPE html>
-            <html>
-            <head><meta charset="UTF-8"><style>${style}</style></head>
-            <body style="padding:20px; background:#fff;">${content}</body>
-            </html>
-        `;
-        const blob = new Blob([fullHtml], { type: 'application/msword' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'CV.doc';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    };
-
-    window.exportPDF = function() {
-        const element = document.getElementById('cvPreview');
-        const opt = {
-            margin: [0.5, 0.5, 0.5, 0.5],
-            filename: 'CV.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, letterRendering: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
-    };
-
-    // ----- Təmizləmə -----
-    window.clearAll = function() {
-        if (confirm(LANG[currentLang].btnClear + '?')) {
-            localStorage.removeItem('cvData');
-            window.avatarData = null;
-            ['firstName','lastName','fatherName','jobTitle','birthDate','phone','email','address'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('educationContainer').innerHTML = '';
-            document.getElementById('experienceContainer').innerHTML = '';
-            document.getElementById('languageContainer').innerHTML = '';
-            document.getElementById('certificateContainer').innerHTML = '';
-            window.skills = [];
-            renderSkillTags();
-            document.getElementById('avatarUpload').value = '';
-            saveToStorage();
-            updatePreview();
-        }
-    };
-
-    document.querySelectorAll('#firstName, #lastName, #fatherName, #jobTitle, #birthDate, #phone, #email, #address').forEach(el => {
-        el.addEventListener('input', () => { saveToStorage(); updatePreview(); });
-    });
-
-    loadFromStorage();
-    document.querySelectorAll('.lang-selector button').forEach(btn => {
-        btn.addEventListener('click', function() {
-            setLanguage(this.dataset.lang);
-        });
-    });
+loadFromStorage();
 </script>
-
 </body>
 </html>
