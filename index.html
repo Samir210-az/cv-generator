@@ -315,6 +315,9 @@ body {
 .site-footer a:hover { text-decoration:underline; }
 
 .hidden { display:none !important; }
+.floating-tpl-btn { position:fixed; bottom:18px; right:18px; z-index:60; background:#16213f; color:#fff; border:none; padding:13px 20px; border-radius:30px; font-weight:800; font-size:0.85rem; box-shadow:0 8px 26px rgba(0,0,0,0.3); cursor:pointer; display:flex; align-items:center; gap:6px; }
+.floating-tpl-btn:hover { background:#0c1526; transform:translateY(-2px); }
+.floating-tpl-btn.hidden { display:none !important; }
 
 /* ===== Şablon seçmə səhifəsi ===== */
 .gallery-wrap { max-width:1200px; margin:0 auto; }
@@ -328,17 +331,17 @@ body {
 .tpl-section { margin-bottom:26px; }
 .tpl-label { display:flex; align-items:center; justify-content:center; gap:8px; font-size:1.5rem; font-weight:800; color:#0c1526; margin-bottom:14px; }
 .tpl-lock-badge { font-size:1rem; background:#f1f5f9; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; }
-.tpl-card { position:relative; background:#fff; border-radius:20px; border:1px solid #e9eef5; overflow:hidden; box-shadow:0 6px 24px rgba(20,40,70,0.08); transition:0.25s; display:flex; flex-direction:column; }
+.tpl-card { position:relative; background:#fff; border-radius:20px; border:1px solid #e9eef5; overflow:hidden; box-shadow:0 6px 24px rgba(20,40,70,0.08); transition:0.25s; }
 .tpl-card:hover { box-shadow:0 16px 40px rgba(20,40,70,0.16); }
 .tpl-card-preview { position:relative; overflow:hidden; background:#f4f6fa; height:520px; }
 .tpl-card-preview .cv-canvas { width:400px; box-shadow:none !important; }
 .tpl-select-overlay {
-    display:block; width:calc(100% - 32px); margin:16px auto 18px; position:relative;
-    background:#1d5fd6; color:#fff; border:none; padding:15px 20px;
-    border-radius:14px; font-weight:800; font-size:0.98rem; cursor:pointer;
-    box-shadow:0 8px 22px rgba(29,95,214,0.3); transition:0.2s; white-space:nowrap;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    background:rgba(255,255,255,0.96); color:#2c4dc9; border:none; padding:16px 34px;
+    border-radius:16px; font-weight:800; font-size:1rem; cursor:pointer;
+    box-shadow:0 10px 34px rgba(20,40,70,0.28); transition:0.2s; white-space:nowrap; z-index:5;
 }
-.tpl-select-overlay:hover { background:#164ec2; transform:translateY(-2px); box-shadow:0 12px 28px rgba(29,95,214,0.38); }
+.tpl-select-overlay:hover { background:#fff; transform:translate(-50%,-50%) scale(1.04); }
 
 /* ===== Tam ekran önizləmə modalı ===== */
 .btn-preview { background:#16213f; color:#fff; box-shadow:0 6px 16px rgba(22,33,63,0.25); }
@@ -404,7 +407,7 @@ body {
     .cv-canvas .cv-item { margin-bottom: 5px !important; }
 }
 @media print {
-    .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer, .gallery-wrap, .preview-modal { display:none !important; }
+    .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer, .gallery-wrap, .preview-modal, .floating-tpl-btn { display:none !important; }
     .preview-panel { border:none !important; box-shadow:none !important; padding:0 !important; }
     /* Mobil ekran-genişliyi əsaslı kiçildilmiş düzülüşü çap zamanı ləğv edirik ki, sidebar/2-sütun şablonları düzgün çapa getsin */
     .tpl-sidebar td.cv-sidebar, .tpl-tech td.cv-sidebar, .tpl-business td.cv-sidebar { display:table-cell !important; width:34% !important; }
@@ -633,7 +636,7 @@ body {
         <div class="activation-box">
             <div class="activation-label" data-lbl="activationLabel">Artıq ödədiniz? Nömrənizi daxil edin:</div>
             <div class="activation-row">
-                <input type="tel" id="activationPhoneInput" placeholder="+994 XX XXX XX XX" />
+                <input type="tel" id="activationPhoneInput" placeholder="+994 55 210 74 11" />
                 <button id="activationBtn" data-lbl="activationBtnLbl">Aktivləşdir</button>
             </div>
             <div class="activation-msg" id="activationMsg"></div>
@@ -647,6 +650,8 @@ body {
         <div id="previewModalContent" class="cv-canvas"></div>
     </div>
 </div>
+
+<button class="floating-tpl-btn hidden" id="floatingTplBtn">◀ <span id="floatingTplBtnLbl">Şablonlar</span></button>
 
 <div class="site-footer" id="mainFooter">By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">@s_akhundoff</a></div>
 
@@ -857,6 +862,7 @@ function updateGalleryLabels(){
     const galleryTitleEl = document.getElementById('galleryTitle'); if (galleryTitleEl) galleryTitleEl.textContent = x.galleryTitle;
     const gallerySubtitleEl = document.getElementById('gallerySubtitle'); if (gallerySubtitleEl) gallerySubtitleEl.textContent = x.gallerySubtitle;
     const backLblEl = document.getElementById('backToGalleryLbl'); if (backLblEl) backLblEl.textContent = x.backToGallery;
+    const floatingLblEl = document.getElementById('floatingTplBtnLbl'); if (floatingLblEl) floatingLblEl.textContent = x.backToGallery;
     const btnPreviewEl = document.getElementById('btnPreview'); if (btnPreviewEl) btnPreviewEl.textContent = x.btnPreview;
 }
 
@@ -1576,7 +1582,7 @@ document.getElementById('avatarUpload').addEventListener('change', function(e){
 /* ---------- Şablon seçmə səhifəsi ---------- */
 const SAMPLE_CV = {
     firstName:'Aygün', lastName:'Məmmədova', fatherName:'Elşad qızı', jobTitle:'Marketinq Meneceri',
-    birthDate:'1996-04-12', phone:'+994 XX XXX XX XX', email:'aygun.memmedova@gmail.com', address:'Bakı, Azərbaycan',
+    birthDate:'1996-04-12', phone:'+994 55 210 74 11', email:'aygun.memmedova@gmail.com', address:'Bakı, Azərbaycan',
     avatar:'https://ui-avatars.com/api/?name=Aygun+Memmedova&background=2C4DC9&color=fff&size=256&bold=true&font-size=0.38',
     educations:[{school:'Bakı Dövlət Universiteti', major:'Marketinq', start:'2014', end:'2018'}],
     experiences:[{company:'Kapital Bank', role:'Marketinq Meneceri', start:'2020', end:'hazırda', desc:'Rəqəmsal kampaniyaların planlanması və icrası'}, {company:'Azercell', role:'Marketinq üzrə mütəxəssis', start:'2018', end:'2020', desc:'Sosial media strategiyası'}],
@@ -1601,12 +1607,14 @@ function showGallery(){
     document.getElementById('templateGallery').classList.remove('hidden');
     document.getElementById('mainApp').classList.add('hidden');
     document.getElementById('mainFooter').classList.add('hidden');
+    document.getElementById('floatingTplBtn').classList.add('hidden');
     buildGalleryPreviews();
 }
 function showApp(){
     document.getElementById('templateGallery').classList.add('hidden');
     document.getElementById('mainApp').classList.remove('hidden');
     document.getElementById('mainFooter').classList.remove('hidden');
+    document.getElementById('floatingTplBtn').classList.remove('hidden');
     updatePreview();
 }
 document.querySelectorAll('.tpl-select-overlay').forEach(function(btn){
@@ -1620,6 +1628,10 @@ document.querySelectorAll('.tpl-select-overlay').forEach(function(btn){
     });
 });
 document.getElementById('backToGalleryBtn').addEventListener('click', function(){
+    showGallery();
+    window.scrollTo({top:0, behavior:'smooth'});
+});
+document.getElementById('floatingTplBtn').addEventListener('click', function(){
     showGallery();
     window.scrollTo({top:0, behavior:'smooth'});
 });
