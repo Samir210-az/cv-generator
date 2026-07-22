@@ -1599,7 +1599,7 @@ function buildGalleryPreviews(){
             const tpl = box.dataset.tpl;
             const w = box.clientWidth || 320;
             const zoomVal = Math.max(0.2, w / 780);
-            box.innerHTML = '<div class="cv-canvas tpl-' + tpl + '" style="width:400px;zoom:' + zoomVal + ';">' + renderCvHtml(SAMPLE_CV, tpl) + '</div>';
+            box.innerHTML = '<div class="cv-canvas tpl-' + tpl + '" style="width:780px;zoom:' + zoomVal + ';">' + renderCvHtml(SAMPLE_CV, tpl) + '</div>';
         } catch(err) {
             console.error('Qalereya önizləməsi render xətası (' + box.dataset.tpl + '):', err);
         }
