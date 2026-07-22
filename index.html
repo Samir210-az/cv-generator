@@ -229,24 +229,26 @@ body {
 /* ===== Şablon seçmə səhifəsi ===== */
 .gallery-wrap { max-width:1200px; margin:0 auto; }
 .gallery-header { text-align:center; margin-bottom:34px; padding-top:10px; }
-.hero-logo { max-width:220px; width:60%; height:auto; border-radius:14px; cursor:pointer; user-select:none; -webkit-user-select:none; margin-bottom:14px; transition:transform 0.15s; }
+.hero-logo { max-width:280px; width:70%; height:auto; border-radius:14px; cursor:pointer; user-select:none; -webkit-user-select:none; margin-bottom:16px; transition:transform 0.15s; }
 .hero-logo:active { transform:scale(0.96); }
 .gallery-header h1 { font-size:1.9rem; font-weight:800; color:#0c1526; letter-spacing:-0.5px; }
 .gallery-header p { color:#5a6c8c; margin-top:8px; font-size:1rem; }
-.gallery-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:22px; }
-.tpl-card { background:#fff; border-radius:18px; border:1px solid #e9eef5; overflow:hidden; box-shadow:0 6px 20px rgba(20,40,70,0.06); transition:0.25s; display:flex; flex-direction:column; }
-.tpl-card:hover { transform:translateY(-5px); box-shadow:0 16px 36px rgba(20,40,70,0.15); }
-.tpl-card-preview { height:340px; position:relative; overflow:hidden; }
-.tpl-card-info { padding:14px 16px 2px; display:flex; justify-content:space-between; align-items:center; }
-.tpl-card-name { font-weight:800; font-size:1rem; color:#0c1526; }
-.tpl-card-price { font-size:0.85rem; padding:3px 8px; border-radius:20px; white-space:nowrap; background:#f1f5f9; color:#64748b; }
-.tpl-card-btn { margin:14px 16px 16px; background:#16213f; color:#fff; border:none; padding:11px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.85rem; transition:0.2s; }
-.tpl-card-btn:hover { background:#0c1526; }
 
-/* Qalereya kartlarında əsl şablon dizaynının miniatür (kiçildilmiş) canlı render-i */
-.tpl-card-preview { background:#f4f6fa; }
-.mini-cv-wrap { position:absolute; top:0; left:0; transform-origin:top left; pointer-events:none; }
-.mini-cv-wrap .cv-canvas { width:400px; box-shadow:none !important; }
+.gallery-grid { display:flex; flex-direction:column; gap:8px; max-width:560px; margin:0 auto; }
+.tpl-section { margin-bottom:26px; }
+.tpl-label { display:flex; align-items:center; justify-content:center; gap:8px; font-size:1.5rem; font-weight:800; color:#0c1526; margin-bottom:14px; }
+.tpl-lock-badge { font-size:1rem; background:#f1f5f9; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; }
+.tpl-card { position:relative; background:#fff; border-radius:20px; border:1px solid #e9eef5; overflow:hidden; box-shadow:0 6px 24px rgba(20,40,70,0.08); transition:0.25s; }
+.tpl-card:hover { box-shadow:0 16px 40px rgba(20,40,70,0.16); }
+.tpl-card-preview { position:relative; overflow:hidden; background:#f4f6fa; min-height:460px; }
+.tpl-card-preview .cv-canvas { width:400px; box-shadow:none !important; }
+.tpl-select-overlay {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    background:rgba(255,255,255,0.96); color:#2c4dc9; border:none; padding:16px 34px;
+    border-radius:16px; font-weight:800; font-size:1rem; cursor:pointer;
+    box-shadow:0 10px 34px rgba(20,40,70,0.28); transition:0.2s; white-space:nowrap; z-index:5;
+}
+.tpl-select-overlay:hover { background:#fff; transform:translate(-50%,-50%) scale(1.04); }
 
 /* ===== Tam ekran önizləmə modalı ===== */
 .btn-preview { background:#16213f; color:#fff; box-shadow:0 6px 16px rgba(22,33,63,0.25); }
@@ -315,50 +317,66 @@ body {
 
 <div class="gallery-wrap" id="templateGallery">
     <div class="gallery-header">
-        <img src="assets/logo.jpg" alt="Security Group" class="hero-logo" id="heroLogo" />
+        <img src="assets/logo.png" alt="Security Group" class="hero-logo" id="heroLogo" />
         <h1 id="galleryTitle">Şablonunuzu seçin</h1>
         <p id="gallerySubtitle">Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.</p>
     </div>
     <div class="gallery-grid">
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="modern"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplModern">Modern</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="modern" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplModern">Modern</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="modern"></div>
+                <button class="tpl-select-overlay" data-tpl="modern" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="minimal"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplMinimal">Minimal</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="minimal" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplMinimal">Minimal</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="minimal"></div>
+                <button class="tpl-select-overlay" data-tpl="minimal" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="classic"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplClassic">Klassik</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="classic" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplClassic">Klassik</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="classic"></div>
+                <button class="tpl-select-overlay" data-tpl="classic" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="sidebar"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplSidebar">Professional</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="sidebar" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplSidebar">Professional</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="sidebar"></div>
+                <button class="tpl-select-overlay" data-tpl="sidebar" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="corporate"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCorporate">Korporativ</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="corporate" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplCorporate">Korporativ</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="corporate"></div>
+                <button class="tpl-select-overlay" data-tpl="corporate" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="elite"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplElite">Elit</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="elite" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplElite">Elit</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="elite"></div>
+                <button class="tpl-select-overlay" data-tpl="elite" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="creative"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCreative">Yaradıcı</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="creative" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplCreative">Yaradıcı</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="creative"></div>
+                <button class="tpl-select-overlay" data-tpl="creative" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
-        <div class="tpl-card">
-            <div class="tpl-card-preview" data-tpl="tech"></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplTech">Texnoloji</span><span class="tpl-card-price">🔒</span></div>
-            <button class="tpl-card-btn" data-tpl="tech" data-lbl="chooseBtn">Bu şablonu seç</button>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplTech">Texnoloji</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="tech"></div>
+                <button class="tpl-select-overlay" data-tpl="tech" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
         </div>
     </div>
     <div class="text-muted" id="galleryBanner" style="text-align:center;margin:18px 0 6px;">Bütün şablonlara sərbəst baxıb məlumatlarınızı doldura bilərsiniz — yükləmə anında abunə tələb olunur.</div>
@@ -1362,18 +1380,14 @@ const SAMPLE_CV = {
 };
 function buildGalleryPreviews(){
     document.querySelectorAll('.tpl-card-preview[data-tpl]').forEach(function(box){
-        const tpl = box.dataset.tpl;
-        box.innerHTML = '<div class="mini-cv-wrap"><div class="cv-canvas tpl-' + tpl + '">' + renderCvHtml(SAMPLE_CV, tpl) + '</div></div>';
-        const wrap = box.querySelector('.mini-cv-wrap');
-        const canvas = box.querySelector('.cv-canvas');
-        const scaleW = box.clientWidth / canvas.offsetWidth;
-        const scaleH = box.clientHeight / canvas.offsetHeight;
-        const scale = Math.min(scaleW, scaleH);
-        const offsetX = (box.clientWidth - canvas.offsetWidth * scale) / 2;
-        const offsetY = (box.clientHeight - canvas.offsetHeight * scale) / 2;
-        wrap.style.left = offsetX + 'px';
-        wrap.style.top = offsetY + 'px';
-        wrap.style.transform = 'scale(' + scale + ')';
+        try {
+            const tpl = box.dataset.tpl;
+            const w = box.clientWidth || 320;
+            const zoomVal = Math.max(0.3, Math.min(1, w / 400));
+            box.innerHTML = '<div class="cv-canvas tpl-' + tpl + '" style="width:400px;zoom:' + zoomVal + ';">' + renderCvHtml(SAMPLE_CV, tpl) + '</div>';
+        } catch(err) {
+            console.error('Qalereya önizləməsi render xətası (' + box.dataset.tpl + '):', err);
+        }
     });
 }
 function showGallery(){
@@ -1388,7 +1402,7 @@ function showApp(){
     document.getElementById('mainFooter').classList.remove('hidden');
     updatePreview();
 }
-document.querySelectorAll('.tpl-card-btn').forEach(function(btn){
+document.querySelectorAll('.tpl-select-overlay').forEach(function(btn){
     btn.addEventListener('click', function(){
         const tpl = btn.dataset.tpl;
         currentTemplate = tpl;
