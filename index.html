@@ -1682,6 +1682,7 @@ window.addEventListener('resize', function(){
     galleryResizeTimer = setTimeout(buildGalleryPreviews, 200);
 });
 function showGallery(){
+    document.getElementById('landingHero').classList.remove('hidden');
     document.getElementById('templateGallery').classList.remove('hidden');
     document.getElementById('mainApp').classList.add('hidden');
     document.getElementById('mainFooter').classList.add('hidden');
@@ -1689,6 +1690,7 @@ function showGallery(){
     buildGalleryPreviews();
 }
 function showApp(){
+    document.getElementById('landingHero').classList.add('hidden');
     document.getElementById('templateGallery').classList.add('hidden');
     document.getElementById('mainApp').classList.remove('hidden');
     document.getElementById('mainFooter').classList.remove('hidden');
