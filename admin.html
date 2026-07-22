@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CV Generator — Admin Panel</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family:'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg,#faf6ef 0%,#f3ece0 100%);
+    color:#1a1410;
+    min-height:100vh;
+    padding:20px;
+}
+.wrap { max-width:920px; margin:0 auto; }
+
+/* ---- PIN ekranı ---- */
+#pinScreen { min-height:80vh; display:flex; align-items:center; justify-content:center; }
+.pin-card { background:#fff; border-radius:20px; padding:36px 30px; max-width:340px; width:100%; box-shadow:0 12px 40px rgba(106,0,0,0.08); text-align:center; border:1px solid #eee0cc; }
+.pin-card h1 { font-size:1.3rem; font-weight:800; color:#6A0000; margin-bottom:6px; }
+.pin-card p { color:#8a7a5c; font-size:0.85rem; margin-bottom:20px; }
+.pin-card input { width:100%; padding:13px 14px; border:1.5px solid #e6ddc9; border-radius:12px; font-size:1.1rem; text-align:center; letter-spacing:3px; margin-bottom:14px; font-family:inherit; }
+.pin-card input:focus { outline:none; border-color:#D2A55D; box-shadow:0 0 0 4px rgba(210,165,93,0.15); }
+.pin-card button { width:100%; background:#6A0000; color:#fff; border:none; padding:13px; border-radius:12px; font-weight:700; font-size:0.95rem; cursor:pointer; transition:0.2s; }
+.pin-card button:hover { background:#4a0000; }
+.pin-error { color:#dc2626; font-size:0.82rem; margin-top:10px; display:none; }
+.pin-error.show { display:block; }
+
+/* ---- Dashboard ---- */
+#dashboard { display:none; }
+#dashboard.show { display:block; }
+.top-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:10px; }
+.top-header h1 { font-size:1.4rem; font-weight:800; color:#6A0000; }
+.top-header .sub { color:#8a7a5c; font-size:0.82rem; margin-top:2px; }
+.logout-btn { background:#f1e9d8; color:#6A0000; border:none; padding:9px 18px; border-radius:30px; font-weight:700; font-size:0.82rem; cursor:pointer; }
+.logout-btn:hover { background:#e6ddc9; }
+
+.stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:14px; margin-bottom:24px; }
+.stat-card { background:#fff; border-radius:16px; padding:16px 18px; border:1px solid #eee0cc; }
+.stat-card .num { font-size:1.6rem; font-weight:800; color:#6A0000; }
+.stat-card .lbl { font-size:0.78rem; color:#8a7a5c; margin-top:2px; font-weight:600; }
+
+.panel { background:#fff; border-radius:20px; padding:26px 24px; border:1px solid #eee0cc; box-shadow:0 8px 30px rgba(106,0,0,0.05); margin-bottom:24px; }
+.panel h2 { font-size:1.1rem; font-weight:800; color:#1a1410; margin-bottom:18px; }
+
+.activate-form { display:grid; gap:14px; }
+.form-group label { display:block; font-weight:700; font-size:0.82rem; color:#6a5a3c; margin-bottom:6px; }
+.form-group input { width:100%; padding:12px 14px; border:1.5px solid #e6ddc9; border-radius:12px; font-size:0.95rem; font-family:inherit; }
+.form-group input:focus { outline:none; border-color:#D2A55D; box-shadow:0 0 0 4px rgba(210,165,93,0.15); }
+.plan-radios { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.plan-opt { border:2px solid #e6ddc9; border-radius:14px; padding:14px; cursor:pointer; transition:0.2s; }
+.plan-opt.selected { border-color:#6A0000; background:#fdf6ee; }
+.plan-opt .p-name { font-weight:800; font-size:0.92rem; color:#1a1410; }
+.plan-opt .p-price { font-weight:800; color:#6A0000; margin-top:4px; }
+.activate-btn { background:#6A0000; color:#fff; border:none; padding:14px; border-radius:14px; font-weight:700; font-size:0.95rem; cursor:pointer; transition:0.2s; }
+.activate-btn:hover { background:#4a0000; }
+.activate-btn:disabled { opacity:0.6; cursor:wait; }
+.form-msg { font-size:0.85rem; font-weight:600; min-height:1.2em; }
+
+.sub-table-wrap { overflow-x:auto; }
+table.sub-table { width:100%; border-collapse:collapse; font-size:0.86rem; }
+table.sub-table th { text-align:left; padding:10px 12px; color:#8a7a5c; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #f1e9d8; white-space:nowrap; }
+table.sub-table td { padding:12px; border-bottom:1px solid #f6f0e4; vertical-align:middle; white-space:nowrap; }
+.status-pill { display:inline-block; padding:3px 12px; border-radius:20px; font-size:0.72rem; font-weight:800; }
+.status-pill.active { background:#dcfce7; color:#15803d; }
+.status-pill.expired { background:#fee2e2; color:#b91c1c; }
+.status-pill.soon { background:#fef3c7; color:#b45309; }
+.row-btn { border:none; background:#f1e9d8; color:#6A0000; padding:6px 12px; border-radius:8px; font-weight:700; font-size:0.75rem; cursor:pointer; margin-right:6px; }
+.row-btn:hover { background:#e6ddc9; }
+.row-btn.danger { background:#fee2e2; color:#b91c1c; }
+.row-btn.danger:hover { background:#fecaca; }
+.empty-state { text-align:center; color:#8a7a5c; padding:30px 10px; font-size:0.88rem; }
+
+.site-footer { max-width:920px; margin:24px auto 0; text-align:center; font-size:0.8rem; color:#a8977a; }
+.site-footer a { color:#6A0000; font-weight:700; text-decoration:none; }
+
+@media (max-width:640px) {
+    table.sub-table { font-size:0.78rem; }
+    table.sub-table td, table.sub-table th { padding:8px 6px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+    <div id="pinScreen">
+        <div class="pin-card">
+            <h1>🔐 Admin Panel</h1>
+            <p>CV Generator — abunə idarəetməsi</p>
+            <input type="password" id="pinInput" placeholder="PIN kodu" inputmode="numeric" />
+            <button id="pinBtn">Daxil ol</button>
+            <div class="pin-error" id="pinError">Yanlış PIN. Yenidən cəhd edin.</div>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <div class="top-header">
+            <div>
+                <h1>CV Generator — Admin</h1>
+                <div class="sub">Abunə aktivləşdirmə və idarəetmə paneli</div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Çıxış</button>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card"><div class="num" id="statActive">–</div><div class="lbl">Aktiv abunə</div></div>
+            <div class="stat-card"><div class="num" id="statSoon">–</div><div class="lbl">24 saata bitir</div></div>
+            <div class="stat-card"><div class="num" id="statTotal">–</div><div class="lbl">Ümumi qeydiyyat</div></div>
+        </div>
+
+        <div class="panel">
+            <h2>➕ Yeni abunə aktivləşdir</h2>
+            <div class="activate-form">
+                <div class="form-group">
+                    <label>Müştərinin telefon nömrəsi</label>
+                    <input type="tel" id="newPhone" placeholder="+994 55 210 74 11" />
+                </div>
+                <div class="plan-radios">
+                    <div class="plan-opt selected" data-days="3" data-price="2" data-name="3 Günlük Tam Giriş">
+                        <div class="p-name">3 Günlük</div>
+                        <div class="p-price">2 AZN</div>
+                    </div>
+                    <div class="plan-opt" data-days="90" data-price="20" data-name="3 Aylıq Tam Giriş">
+                        <div class="p-name">3 Aylıq</div>
+                        <div class="p-price">20 AZN</div>
+                    </div>
+                </div>
+                <button class="activate-btn" id="activateNewBtn">Aktivləşdir</button>
+                <div class="form-msg" id="activateMsg"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>📋 Abunəçilər</h2>
+            <div class="sub-table-wrap">
+                <table class="sub-table" id="subTable">
+                    <thead>
+                        <tr>
+                            <th>Telefon</th>
+                            <th>Plan</th>
+                            <th>Bitmə tarixi</th>
+                            <th>Status</th>
+                            <th>Əməliyyat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subTableBody"></tbody>
+                </table>
+                <div class="empty-state" id="emptyState" style="display:none;">Hələ heç bir abunəçi yoxdur.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-footer">By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">@s_akhundoff</a></div>
+</div>
+
+<script>
+/* ====== TƏHLÜKƏSİZLİK QEYDİ ======
+   Bu PIN sadəcə səhv basmalardan qorunma məqsədi daşıyır — kod açıq mənbədir (client-side),
+   ona görə real təhlükəsizlik Firebase Rules üzərindən təmin edilir (yalnız admin panel yazır).
+   İstəsən PIN-i dəyiş: aşağıdakı ADMIN_PIN sətrini redaktə et. */
+const ADMIN_PIN = 'CV2026AZ';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC9CPRC7FXmvC2fUgx1oRD12hi5ivlVf8Q",
+    authDomain: "cv-generator-sub.firebaseapp.com",
+    databaseURL: "https://cv-generator-sub-default-rtdb.firebaseio.com",
+    projectId: "cv-generator-sub",
+    storageBucket: "cv-generator-sub.firebasestorage.app",
+    messagingSenderId: "26661100280",
+    appId: "1:26661100280:web:2c8da8433af932d4bdf90d"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+function sanitizePhone(v){ return (v||'').replace(/\D/g,''); }
+
+/* ---- PIN girişi ---- */
+function tryLogin(){
+    const val = document.getElementById('pinInput').value;
+    if (val === ADMIN_PIN) {
+        sessionStorage.setItem('cvAdminAuthed', '1');
+        document.getElementById('pinScreen').style.display = 'none';
+        document.getElementById('dashboard').classList.add('show');
+        initDashboard();
+    } else {
+        document.getElementById('pinError').classList.add('show');
+    }
+}
+document.getElementById('pinBtn').addEventListener('click', tryLogin);
+document.getElementById('pinInput').addEventListener('keypress', function(e){ if (e.key === 'Enter') tryLogin(); });
+document.getElementById('logoutBtn').addEventListener('click', function(){
+    sessionStorage.removeItem('cvAdminAuthed');
+    location.reload();
+});
+if (sessionStorage.getItem('cvAdminAuthed') === '1') {
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('show');
+    initDashboard();
+}
+
+/* ---- Plan seçimi (yeni aktivləşdirmə formu) ---- */
+document.querySelectorAll('.plan-opt').forEach(function(opt){
+    opt.addEventListener('click', function(){
+        document.querySelectorAll('.plan-opt').forEach(o=>o.classList.remove('selected'));
+        opt.classList.add('selected');
+    });
+});
+
+/* ---- Yeni abunə aktivləşdir ---- */
+document.getElementById('activateNewBtn').addEventListener('click', function(){
+    const phone = sanitizePhone(document.getElementById('newPhone').value);
+    const msgEl = document.getElementById('activateMsg');
+    if (phone.length < 9) { msgEl.textContent = '❌ Düzgün telefon nömrəsi daxil edin.'; msgEl.style.color = '#dc2626'; return; }
+    const plan = document.querySelector('.plan-opt.selected');
+    const days = parseInt(plan.dataset.days, 10);
+    const price = parseInt(plan.dataset.price, 10);
+    const planName = plan.dataset.name;
+    const now = Date.now();
+    const btn = document.getElementById('activateNewBtn');
+    btn.disabled = true; btn.textContent = 'Aktivləşdirilir...';
+    db.ref('subscriptions/' + phone).set({
+        plan: plan.dataset.days === '3' ? '3day' : '3month',
+        planName: planName,
+        price: price,
+        activatedAt: now,
+        expiresAt: now + days * 86400000
+    }).then(function(){
+        msgEl.textContent = '✅ ' + phone + ' nömrəsi üçün "' + planName + '" aktivləşdirildi.';
+        msgEl.style.color = '#15803d';
+        document.getElementById('newPhone').value = '';
+    }).catch(function(err){
+        msgEl.textContent = '❌ Xəta: ' + err.message;
+        msgEl.style.color = '#dc2626';
+    }).finally(function(){
+        btn.disabled = false; btn.textContent = 'Aktivləşdir';
+    });
+});
+
+/* ---- Abunəçilər siyahısı (canlı) ---- */
+function initDashboard(){
+    db.ref('subscriptions').on('value', function(snap){
+        const data = snap.val() || {};
+        renderTable(data);
+        renderStats(data);
+    });
+}
+
+function renderStats(data){
+    const now = Date.now();
+    let active = 0, soon = 0, total = 0;
+    Object.keys(data).forEach(function(phone){
+        total++;
+        const exp = data[phone].expiresAt;
+        if (exp > now) {
+            active++;
+            if (exp - now < 86400000) soon++;
+        }
+    });
+    document.getElementById('statActive').textContent = active;
+    document.getElementById('statSoon').textContent = soon;
+    document.getElementById('statTotal').textContent = total;
+}
+
+function fmtDate(ts){
+    const d = new Date(ts);
+    return d.toLocaleDateString('az-AZ', {day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + d.toLocaleTimeString('az-AZ', {hour:'2-digit',minute:'2-digit'});
+}
+
+function renderTable(data){
+    const now = Date.now();
+    const tbody = document.getElementById('subTableBody');
+    const phones = Object.keys(data).sort(function(a,b){ return (data[b].activatedAt||0) - (data[a].activatedAt||0); });
+    tbody.innerHTML = '';
+    document.getElementById('emptyState').style.display = phones.length ? 'none' : 'block';
+
+    phones.forEach(function(phone){
+        const item = data[phone];
+        const exp = item.expiresAt;
+        let statusHtml;
+        if (exp > now) {
+            statusHtml = (exp - now < 86400000)
+                ? '<span class="status-pill soon">Tezliklə bitir</span>'
+                : '<span class="status-pill active">Aktiv</span>';
+        } else {
+            statusHtml = '<span class="status-pill expired">Bitib</span>';
+        }
+        const tr = document.createElement('tr');
+        tr.innerHTML =
+            '<td>+' + phone + '</td>' +
+            '<td>' + (item.planName || item.plan || '-') + '</td>' +
+            '<td>' + fmtDate(exp) + '</td>' +
+            '<td>' + statusHtml + '</td>' +
+            '<td>' +
+                '<button class="row-btn" data-action="extend" data-phone="' + phone + '">+3 gün</button>' +
+                '<button class="row-btn danger" data-action="delete" data-phone="' + phone + '">Sil</button>' +
+            '</td>';
+        tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll('button[data-action="delete"]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            if (!confirm('Bu abunəni silmək istədiyinizə əminsiniz?')) return;
+            db.ref('subscriptions/' + btn.dataset.phone).remove();
+        });
+    });
+    tbody.querySelectorAll('button[data-action="extend"]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+            const ref = db.ref('subscriptions/' + btn.dataset.phone);
+            ref.once('value').then(function(snap){
+                const item = snap.val();
+                if (!item) return;
+                const base = Math.max(item.expiresAt, Date.now());
+                ref.update({ expiresAt: base + 3 * 86400000 });
+            });
+        });
+    });
+}
+</script>
+</body>
+</html>
