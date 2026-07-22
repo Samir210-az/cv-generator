@@ -239,87 +239,10 @@ body {
 .tpl-card-btn { margin:14px 16px 16px; background:#16213f; color:#fff; border:none; padding:11px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.85rem; transition:0.2s; }
 .tpl-card-btn:hover { background:#0c1526; }
 
-/* mini-mokap bazası */
-.mock-base { position:relative; width:100%; height:100%; }
-.mock-topbar { position:absolute; top:0; left:0; right:0; height:34px; }
-.mock-avatar { position:absolute; top:44px; left:16px; width:32px; height:32px; border-radius:50%; }
-.mock-name { position:absolute; top:48px; left:60px; width:72px; height:8px; border-radius:4px; }
-.mock-title { position:absolute; top:62px; left:60px; width:50px; height:6px; border-radius:3px; }
-.mock-line { position:absolute; left:16px; height:6px; border-radius:3px; }
-.mock-line.l1 { top:96px; width:calc(100% - 32px); }
-.mock-line.l2 { top:112px; width:78%; }
-.mock-line.l3 { top:128px; width:62%; }
-
-.mock-modern { background:#fff; }
-.mock-modern .mock-topbar { background:#2C4DC9; }
-.mock-modern .mock-avatar { background:#e8edfb; border:2px solid #2C4DC9; }
-.mock-modern .mock-name { background:#1a2433; }
-.mock-modern .mock-title { background:#2C4DC9; }
-.mock-modern .mock-line { background:#e2e8f0; }
-
-.mock-minimal { background:#fff; }
-.mock-minimal .mock-topbar { display:none; }
-.mock-minimal .mock-avatar { top:20px; background:#f3f5f8; border-radius:8px; }
-.mock-minimal .mock-name { top:24px; background:#101418; }
-.mock-minimal .mock-title { top:38px; background:#475569; width:44px; }
-.mock-minimal .mock-line { background:#eef1f5; }
-.mock-minimal .mock-line.l1 { top:74px; }
-.mock-minimal .mock-line.l2 { top:90px; }
-.mock-minimal .mock-line.l3 { top:106px; }
-
-.mock-classic { background:#fff; }
-.mock-classic .mock-topbar { display:none; }
-.mock-classic .mock-avatar { display:none; }
-.mock-classic::after { content:''; position:absolute; top:58px; left:22%; right:22%; height:2px; background:#1a1a1a; }
-.mock-classic .mock-name { left:0; right:0; margin:0 auto; top:24px; width:100px; background:#1a1a1a; }
-.mock-classic .mock-title { left:0; right:0; margin:0 auto; top:40px; width:64px; background:#555; }
-.mock-classic .mock-line { left:22px; background:#ddd; }
-.mock-classic .mock-line.l1 { top:74px; width:calc(100% - 44px); }
-.mock-classic .mock-line.l2 { top:90px; width:75%; }
-.mock-classic .mock-line.l3 { top:106px; width:58%; }
-
-.mock-sidebar { background:#1f2a44; }
-.mock-sidebar .mock-topbar { display:none; }
-.mock-sidebar::before { content:''; position:absolute; top:0; left:36%; right:0; bottom:0; background:#fff; }
-.mock-sidebar .mock-avatar { top:16px; left:12px; width:36px; height:36px; background:rgba(255,255,255,0.15); border:2px solid #fff; }
-.mock-sidebar .mock-name { display:none; }
-.mock-sidebar .mock-title { display:none; }
-.mock-sidebar .mock-line { left:10px; width:42px; background:rgba(255,255,255,0.3); }
-.mock-sidebar .mock-line.l1 { top:66px; }
-.mock-sidebar .mock-line.l2 { top:82px; }
-.mock-sidebar .mock-line.l3 { top:98px; }
-
-.mock-corporate { background:#fff; }
-.mock-corporate .mock-topbar { height:40px; background:#f6f8fb; border-bottom:4px solid #1e3a5f; }
-.mock-corporate .mock-avatar { display:none; }
-.mock-corporate .mock-name { top:12px; left:16px; background:#152238; }
-.mock-corporate .mock-title { top:26px; left:16px; background:#1e3a5f; width:52px; }
-.mock-corporate .mock-line { background:#e5e9f0; }
-
-.mock-elite { background:#18181b; }
-.mock-elite .mock-topbar { height:38px; background:#18181b; border-bottom:2px solid #a1a1aa; }
-.mock-elite .mock-avatar { left:0; right:0; margin:0 auto; top:8px; width:26px; height:26px; background:rgba(255,255,255,0.1); border:2px solid #a1a1aa; }
-.mock-elite .mock-name { left:0; right:0; margin:0 auto; top:42px; width:84px; background:#f4f4f5; }
-.mock-elite .mock-title { left:0; right:0; margin:0 auto; top:56px; width:58px; background:#a1a1aa; }
-.mock-elite .mock-line { background:#3f3f46; left:22px; }
-.mock-elite .mock-line.l1 { top:80px; width:calc(100% - 44px); }
-.mock-elite .mock-line.l2 { top:96px; width:68%; }
-.mock-elite .mock-line.l3 { top:112px; width:52%; }
-
-.mock-creative { background:#fff; }
-.mock-creative::before { content:''; position:absolute; top:0; left:0; right:0; height:72px; background:linear-gradient(120deg,#2563eb,#7c3aed); border-radius:0 0 18px 18px; }
-.mock-creative .mock-topbar { display:none; }
-.mock-creative .mock-avatar { background:rgba(255,255,255,0.3); border:2px solid #fff; }
-.mock-creative .mock-name { background:#fff; }
-.mock-creative .mock-title { background:rgba(255,255,255,0.9); }
-.mock-creative .mock-line { background:#e5e9f0; }
-
-.mock-tech { background:#0f172a; }
-.mock-tech .mock-topbar { height:6px; background:#38bdf8; }
-.mock-tech .mock-avatar { top:20px; border-radius:8px; background:#1e293b; border:2px solid #38bdf8; }
-.mock-tech .mock-name { top:24px; background:#f1f5f9; }
-.mock-tech .mock-title { top:38px; background:#38bdf8; width:52px; }
-.mock-tech .mock-line { background:#1e293b; border:1px solid #334155; }
+/* Qalereya kartlarında əsl şablon dizaynının miniatür (kiçildilmiş) canlı render-i */
+.tpl-card-preview { background:#f4f6fa; }
+.mini-cv-wrap { position:absolute; top:0; left:0; transform-origin:top left; pointer-events:none; }
+.mini-cv-wrap .cv-canvas { width:400px; box-shadow:none !important; }
 
 /* ===== Tam ekran önizləmə modalı ===== */
 .btn-preview { background:#16213f; color:#fff; box-shadow:0 6px 16px rgba(22,33,63,0.25); }
@@ -350,6 +273,13 @@ body {
 .paywall-choose-btn:hover { background:#21399c; }
 .paywall-note { font-size:0.78rem; color:#8b9bb8; text-align:center; margin-top:12px; display:none; }
 .paywall-note.show { display:block; }
+.activation-box { border-top:1px solid #eef1f7; margin-top:20px; padding-top:16px; }
+.activation-label { font-size:0.8rem; font-weight:600; color:#45597c; margin-bottom:8px; }
+.activation-row { display:flex; gap:8px; }
+.activation-row input { flex:1; padding:10px 12px; border:1.5px solid #dbe4f0; border-radius:10px; font-size:0.88rem; font-family:inherit; }
+.activation-row button { background:#eef1f7; color:#16213f; border:none; padding:10px 16px; border-radius:10px; font-weight:700; font-size:0.82rem; cursor:pointer; white-space:nowrap; }
+.activation-row button:hover { background:#dde4f0; }
+.activation-msg { font-size:0.8rem; margin-top:8px; min-height:1em; font-weight:600; }
 .preview-modal-close.paywall-close { position:static; margin-left:auto; display:block; }
 .paywall-top { display:flex; justify-content:flex-end; margin-bottom:4px; }
 
@@ -386,42 +316,42 @@ body {
     </div>
     <div class="gallery-grid">
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-modern"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="modern"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplModern">Modern</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="modern" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-minimal"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="minimal"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplMinimal">Minimal</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="minimal" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-classic"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="classic"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplClassic">Klassik</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="classic" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-sidebar"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="sidebar"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplSidebar">Professional</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="sidebar" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-corporate"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="corporate"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCorporate">Korporativ</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="corporate" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-elite"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="elite"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplElite">Elit</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="elite" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-creative"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="creative"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCreative">Yaradıcı</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="creative" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
-            <div class="tpl-card-preview mock-tech"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
+            <div class="tpl-card-preview" data-tpl="tech"></div>
             <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplTech">Texnoloji</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="tech" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
@@ -552,6 +482,15 @@ body {
 
         <button class="paywall-choose-btn" id="paywallChooseBtn" data-lbl="paywallChoose">Seç</button>
         <div class="paywall-note" id="paywallNote" data-lbl="paywallNoteTxt">Ödəniş sistemi tezliklə aktivləşəcək. Hazırda aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.</div>
+
+        <div class="activation-box">
+            <div class="activation-label" data-lbl="activationLabel">Artıq ödədiniz? Nömrənizi daxil edin:</div>
+            <div class="activation-row">
+                <input type="tel" id="activationPhoneInput" placeholder="+994 55 210 74 11" />
+                <button id="activationBtn" data-lbl="activationBtnLbl">Aktivləşdir</button>
+            </div>
+            <div class="activation-msg" id="activationMsg"></div>
+        </div>
     </div>
 </div>
 
@@ -566,9 +505,9 @@ body {
 
 <script>
 const LANG = {
-    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'🎓 Təhsil', cvExperience:'💼 İş təcrübəsi', cvLanguages:'🌐 Dillər', cvCertificates:'📜 Sertifikatlar', cvSkills:'⭐ Bacarıqlar', cvProjects:'🏗 Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'Ödəniş sistemi tezliklə aktivləşəcək. Hazırda aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.' },
-    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'🎓 Education', cvExperience:'💼 Work Experience', cvLanguages:'🌐 Languages', cvCertificates:'📜 Certificates', cvSkills:'⭐ Skills', cvProjects:'🏗 Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'Payment system launching soon. Contact @s_akhundoff to activate for now.' },
-    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'🎓 Образование', cvExperience:'💼 Опыт работы', cvLanguages:'🌐 Языки', cvCertificates:'📜 Сертификаты', cvSkills:'⭐ Навыки', cvProjects:'🏗 Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'Система оплаты скоро заработает. Пока свяжитесь с @s_akhundoff для активации.' }
+    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'🎓 Təhsil', cvExperience:'💼 İş təcrübəsi', cvLanguages:'🌐 Dillər', cvCertificates:'📜 Sertifikatlar', cvSkills:'⭐ Bacarıqlar', cvProjects:'🏗 Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'WhatsApp açıldı — ödənişi təsdiqləyin, hesabınız qısa müddətdə aktivləşdiriləcək.', activationLabel:'Artıq ödədiniz? Nömrənizi daxil edin:', activationBtnLbl:'Aktivləşdir' },
+    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'🎓 Education', cvExperience:'💼 Work Experience', cvLanguages:'🌐 Languages', cvCertificates:'📜 Certificates', cvSkills:'⭐ Skills', cvProjects:'🏗 Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'WhatsApp opened — confirm your payment and your access will be activated shortly.', activationLabel:'Already paid? Enter your phone number:', activationBtnLbl:'Activate' },
+    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'🎓 Образование', cvExperience:'💼 Опыт работы', cvLanguages:'🌐 Языки', cvCertificates:'📜 Сертификаты', cvSkills:'⭐ Навыки', cvProjects:'🏗 Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'WhatsApp открыт — подтвердите оплату, доступ будет активирован в ближайшее время.', activationLabel:'Уже оплатили? Введите номер телефона:', activationBtnLbl:'Активировать' }
 };
 
 let currentLang = 'az';
@@ -1405,10 +1344,32 @@ document.getElementById('avatarUpload').addEventListener('change', function(e){
 });
 
 /* ---------- Şablon seçmə səhifəsi ---------- */
+const SAMPLE_CV = {
+    firstName:'Aygün', lastName:'Məmmədova', fatherName:'Elşad qızı', jobTitle:'Marketinq Meneceri',
+    birthDate:'1996-04-12', phone:'+994 55 210 74 11', email:'aygun.memmedova@gmail.com', address:'Bakı, Azərbaycan',
+    avatar:'https://ui-avatars.com/api/?name=Aygun+Memmedova&background=2C4DC9&color=fff&size=256&bold=true&font-size=0.38',
+    educations:[{school:'Bakı Dövlət Universiteti', major:'Marketinq', start:'2014', end:'2018'}],
+    experiences:[{company:'Kapital Bank', role:'Marketinq Meneceri', start:'2020', end:'hazırda', desc:'Rəqəmsal kampaniyaların planlanması və icrası'}, {company:'Azercell', role:'Marketinq üzrə mütəxəssis', start:'2018', end:'2020', desc:'Sosial media strategiyası'}],
+    languages:[{name:'Azərbaycan', level:'Ana dili'}, {name:'İngilis', level:'Səlis'}, {name:'Rus', level:'Orta səviyyə'}],
+    certificates:[{name:'Google Analytics', org:'Google', year:'2022'}],
+    projects:[{company:'Marka Yeniləmə Layihəsi', list:'Loqotip, sosial media strategiyası, kampaniya'}],
+    skills:['Liderlik','Kreativlik','SEO','Komanda işi','Analitik düşüncə']
+};
+function buildGalleryPreviews(){
+    document.querySelectorAll('.tpl-card-preview[data-tpl]').forEach(function(box){
+        const tpl = box.dataset.tpl;
+        box.innerHTML = '<div class="mini-cv-wrap"><div class="cv-canvas tpl-' + tpl + '">' + renderCvHtml(SAMPLE_CV, tpl) + '</div></div>';
+        const wrap = box.querySelector('.mini-cv-wrap');
+        const canvas = box.querySelector('.cv-canvas');
+        const scale = box.clientWidth / canvas.offsetWidth;
+        wrap.style.transform = 'scale(' + scale + ')';
+    });
+}
 function showGallery(){
     document.getElementById('templateGallery').classList.remove('hidden');
     document.getElementById('mainApp').classList.add('hidden');
     document.getElementById('mainFooter').classList.add('hidden');
+    buildGalleryPreviews();
 }
 function showApp(){
     document.getElementById('templateGallery').classList.add('hidden');
@@ -1460,14 +1421,39 @@ document.getElementById('paywallModal').addEventListener('click', function(e){
 document.getElementById('paywallChooseBtn').addEventListener('click', function(){
     const selected = document.querySelector('.plan-card.selected');
     if (!selected) return;
+    const planName = selected.querySelector('.plan-name').textContent.trim();
+    const price = selected.dataset.price;
+    const msg = encodeURIComponent('Salam! CV Generator üçün "' + planName + '" planını (' + price + ' AZN) almaq istəyirəm.');
+    window.open('https://wa.me/994552107111?text=' + msg, '_blank');
     document.getElementById('paywallNote').classList.add('show');
     // Qeyd: real ödəniş inteqrasiyası hələ qoşulmayıb — seçilmiş plan (selected.dataset.plan/days/price)
     // ödəniş provayderi (Payriff və s.) qoşulanda burada təsdiqdən sonra localStorage-ə yazılacaq:
     // localStorage.setItem(SUBSCRIPTION_KEY, String(Date.now() + parseInt(selected.dataset.days,10)*86400000));
 });
 
+/* ---------- Əl ilə aktivləşdirmə (ödəniş WhatsApp-dan təsdiqlənəndən sonra) ---------- */
+const ACTIVATED_PHONES = [
+    // Nümunə: '994551234567' (boşluqsuz, ölkə kodu ilə). Ödəniş təsdiqlənən müştərinin nömrəsini bura əlavə edib GitHub-a push et.
+];
+function tryActivateByPhone(){
+    const raw = document.getElementById('activationPhoneInput').value.replace(/\D/g,'');
+    const msgEl = document.getElementById('activationMsg');
+    const match = ACTIVATED_PHONES.find(p => raw.endsWith(p) || p.endsWith(raw));
+    if (match) {
+        const days = parseInt(document.querySelector('.plan-card.selected').dataset.days, 10) || 3;
+        localStorage.setItem(SUBSCRIPTION_KEY, String(Date.now() + days*86400000));
+        msgEl.textContent = '✅ Uğurla aktivləşdirildi! İndi yükləyə bilərsiniz.';
+        msgEl.style.color = '#15803d';
+        setTimeout(closePaywall, 1400);
+    } else {
+        msgEl.textContent = '❌ Bu nömrə üçün aktiv abunə tapılmadı.';
+        msgEl.style.color = '#dc2626';
+    }
+}
+document.getElementById('activationBtn').addEventListener('click', tryActivateByPhone);
+
 loadFromStorage();
-if (localStorage.getItem('cvData')) { showApp(); } else { showGallery(); }
+showGallery();
 </script>
 </body>
 </html>
