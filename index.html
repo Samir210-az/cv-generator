@@ -8,6 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Lora:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -1431,24 +1433,45 @@ document.getElementById('paywallChooseBtn').addEventListener('click', function()
     // localStorage.setItem(SUBSCRIPTION_KEY, String(Date.now() + parseInt(selected.dataset.days,10)*86400000));
 });
 
-/* ---------- Əl ilə aktivləşdirmə (ödəniş WhatsApp-dan təsdiqlənəndən sonra) ---------- */
-const ACTIVATED_PHONES = [
-    // Nümunə: '994551234567' (boşluqsuz, ölkə kodu ilə). Ödəniş təsdiqlənən müştərinin nömrəsini bura əlavə edib GitHub-a push et.
-];
+/* ---------- Əl ilə aktivləşdirmə (Firebase Realtime Database üzərindən) ---------- */
+const firebaseConfig = {
+    apiKey: "AIzaSyC9CPRC7FXmvC2fUgx1oRD12hi5ivlVf8Q",
+    authDomain: "cv-generator-sub.firebaseapp.com",
+    databaseURL: "https://cv-generator-sub-default-rtdb.firebaseio.com",
+    projectId: "cv-generator-sub",
+    storageBucket: "cv-generator-sub.firebasestorage.app",
+    messagingSenderId: "26661100280",
+    appId: "1:26661100280:web:2c8da8433af932d4bdf90d"
+};
+firebase.initializeApp(firebaseConfig);
+const subDb = firebase.database();
+
 function tryActivateByPhone(){
     const raw = document.getElementById('activationPhoneInput').value.replace(/\D/g,'');
     const msgEl = document.getElementById('activationMsg');
-    const match = ACTIVATED_PHONES.find(p => raw.endsWith(p) || p.endsWith(raw));
-    if (match) {
-        const days = parseInt(document.querySelector('.plan-card.selected').dataset.days, 10) || 3;
-        localStorage.setItem(SUBSCRIPTION_KEY, String(Date.now() + days*86400000));
-        msgEl.textContent = '✅ Uğurla aktivləşdirildi! İndi yükləyə bilərsiniz.';
-        msgEl.style.color = '#15803d';
-        setTimeout(closePaywall, 1400);
-    } else {
-        msgEl.textContent = '❌ Bu nömrə üçün aktiv abunə tapılmadı.';
+    const btn = document.getElementById('activationBtn');
+    if (raw.length < 9) { msgEl.textContent = '❌ Düzgün telefon nömrəsi daxil edin.'; msgEl.style.color = '#dc2626'; return; }
+    btn.disabled = true;
+    const originalBtnText = btn.textContent;
+    btn.textContent = '...';
+    subDb.ref('subscriptions/' + raw).once('value').then(function(snap){
+        const item = snap.val();
+        if (item && item.expiresAt > Date.now()) {
+            localStorage.setItem(SUBSCRIPTION_KEY, String(item.expiresAt));
+            msgEl.textContent = '✅ Uğurla aktivləşdirildi! İndi yükləyə bilərsiniz.';
+            msgEl.style.color = '#15803d';
+            setTimeout(closePaywall, 1400);
+        } else {
+            msgEl.textContent = '❌ Bu nömrə üçün aktiv abunə tapılmadı. Ödənişdən sonra bir az gözləyin.';
+            msgEl.style.color = '#dc2626';
+        }
+    }).catch(function(err){
+        msgEl.textContent = '❌ Yoxlama zamanı xəta baş verdi. İnternet bağlantınızı yoxlayın.';
         msgEl.style.color = '#dc2626';
-    }
+        console.error(err);
+    }).finally(function(){
+        btn.disabled = false; btn.textContent = originalBtnText;
+    });
 }
 document.getElementById('activationBtn').addEventListener('click', tryActivateByPhone);
 
