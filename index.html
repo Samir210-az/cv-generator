@@ -328,17 +328,17 @@ body {
 .tpl-section { margin-bottom:26px; }
 .tpl-label { display:flex; align-items:center; justify-content:center; gap:8px; font-size:1.5rem; font-weight:800; color:#0c1526; margin-bottom:14px; }
 .tpl-lock-badge { font-size:1rem; background:#f1f5f9; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; }
-.tpl-card { position:relative; background:#fff; border-radius:20px; border:1px solid #e9eef5; overflow:hidden; box-shadow:0 6px 24px rgba(20,40,70,0.08); transition:0.25s; }
+.tpl-card { position:relative; background:#fff; border-radius:20px; border:1px solid #e9eef5; overflow:hidden; box-shadow:0 6px 24px rgba(20,40,70,0.08); transition:0.25s; display:flex; flex-direction:column; }
 .tpl-card:hover { box-shadow:0 16px 40px rgba(20,40,70,0.16); }
 .tpl-card-preview { position:relative; overflow:hidden; background:#f4f6fa; height:520px; }
 .tpl-card-preview .cv-canvas { width:400px; box-shadow:none !important; }
 .tpl-select-overlay {
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    background:rgba(255,255,255,0.96); color:#2c4dc9; border:none; padding:16px 34px;
-    border-radius:16px; font-weight:800; font-size:1rem; cursor:pointer;
-    box-shadow:0 10px 34px rgba(20,40,70,0.28); transition:0.2s; white-space:nowrap; z-index:5;
+    display:block; width:calc(100% - 32px); margin:16px auto 18px; position:relative;
+    background:#1d5fd6; color:#fff; border:none; padding:15px 20px;
+    border-radius:14px; font-weight:800; font-size:0.98rem; cursor:pointer;
+    box-shadow:0 8px 22px rgba(29,95,214,0.3); transition:0.2s; white-space:nowrap;
 }
-.tpl-select-overlay:hover { background:#fff; transform:translate(-50%,-50%) scale(1.04); }
+.tpl-select-overlay:hover { background:#164ec2; transform:translateY(-2px); box-shadow:0 12px 28px rgba(29,95,214,0.38); }
 
 /* ===== Tam ekran önizləmə modalı ===== */
 .btn-preview { background:#16213f; color:#fff; box-shadow:0 6px 16px rgba(22,33,63,0.25); }
@@ -633,7 +633,7 @@ body {
         <div class="activation-box">
             <div class="activation-label" data-lbl="activationLabel">Artıq ödədiniz? Nömrənizi daxil edin:</div>
             <div class="activation-row">
-                <input type="tel" id="activationPhoneInput" placeholder="+994 55 210 74 11" />
+                <input type="tel" id="activationPhoneInput" placeholder="+994 XX XXX XX XX" />
                 <button id="activationBtn" data-lbl="activationBtnLbl">Aktivləşdir</button>
             </div>
             <div class="activation-msg" id="activationMsg"></div>
@@ -1576,7 +1576,7 @@ document.getElementById('avatarUpload').addEventListener('change', function(e){
 /* ---------- Şablon seçmə səhifəsi ---------- */
 const SAMPLE_CV = {
     firstName:'Aygün', lastName:'Məmmədova', fatherName:'Elşad qızı', jobTitle:'Marketinq Meneceri',
-    birthDate:'1996-04-12', phone:'+994 55 210 74 11', email:'aygun.memmedova@gmail.com', address:'Bakı, Azərbaycan',
+    birthDate:'1996-04-12', phone:'+994 XX XXX XX XX', email:'aygun.memmedova@gmail.com', address:'Bakı, Azərbaycan',
     avatar:'https://ui-avatars.com/api/?name=Aygun+Memmedova&background=2C4DC9&color=fff&size=256&bold=true&font-size=0.38',
     educations:[{school:'Bakı Dövlət Universiteti', major:'Marketinq', start:'2014', end:'2018'}],
     experiences:[{company:'Kapital Bank', role:'Marketinq Meneceri', start:'2020', end:'hazırda', desc:'Rəqəmsal kampaniyaların planlanması və icrası'}, {company:'Azercell', role:'Marketinq üzrə mütəxəssis', start:'2018', end:'2020', desc:'Sosial media strategiyası'}],
