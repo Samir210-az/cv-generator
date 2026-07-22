@@ -82,8 +82,6 @@ body {
 .template-switch { display:flex; gap:6px; background:#f0f4fa; border-radius:40px; padding:4px; flex-wrap:wrap; max-width:520px; }
 .template-switch button { border:none; background:transparent; padding:8px 14px; border-radius:30px; font-size:0.8rem; font-weight:700; cursor:pointer; color:#45597c; transition:0.2s; white-space:nowrap; display:flex; align-items:center; gap:6px; }
 .template-switch button.active { background:#16213f; color:#fff; }
-.price-badge { display:inline-block; background:#f59e0b; color:#fff; font-size:0.6rem; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:0.2px; }
-.template-switch button.active .price-badge { background:#fff; color:#f59e0b; }
 
 #cvPreviewWrap { border-radius:14px; overflow:hidden; box-shadow:0 2px 18px rgba(20,40,70,0.08); }
 .cv-canvas { background:#fff; font-size:0.92rem; line-height:1.55; }
@@ -237,9 +235,7 @@ body {
 .tpl-card-preview { height:190px; position:relative; overflow:hidden; }
 .tpl-card-info { padding:14px 16px 2px; display:flex; justify-content:space-between; align-items:center; }
 .tpl-card-name { font-weight:800; font-size:1rem; color:#0c1526; }
-.tpl-card-price { font-size:0.66rem; font-weight:800; padding:3px 10px; border-radius:20px; white-space:nowrap; }
-.tpl-card-price.free { background:#dcfce7; color:#15803d; }
-.tpl-card-price.paid { background:#fef3c7; color:#b45309; }
+.tpl-card-price { font-size:0.85rem; padding:3px 8px; border-radius:20px; white-space:nowrap; background:#f1f5f9; color:#64748b; }
 .tpl-card-btn { margin:14px 16px 16px; background:#16213f; color:#fff; border:none; padding:11px; border-radius:12px; font-weight:700; cursor:pointer; font-size:0.85rem; transition:0.2s; }
 .tpl-card-btn:hover { background:#0c1526; }
 
@@ -334,6 +330,29 @@ body {
 .preview-modal-close { position:absolute; top:12px; right:12px; background:#16213f; color:#fff; border:none; width:34px; height:34px; border-radius:50%; font-size:1rem; cursor:pointer; z-index:2; }
 .preview-modal-close:hover { background:#0c1526; }
 
+/* ===== Abunə (paywall) modalı ===== */
+.paywall-inner { background:#fff; border-radius:20px; max-width:420px; width:100%; max-height:92vh; overflow:auto; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.45); padding:30px 26px 26px; }
+.paywall-title { font-size:1.35rem; font-weight:800; color:#0c1526; margin-bottom:6px; }
+.paywall-subtitle { color:#5a6c8c; font-size:0.88rem; margin-bottom:20px; }
+.plan-card { border:2px solid #e5e9f0; border-radius:16px; padding:16px 18px; margin-bottom:14px; cursor:pointer; transition:0.2s; }
+.plan-card.selected { border-color:#2c4dc9; background:#f5f7fe; }
+.plan-card-head { display:flex; align-items:center; gap:12px; }
+.plan-radio { width:20px; height:20px; border-radius:50%; border:2px solid #c6cfdd; flex-shrink:0; position:relative; }
+.plan-card.selected .plan-radio { border-color:#2c4dc9; }
+.plan-card.selected .plan-radio::after { content:''; position:absolute; top:3px; left:3px; width:10px; height:10px; border-radius:50%; background:#2c4dc9; }
+.plan-name { font-weight:800; font-size:1.02rem; color:#0c1526; flex:1; }
+.plan-price { font-weight:800; font-size:1.05rem; color:#0c1526; }
+.plan-price small { font-size:0.7rem; font-weight:600; color:#8b9bb8; }
+.plan-features { list-style:none; margin:10px 0 0 32px; padding:0; }
+.plan-features li { font-size:0.82rem; color:#5a6c8c; margin-bottom:5px; }
+.plan-features li::before { content:'✓ '; color:#2c4dc9; font-weight:800; }
+.paywall-choose-btn { width:100%; background:#2c4dc9; color:#fff; border:none; padding:14px; border-radius:14px; font-weight:700; font-size:0.95rem; cursor:pointer; margin-top:6px; transition:0.2s; }
+.paywall-choose-btn:hover { background:#21399c; }
+.paywall-note { font-size:0.78rem; color:#8b9bb8; text-align:center; margin-top:12px; display:none; }
+.paywall-note.show { display:block; }
+.preview-modal-close.paywall-close { position:static; margin-left:auto; display:block; }
+.paywall-top { display:flex; justify-content:flex-end; margin-bottom:4px; }
+
 @media (max-width: 900px) {
     .app { grid-template-columns: 1fr; gap: 20px; }
     .preview-panel { position: static; max-height: none; }
@@ -368,45 +387,46 @@ body {
     <div class="gallery-grid">
         <div class="tpl-card">
             <div class="tpl-card-preview mock-modern"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplModern">Modern</span><span class="tpl-card-price free" data-lbl="priceFree">Pulsuz</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplModern">Modern</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="modern" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
             <div class="tpl-card-preview mock-minimal"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplMinimal">Minimal</span><span class="tpl-card-price free" data-lbl="priceFree">Pulsuz</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplMinimal">Minimal</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="minimal" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
             <div class="tpl-card-preview mock-classic"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplClassic">Klassik</span><span class="tpl-card-price paid">5 AZN</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplClassic">Klassik</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="classic" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
             <div class="tpl-card-preview mock-sidebar"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplSidebar">Professional</span><span class="tpl-card-price paid">5 AZN</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplSidebar">Professional</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="sidebar" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
             <div class="tpl-card-preview mock-corporate"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCorporate">Korporativ</span><span class="tpl-card-price paid">5 AZN</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCorporate">Korporativ</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="corporate" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
             <div class="tpl-card-preview mock-elite"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplElite">Elit</span><span class="tpl-card-price paid">5 AZN</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplElite">Elit</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="elite" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
             <div class="tpl-card-preview mock-creative"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCreative">Yaradıcı</span><span class="tpl-card-price paid">5 AZN</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplCreative">Yaradıcı</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="creative" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
         <div class="tpl-card">
             <div class="tpl-card-preview mock-tech"><div class="mock-base"><div class="mock-topbar"></div><div class="mock-avatar"></div><div class="mock-name"></div><div class="mock-title"></div><div class="mock-line l1"></div><div class="mock-line l2"></div><div class="mock-line l3"></div></div></div>
-            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplTech">Texnoloji</span><span class="tpl-card-price paid">5 AZN</span></div>
+            <div class="tpl-card-info"><span class="tpl-card-name" data-lbl="tplTech">Texnoloji</span><span class="tpl-card-price">🔒</span></div>
             <button class="tpl-card-btn" data-tpl="tech" data-lbl="chooseBtn">Bu şablonu seç</button>
         </div>
     </div>
+    <div class="text-muted" id="galleryBanner" style="text-align:center;margin:18px 0 6px;">Bütün şablonlara sərbəst baxıb məlumatlarınızı doldura bilərsiniz — yükləmə anında abunə tələb olunur.</div>
     <div class="site-footer" style="border:none;">By <a href="https://instagram.com/s_akhundoff" target="_blank" rel="noopener">@s_akhundoff</a></div>
 </div>
 
@@ -485,15 +505,53 @@ body {
             <div class="template-switch">
                 <button data-tpl="modern" class="active" id="tplBtnModern"><span class="tpl-label">Modern</span></button>
                 <button data-tpl="minimal" id="tplBtnMinimal"><span class="tpl-label">Minimal</span></button>
-                <button data-tpl="classic" id="tplBtnClassic"><span class="tpl-label">Klassik</span><span class="price-badge">5 AZN</span></button>
-                <button data-tpl="sidebar" id="tplBtnSidebar"><span class="tpl-label">Professional</span><span class="price-badge">5 AZN</span></button>
-                <button data-tpl="corporate" id="tplBtnCorporate"><span class="tpl-label">Korporativ</span><span class="price-badge">5 AZN</span></button>
-                <button data-tpl="elite" id="tplBtnElite"><span class="tpl-label">Elit</span><span class="price-badge">5 AZN</span></button>
-                <button data-tpl="creative" id="tplBtnCreative"><span class="tpl-label">Yaradıcı</span><span class="price-badge">5 AZN</span></button>
-                <button data-tpl="tech" id="tplBtnTech"><span class="tpl-label">Texnoloji</span><span class="price-badge">5 AZN</span></button>
+                <button data-tpl="classic" id="tplBtnClassic"><span class="tpl-label">Klassik</span></button>
+                <button data-tpl="sidebar" id="tplBtnSidebar"><span class="tpl-label">Professional</span></button>
+                <button data-tpl="corporate" id="tplBtnCorporate"><span class="tpl-label">Korporativ</span></button>
+                <button data-tpl="elite" id="tplBtnElite"><span class="tpl-label">Elit</span></button>
+                <button data-tpl="creative" id="tplBtnCreative"><span class="tpl-label">Yaradıcı</span></button>
+                <button data-tpl="tech" id="tplBtnTech"><span class="tpl-label">Texnoloji</span></button>
             </div>
         </div>
         <div id="cvPreviewWrap"><div id="cvPreview" class="cv-canvas tpl-modern"></div></div>
+    </div>
+</div>
+
+<div class="preview-modal" id="paywallModal">
+    <div class="paywall-inner">
+        <div class="paywall-top"><button class="preview-modal-close paywall-close" id="paywallClose">✕</button></div>
+        <div class="paywall-title" data-lbl="paywallTitle">CV-niz hazırdır!</div>
+        <div class="paywall-subtitle" data-lbl="paywallSubtitle">Yükləmək üçün abunə planı seçin</div>
+
+        <div class="plan-card selected" data-plan="3day" data-days="3" data-price="2">
+            <div class="plan-card-head">
+                <div class="plan-radio"></div>
+                <div class="plan-name" data-lbl="plan3DayName">3 Günlük Tam Giriş</div>
+                <div class="plan-price">2 <small>AZN</small></div>
+            </div>
+            <ul class="plan-features">
+                <li data-lbl="planFeatureAccess">Bütün şablonlara giriş</li>
+                <li data-lbl="planFeatureDownload">Limitsiz Word/PDF yükləmə</li>
+                <li data-lbl="planFeatureEasy">Asan, problemsiz istifadə</li>
+            </ul>
+        </div>
+
+        <div class="plan-card" data-plan="3month" data-days="90" data-price="20">
+            <div class="plan-card-head">
+                <div class="plan-radio"></div>
+                <div class="plan-name" data-lbl="plan3MonthName">3 Aylıq Tam Giriş</div>
+                <div class="plan-price">20 <small>AZN</small></div>
+            </div>
+            <ul class="plan-features">
+                <li data-lbl="planFeatureEdit">Limitsiz redaktə</li>
+                <li data-lbl="planFeatureAccess">Bütün şablonlara giriş</li>
+                <li data-lbl="planFeatureDownload">Limitsiz Word/PDF yükləmə</li>
+                <li data-lbl="planFeatureEasy">Asan, problemsiz istifadə</li>
+            </ul>
+        </div>
+
+        <button class="paywall-choose-btn" id="paywallChooseBtn" data-lbl="paywallChoose">Seç</button>
+        <div class="paywall-note" id="paywallNote" data-lbl="paywallNoteTxt">Ödəniş sistemi tezliklə aktivləşəcək. Hazırda aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.</div>
     </div>
 </div>
 
@@ -508,22 +566,29 @@ body {
 
 <script>
 const LANG = {
-    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'🎓 Təhsil', cvExperience:'💼 İş təcrübəsi', cvLanguages:'🌐 Dillər', cvCertificates:'📜 Sertifikatlar', cvSkills:'⭐ Bacarıqlar', cvProjects:'🏗 Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə' },
-    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'🎓 Education', cvExperience:'💼 Work Experience', cvLanguages:'🌐 Languages', cvCertificates:'📜 Certificates', cvSkills:'⭐ Skills', cvProjects:'🏗 Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview' },
-    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'🎓 Образование', cvExperience:'💼 Опыт работы', cvLanguages:'🌐 Языки', cvCertificates:'📜 Сертификаты', cvSkills:'⭐ Навыки', cvProjects:'🏗 Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр' }
+    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'🎓 Təhsil', cvExperience:'💼 İş təcrübəsi', cvLanguages:'🌐 Dillər', cvCertificates:'📜 Sertifikatlar', cvSkills:'⭐ Bacarıqlar', cvProjects:'🏗 Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'Ödəniş sistemi tezliklə aktivləşəcək. Hazırda aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.' },
+    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'🎓 Education', cvExperience:'💼 Work Experience', cvLanguages:'🌐 Languages', cvCertificates:'📜 Certificates', cvSkills:'⭐ Skills', cvProjects:'🏗 Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'Payment system launching soon. Contact @s_akhundoff to activate for now.' },
+    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'🎓 Образование', cvExperience:'💼 Опыт работы', cvLanguages:'🌐 Языки', cvCertificates:'📜 Сертификаты', cvSkills:'⭐ Навыки', cvProjects:'🏗 Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'Система оплаты скоро заработает. Пока свяжитесь с @s_akhundoff для активации.' }
 };
 
 let currentLang = 'az';
 let currentTemplate = 'modern';
-const PREMIUM_TEMPLATES = ['classic','sidebar','elite','creative','tech','corporate'];
-function isTemplateUnlocked(tpl){
-    if (!PREMIUM_TEMPLATES.includes(tpl)) return true;
-    try { return JSON.parse(localStorage.getItem('unlockedTemplates')||'[]').includes(tpl); } catch(e){ return false; }
+const SUBSCRIPTION_KEY = 'cvSubscriptionExpiry';
+function isSubscriptionActive(){
+    const exp = localStorage.getItem(SUBSCRIPTION_KEY);
+    return !!exp && Date.now() < parseInt(exp, 10);
 }
 function checkPremiumAccess(){
-    if (isTemplateUnlocked(currentTemplate)) return true;
-    alert(t().premiumAlert);
+    if (isSubscriptionActive()) return true;
+    openPaywall();
     return false;
+}
+function openPaywall(){
+    document.getElementById('paywallNote').classList.remove('show');
+    document.getElementById('paywallModal').classList.add('open');
+}
+function closePaywall(){
+    document.getElementById('paywallModal').classList.remove('open');
 }
 window.skills = [];
 window.avatarData = null;
@@ -696,7 +761,7 @@ function updateAllLabels(){
 
 function updateGalleryLabels(){
     const x = t();
-    document.querySelectorAll('#templateGallery [data-lbl]').forEach(function(el){
+    document.querySelectorAll('#templateGallery [data-lbl], #paywallModal [data-lbl]').forEach(function(el){
         const key = el.dataset.lbl;
         if (x[key] !== undefined) el.textContent = x[key];
     });
@@ -1379,6 +1444,26 @@ document.getElementById('previewModalClose').addEventListener('click', function(
 });
 document.getElementById('previewModal').addEventListener('click', function(e){
     if (e.target === this) this.classList.remove('open');
+});
+
+/* ---------- Abunə (paywall) modalı ---------- */
+document.querySelectorAll('.plan-card').forEach(function(card){
+    card.addEventListener('click', function(){
+        document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
+        card.classList.add('selected');
+    });
+});
+document.getElementById('paywallClose').addEventListener('click', closePaywall);
+document.getElementById('paywallModal').addEventListener('click', function(e){
+    if (e.target === this) closePaywall();
+});
+document.getElementById('paywallChooseBtn').addEventListener('click', function(){
+    const selected = document.querySelector('.plan-card.selected');
+    if (!selected) return;
+    document.getElementById('paywallNote').classList.add('show');
+    // Qeyd: real ödəniş inteqrasiyası hələ qoşulmayıb — seçilmiş plan (selected.dataset.plan/days/price)
+    // ödəniş provayderi (Payriff və s.) qoşulanda burada təsdiqdən sonra localStorage-ə yazılacaq:
+    // localStorage.setItem(SUBSCRIPTION_KEY, String(Date.now() + parseInt(selected.dataset.days,10)*86400000));
 });
 
 loadFromStorage();
