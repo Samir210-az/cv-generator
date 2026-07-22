@@ -158,6 +158,36 @@ body {
 .tpl-sidebar .tl-role { font-size:0.85rem; color:#3a6df0; font-style:italic; margin-top:1px; }
 .tpl-sidebar .tl-desc { font-size:0.8rem; color:#666; margin-top:3px; }
 
+/* ===== Biznes (foto sağda, iki-sütunlu) ===== */
+.tpl-business { font-family:'Inter', sans-serif; }
+.tpl-business table.cv-shell { width:100%; border-collapse:collapse; }
+.tpl-business td.cv-main { padding:34px 30px; vertical-align:top; background:#f7f8fb; }
+.tpl-business td.cv-sidebar { background:#152238; color:#fff; padding:34px 24px; width:34%; vertical-align:top; }
+.tpl-business .cv-avatar, .tpl-business .cv-avatar-placeholder { width:104px; height:104px; border-radius:50%; object-fit:cover; border:4px solid rgba(255,255,255,0.85); margin:0 auto 16px; display:block; }
+.tpl-business .cv-avatar-placeholder { display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.1); color:#9fb0d6; font-size:0.7rem; }
+.tpl-business td.cv-main .cv-name { font-size:1.5rem; font-weight:800; color:#152238; }
+.tpl-business td.cv-main .cv-title { font-size:0.92rem; color:#c9a227; font-weight:700; margin-bottom:4px; }
+.tpl-business td.cv-main .meta { color:#7c8aab; font-size:0.82rem; }
+.tpl-business td.cv-main .cv-section { margin-top:20px; }
+.tpl-business td.cv-main .cv-section h4, .tpl-business td.cv-main .tl-h4 { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.8px; color:#152238; border-bottom:2px solid #c9a227; padding-bottom:5px; margin-bottom:14px; font-weight:700; }
+.tpl-business td.cv-main .cv-item { margin-bottom:8px; }
+.tpl-business td.cv-main .cv-item strong { color:#152238; }
+.tpl-business .cv-timeline { position:relative; padding-left:20px; border-left:2px solid #dfe3ea; margin-bottom:8px; }
+.tpl-business .tl-item { position:relative; margin-bottom:16px; }
+.tpl-business .tl-dot { position:absolute; left:-26px; top:4px; width:11px; height:11px; border-radius:50%; background:#c9a227; border:2px solid #fff; box-shadow:0 0 0 2px #c9a227; }
+.tpl-business .tl-row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.tpl-business .tl-row strong { font-size:0.95rem; color:#152238; }
+.tpl-business .tl-date { font-size:0.78rem; color:#7c8aab; white-space:nowrap; }
+.tpl-business .tl-role { font-size:0.85rem; color:#c9a227; font-style:italic; margin-top:1px; }
+.tpl-business .tl-desc { font-size:0.8rem; color:#555; margin-top:3px; }
+.tpl-business td.cv-sidebar .cv-section h4 { font-size:0.74rem; text-transform:uppercase; letter-spacing:1px; color:#9fb0d6; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:5px; margin-bottom:10px; font-weight:700; }
+.tpl-business td.cv-sidebar .cv-item { font-size:0.85rem; margin-bottom:7px; color:#dde3f0; }
+.tpl-business td.cv-sidebar .cv-item strong { color:#fff; }
+.tpl-business td.cv-sidebar .skill-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; font-size:0.8rem; color:#fff; }
+.tpl-business td.cv-sidebar .dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.22); display:inline-block; margin-left:3px; }
+.tpl-business td.cv-sidebar .dot.on { background:#c9a227; }
+.tpl-business td.cv-sidebar .ci-dot { width:5px; height:5px; border-radius:50%; background:#c9a227; display:inline-block; margin-right:9px; }
+
 /* ===== Minimal ===== */
 .tpl-minimal { font-family:'Inter', sans-serif; }
 .tpl-minimal .cv-topbar { display:none; }
@@ -210,25 +240,37 @@ body {
 .tpl-creative .dot.on { background:#2563eb; }
 .tpl-creative .ci-dot { width:5px; height:5px; border-radius:50%; background:#2563eb; display:inline-block; margin-right:9px; }
 
-/* ===== Texnoloji ===== */
-.cv-canvas.tpl-tech { background:#0f172a; color:#e2e8f0; }
+/* ===== Texnoloji (iki-sütunlu, tünd firuzəyi) ===== */
 .tpl-tech { font-family:'Inter', sans-serif; }
-.tpl-tech .cv-topbar { height:4px; background:#38bdf8; }
-.tpl-tech .cv-header { display:flex; gap:18px; align-items:center; padding:28px 30px 18px; border-bottom:1px solid #1e293b; }
-.tpl-tech .cv-avatar, .tpl-tech .cv-avatar-placeholder { width:82px; height:82px; border-radius:12px; object-fit:cover; border:2px solid #38bdf8; background:#1e293b; color:#38bdf8; display:flex; align-items:center; justify-content:center; font-size:0.62rem; flex-shrink:0; }
-.tpl-tech .cv-name { font-size:1.45rem; font-weight:800; color:#f1f5f9; }
-.tpl-tech .cv-title { color:#38bdf8; font-weight:600; font-size:0.88rem; font-family:'Courier New', monospace; margin-top:3px; }
-.tpl-tech .cv-title::before { content:'> '; }
-.tpl-tech .cv-body { padding:20px 30px 30px; }
-.tpl-tech .cv-section { margin-top:16px; }
-.tpl-tech .cv-section h4 { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#38bdf8; font-family:'Courier New', monospace; margin-bottom:9px; }
-.tpl-tech .cv-section h4::before { content:'# '; color:#475569; }
-.tpl-tech .cv-item strong { color:#f1f5f9; }
-.tpl-tech .cv-item .meta { color:#64748b; font-size:0.8rem; }
-.tpl-tech .skill-row { display:flex; align-items:center; justify-content:space-between; padding:5px 0; font-size:0.82rem; color:#e2e8f0; font-family:'Courier New', monospace; }
-.tpl-tech .dot { width:6px; height:6px; border-radius:2px; background:#334155; display:inline-block; margin-left:3px; }
-.tpl-tech .dot.on { background:#38bdf8; }
-.tpl-tech .ci-dot { width:5px; height:5px; border-radius:2px; background:#38bdf8; display:inline-block; margin-right:9px; }
+.tpl-tech table.cv-shell { width:100%; border-collapse:collapse; }
+.tpl-tech td.cv-sidebar { background:#0f172a; color:#fff; padding:34px 24px; width:34%; vertical-align:top; position:relative; }
+.tpl-tech td.cv-main { padding:34px 30px; vertical-align:top; position:relative; background:#fff; }
+.tpl-tech .cv-diag { position:absolute; top:0; left:0; width:100%; height:8px; background:#14b8a6; }
+.tpl-tech td.cv-main > *:not(.cv-diag) { position:relative; z-index:1; }
+.tpl-tech .cv-avatar, .tpl-tech .cv-avatar-placeholder { width:104px; height:104px; border-radius:14px; object-fit:cover; border:3px solid #14b8a6; margin:0 auto 16px; display:block; }
+.tpl-tech .cv-avatar-placeholder { display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); color:#5eead4; font-size:0.7rem; }
+.tpl-tech .cv-name { font-size:1.28rem; font-weight:800; text-align:center; color:#fff; }
+.tpl-tech .cv-title { font-size:0.85rem; text-align:center; color:#5eead4; margin-bottom:18px; font-weight:600; }
+.tpl-tech .cv-section { margin-top:20px; }
+.tpl-tech td.cv-sidebar .cv-section h4 { font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:#5eead4; border-bottom:1px solid rgba(255,255,255,0.18); padding-bottom:5px; margin-bottom:10px; font-weight:700; }
+.tpl-tech td.cv-sidebar .cv-item { font-size:0.85rem; margin-bottom:7px; color:#dbe4e2; }
+.tpl-tech td.cv-sidebar .cv-item strong { color:#fff; }
+.tpl-tech td.cv-main .cv-section h4, .tpl-tech td.cv-main .tl-h4 { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.8px; color:#0f172a; border-bottom:2px solid #14b8a6; padding-bottom:5px; margin-bottom:14px; font-weight:700; }
+.tpl-tech td.cv-main .cv-item { margin-bottom:8px; }
+.tpl-tech td.cv-main .cv-item strong { color:#111; }
+.tpl-tech td.cv-main .cv-item .meta { color:#64748b; font-size:0.82rem; }
+.tpl-tech td.cv-sidebar .skill-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; font-size:0.8rem; color:#fff; }
+.tpl-tech td.cv-sidebar .dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.2); display:inline-block; margin-left:3px; }
+.tpl-tech td.cv-sidebar .dot.on { background:#5eead4; }
+.tpl-tech td.cv-sidebar .ci-dot { width:5px; height:5px; border-radius:50%; background:#5eead4; display:inline-block; margin-right:9px; }
+.tpl-tech .cv-timeline { position:relative; padding-left:20px; border-left:2px solid #e2e8f0; margin-bottom:8px; }
+.tpl-tech .tl-item { position:relative; margin-bottom:16px; }
+.tpl-tech .tl-dot { position:absolute; left:-26px; top:4px; width:11px; height:11px; border-radius:50%; background:#14b8a6; border:2px solid #fff; box-shadow:0 0 0 2px #14b8a6; }
+.tpl-tech .tl-row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+.tpl-tech .tl-row strong { font-size:0.95rem; color:#111; }
+.tpl-tech .tl-date { font-size:0.78rem; color:#7c8aab; white-space:nowrap; }
+.tpl-tech .tl-role { font-size:0.85rem; color:#0d9488; font-style:italic; margin-top:1px; }
+.tpl-tech .tl-desc { font-size:0.8rem; color:#666; margin-top:3px; }
 
 /* ===== Korporativ ===== */
 .tpl-corporate { font-family:'Inter', sans-serif; color:#1c2534; }
@@ -245,6 +287,22 @@ body {
 .tpl-corporate .dot { width:7px; height:7px; border-radius:50%; background:#e5e9f0; display:inline-block; margin-left:3px; }
 .tpl-corporate .dot.on { background:#1e3a5f; }
 .tpl-corporate .ci-dot { width:5px; height:5px; border-radius:50%; background:#1e3a5f; display:inline-block; margin-right:9px; }
+
+/* ===== ATS Standart (beynəlxalq ATS-təhlükəsiz, tək sütun) ===== */
+.tpl-ats { font-family:'Arial', 'Helvetica', sans-serif; color:#111; }
+.tpl-ats .cv-header { text-align:left; padding:30px 36px 16px; border-bottom:2px solid #111; }
+.tpl-ats .cv-name { font-size:1.7rem; font-weight:700; color:#111; letter-spacing:0.2px; }
+.tpl-ats .cv-title { font-size:0.95rem; color:#444; margin-top:4px; font-weight:400; }
+.tpl-ats .cv-body { padding:20px 36px 32px; }
+.tpl-ats .cv-section { margin-top:16px; }
+.tpl-ats .cv-section h4 { font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#111; border-bottom:1px solid #111; padding-bottom:4px; margin-bottom:9px; }
+.tpl-ats .cv-item { margin-bottom:7px; font-size:0.92rem; }
+.tpl-ats .cv-item strong { color:#111; font-weight:700; }
+.tpl-ats .cv-item .meta { color:#444; font-size:0.85rem; }
+.tpl-ats .skill-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; font-size:0.9rem; color:#111; }
+.tpl-ats .dot { width:6px; height:6px; border-radius:50%; background:#ddd; display:inline-block; margin-left:3px; }
+.tpl-ats .dot.on { background:#111; }
+.tpl-ats .ci-dot { width:4px; height:4px; border-radius:50%; background:#111; display:inline-block; margin-right:8px; opacity:0.6; }
 
 .text-muted { color:#8b9bb8; font-size:0.8rem; }
 .mt-1 { margin-top:8px; }
@@ -324,15 +382,17 @@ body {
     .form-row { grid-template-columns: 1fr; }
     .lang-selector { top: 16px; right: 16px; }
     .form-panel h2 { margin-right: 100px; }
-    .tpl-sidebar td.cv-sidebar, .tpl-sidebar td.cv-main { display:block; width:100%; }
+    .tpl-sidebar td.cv-sidebar, .tpl-sidebar td.cv-main,
+    .tpl-tech td.cv-sidebar, .tpl-tech td.cv-main,
+    .tpl-business td.cv-sidebar, .tpl-business td.cv-main { display:block; width:100%; }
 }
 @media print {
     .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer, .gallery-wrap, .preview-modal { display:none !important; }
     .preview-panel { border:none !important; box-shadow:none !important; padding:0 !important; }
     /* Mobil ekran-genişliyi əsaslı kiçildilmiş düzülüşü çap zamanı ləğv edirik ki, sidebar/2-sütun şablonları düzgün çapa getsin */
-    .tpl-sidebar td.cv-sidebar { display:table-cell !important; width:34% !important; }
-    .tpl-sidebar td.cv-main { display:table-cell !important; }
-    .tpl-sidebar table.cv-shell { display:table !important; width:100% !important; }
+    .tpl-sidebar td.cv-sidebar, .tpl-tech td.cv-sidebar, .tpl-business td.cv-sidebar { display:table-cell !important; width:34% !important; }
+    .tpl-sidebar td.cv-main, .tpl-tech td.cv-main, .tpl-business td.cv-main { display:table-cell !important; }
+    .tpl-sidebar table.cv-shell, .tpl-tech table.cv-shell, .tpl-business table.cv-shell { display:table !important; width:100% !important; }
     /* Brauzer defolt olaraq çapda fon rənglərini söndürür — bunu məcburi aktiv edirik */
     * {
         -webkit-print-color-adjust: exact !important;
@@ -405,6 +465,20 @@ body {
             <div class="tpl-card">
                 <div class="tpl-card-preview" data-tpl="tech"></div>
                 <button class="tpl-select-overlay" data-tpl="tech" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
+        </div>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplAts">ATS Standart</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="ats"></div>
+                <button class="tpl-select-overlay" data-tpl="ats" data-lbl="chooseBtn">Bu şablonu seç</button>
+            </div>
+        </div>
+        <div class="tpl-section">
+            <div class="tpl-label"><span data-lbl="tplBusiness">Biznes</span><span class="tpl-lock-badge">🔒</span></div>
+            <div class="tpl-card">
+                <div class="tpl-card-preview" data-tpl="business"></div>
+                <button class="tpl-select-overlay" data-tpl="business" data-lbl="chooseBtn">Bu şablonu seç</button>
             </div>
         </div>
     </div>
@@ -493,6 +567,8 @@ body {
                 <button data-tpl="elite" id="tplBtnElite"><span class="tpl-label">Elit</span></button>
                 <button data-tpl="creative" id="tplBtnCreative"><span class="tpl-label">Yaradıcı</span></button>
                 <button data-tpl="tech" id="tplBtnTech"><span class="tpl-label">Texnoloji</span></button>
+                <button data-tpl="ats" id="tplBtnAts"><span class="tpl-label">ATS Standart</span></button>
+                <button data-tpl="business" id="tplBtnBusiness"><span class="tpl-label">Biznes</span></button>
             </div>
         </div>
         <div id="cvPreviewWrap"><div id="cvPreview" class="cv-canvas tpl-modern"></div></div>
@@ -557,9 +633,9 @@ body {
 
 <script>
 const LANG = {
-    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'Təhsil', cvExperience:'İş təcrübəsi', cvLanguages:'Dillər', cvCertificates:'Sertifikatlar', cvSkills:'Bacarıqlar', cvProjects:'Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'WhatsApp açıldı — ödənişi təsdiqləyin, hesabınız qısa müddətdə aktivləşdiriləcək.', activationLabel:'Artıq ödədiniz? Nömrənizi daxil edin:', activationBtnLbl:'Aktivləşdir' },
-    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'Education', cvExperience:'Work Experience', cvLanguages:'Languages', cvCertificates:'Certificates', cvSkills:'Skills', cvProjects:'Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'WhatsApp opened — confirm your payment and your access will be activated shortly.', activationLabel:'Already paid? Enter your phone number:', activationBtnLbl:'Activate' },
-    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'Образование', cvExperience:'Опыт работы', cvLanguages:'Языки', cvCertificates:'Сертификаты', cvSkills:'Навыки', cvProjects:'Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'WhatsApp открыт — подтвердите оплату, доступ будет активирован в ближайшее время.', activationLabel:'Уже оплатили? Введите номер телефона:', activationBtnLbl:'Активировать' }
+    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'Təhsil', cvExperience:'İş təcrübəsi', cvLanguages:'Dillər', cvCertificates:'Sertifikatlar', cvSkills:'Bacarıqlar', cvProjects:'Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', tplAts:'ATS Standart', tplBusiness:'Biznes', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'WhatsApp açıldı — ödənişi təsdiqləyin, hesabınız qısa müddətdə aktivləşdiriləcək.', activationLabel:'Artıq ödədiniz? Nömrənizi daxil edin:', activationBtnLbl:'Aktivləşdir' },
+    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'Education', cvExperience:'Work Experience', cvLanguages:'Languages', cvCertificates:'Certificates', cvSkills:'Skills', cvProjects:'Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', tplAts:'ATS Standard', tplBusiness:'Business', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'WhatsApp opened — confirm your payment and your access will be activated shortly.', activationLabel:'Already paid? Enter your phone number:', activationBtnLbl:'Activate' },
+    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'Образование', cvExperience:'Опыт работы', cvLanguages:'Языки', cvCertificates:'Сертификаты', cvSkills:'Навыки', cvProjects:'Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', tplAts:'ATS Стандарт', tplBusiness:'Бизнес', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'WhatsApp открыт — подтвердите оплату, доступ будет активирован в ближайшее время.', activationLabel:'Уже оплатили? Введите номер телефона:', activationBtnLbl:'Активировать' }
 };
 
 let currentLang = 'az';
@@ -744,7 +820,7 @@ function setTemplate(tpl){
 
 function updateAllLabels(){
     const x = t();
-    const map = {formTitle:'formTitle',lblFirstName:'lblFirstName',lblLastName:'lblLastName',lblFatherName:'lblFatherName',lblJobTitle:'lblJobTitle',lblBirthDate:'lblBirthDate',lblPhone:'lblPhone',lblEmail:'lblEmail',lblAddress:'lblAddress',lblAvatar:'lblAvatar',eduTitle:'eduTitle',eduAddBtn:'eduAddBtn',expTitle:'expTitle',expAddBtn:'expAddBtn',langTitle:'langTitle',langAddBtn:'langAddBtn',certTitle:'certTitle',certAddBtn:'certAddBtn',skillTitle:'skillTitle',skillAddBtn:'skillAddBtn',btnWord:'btnWord',btnPdf:'btnPdf',btnClear:'btnClear',storageInfo:'storageInfo',previewTitle:'previewTitle',tplBtnModern:'tplModern',tplBtnClassic:'tplClassic',tplBtnSidebar:'tplSidebar',tplBtnMinimal:'tplMinimal',tplBtnElite:'tplElite',tplBtnCreative:'tplCreative',tplBtnTech:'tplTech',tplBtnCorporate:'tplCorporate'};
+    const map = {formTitle:'formTitle',lblFirstName:'lblFirstName',lblLastName:'lblLastName',lblFatherName:'lblFatherName',lblJobTitle:'lblJobTitle',lblBirthDate:'lblBirthDate',lblPhone:'lblPhone',lblEmail:'lblEmail',lblAddress:'lblAddress',lblAvatar:'lblAvatar',eduTitle:'eduTitle',eduAddBtn:'eduAddBtn',expTitle:'expTitle',expAddBtn:'expAddBtn',langTitle:'langTitle',langAddBtn:'langAddBtn',certTitle:'certTitle',certAddBtn:'certAddBtn',skillTitle:'skillTitle',skillAddBtn:'skillAddBtn',btnWord:'btnWord',btnPdf:'btnPdf',btnClear:'btnClear',storageInfo:'storageInfo',previewTitle:'previewTitle',tplBtnModern:'tplModern',tplBtnClassic:'tplClassic',tplBtnSidebar:'tplSidebar',tplBtnMinimal:'tplMinimal',tplBtnElite:'tplElite',tplBtnCreative:'tplCreative',tplBtnTech:'tplTech',tplBtnCorporate:'tplCorporate',tplBtnAts:'tplAts',tplBtnBusiness:'tplBusiness'};
     for (const id in map) { const el = document.getElementById(id); if (el) { const labelEl = el.querySelector('.tpl-label'); if (labelEl) labelEl.textContent = x[map[id]]; else el.textContent = x[map[id]]; } }
     document.getElementById('skillInput').placeholder = x.skillPlaceholder;
     updateGalleryLabels();
@@ -1019,15 +1095,15 @@ function renderCvHtml(d, tpl){
     const skillList = (d.skills||[]).map(s => (typeof s === 'string') ? {name:s, level:4} : s).filter(s=>s && s.name);
     const skillBlock = skillList.length ? ('<div class="cv-section"><h4>' + x.cvSkills + '</h4><div class="skill-list">' + skillList.map(s=> '<div class="skill-row"><span class="skill-name">' + escapeHtml(s.name) + '</span>' + dotsHtml(s.level) + '</div>').join('') + '</div></div>') : '';
 
-    if (tpl === 'sidebar'){
-        const timelineExp = d.experiences.filter(e=>e.company||e.role).length ? ('<h4 class="tl-h4">' + x.cvExperience + '</h4><div class="cv-timeline">' + d.experiences.map(e=> (e.company||e.role) ? (
-            '<div class="tl-item"><div class="tl-dot"></div><div class="tl-content">' +
-                '<div class="tl-row"><strong>' + escapeHtml(e.company) + '</strong>' + ((e.start||e.end)?('<span class="tl-date">' + escapeHtml(e.start) + (e.start&&e.end?' – ':'') + escapeHtml(e.end) + '</span>'):'') + '</div>' +
-                '<div class="tl-role">' + escapeHtml(e.role) + '</div>' +
-                (e.desc?('<div class="tl-desc">' + escapeHtml(e.desc) + '</div>'):'') +
-            '</div></div>'
-        ) : '').join('') + '</div>') : '';
+    const timelineExp = d.experiences.filter(e=>e.company||e.role).length ? ('<h4 class="tl-h4">' + x.cvExperience + '</h4><div class="cv-timeline">' + d.experiences.map(e=> (e.company||e.role) ? (
+        '<div class="tl-item"><div class="tl-dot"></div><div class="tl-content">' +
+            '<div class="tl-row"><strong>' + escapeHtml(e.company) + '</strong>' + ((e.start||e.end)?('<span class="tl-date">' + escapeHtml(e.start) + (e.start&&e.end?' – ':'') + escapeHtml(e.end) + '</span>'):'') + '</div>' +
+            '<div class="tl-role">' + escapeHtml(e.role) + '</div>' +
+            (e.desc?('<div class="tl-desc">' + escapeHtml(e.desc) + '</div>'):'') +
+        '</div></div>'
+    ) : '').join('') + '</div>') : '';
 
+    if (tpl === 'sidebar' || tpl === 'tech'){
         return '<table class="cv-shell" cellpadding="0" cellspacing="0"><tr>' +
             '<td class="cv-sidebar">' + avatarImg +
                 '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
@@ -1042,7 +1118,21 @@ function renderCvHtml(d, tpl){
         '</tr></table>';
     }
 
-    if (tpl === 'classic' || tpl === 'corporate'){
+    if (tpl === 'business'){
+        return '<table class="cv-shell" cellpadding="0" cellspacing="0"><tr>' +
+            '<td class="cv-main">' +
+                '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
+                '<div class="cv-title">' + job + '</div>' +
+                (d.birthDate?('<div class="meta" style="margin:6px 0 14px;">' + escapeHtml(d.birthDate) + '</div>'):'') +
+                timelineExp + eduBlock + certBlock + projBlock +
+            '</td>' +
+            '<td class="cv-sidebar">' + avatarImg +
+                contactBlock + langBlock + skillBlock +
+            '</td>' +
+        '</tr></table>';
+    }
+
+    if (tpl === 'classic' || tpl === 'corporate' || tpl === 'ats'){
         return '<div class="cv-header">' +
                 '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
                 '<div class="cv-title">' + job + '</div>' +
@@ -1365,14 +1455,14 @@ async function exportWord(){
     btn.disabled = true; btn.textContent = '⏳ ' + x.generating;
     try {
         const d = getFormData();
-        const accentColorMap = { sidebar:'1F2A44', classic:'000000', modern:'2C4DC9', minimal:'475569', elite:'3F3F46', creative:'2563EB', tech:'38BDF8', corporate:'1E3A5F' };
+        const accentColorMap = { sidebar:'1F2A44', classic:'000000', modern:'2C4DC9', minimal:'475569', elite:'3F3F46', creative:'2563EB', tech:'0F172A', corporate:'1E3A5F', ats:'000000', business:'152238' };
         const accentHex = accentColorMap[currentTemplate] || '2C4DC9';
         let imageData = null;
         if (d.avatar) {
             try { imageData = dataUrlToUint8(d.avatar); } catch(e){ console.warn('avatar decode xetasi', e); }
         }
         const { Document, Packer } = docx;
-        const bodyChildren = currentTemplate === 'sidebar'
+        const bodyChildren = (currentTemplate === 'sidebar' || currentTemplate === 'tech' || currentTemplate === 'business')
             ? buildDocxSidebarTable(d, accentHex, imageData)
             : buildDocxParagraphs(d, accentHex, imageData);
         const doc = new Document({
