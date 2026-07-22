@@ -114,6 +114,13 @@ table.sub-table td { padding:12px; border-bottom:1px solid #f6f0e4; vertical-ali
             <div class="stat-card"><div class="num" id="statTotal">–</div><div class="lbl">Ümumi qeydiyyat</div></div>
         </div>
 
+        <div class="panel" style="background:#fdf6ee;">
+            <h2>👑 Admin girişi (bu cihaz)</h2>
+            <p style="font-size:0.85rem;color:#8a7a5c;margin-bottom:14px;">Sən (admin) cv-generator saytında yükləmə üçün ödəniş etməməlisən. Bu düymə YALNIZ bu cihazın brauzerini limitsiz aktivləşdirir (10 il), başqa heç kimə təsir etmir.</p>
+            <button class="activate-btn" id="ownerActivateBtn">Bu cihazı limitsiz aktivləşdir</button>
+            <div class="form-msg" id="ownerActivateMsg"></div>
+        </div>
+
         <div class="panel">
             <h2>➕ Yeni abunə aktivləşdir</h2>
             <div class="activate-form">
@@ -194,6 +201,13 @@ function tryLogin(){
 }
 document.getElementById('pinBtn').addEventListener('click', tryLogin);
 document.getElementById('pinInput').addEventListener('keypress', function(e){ if (e.key === 'Enter') tryLogin(); });
+document.getElementById('ownerActivateBtn').addEventListener('click', function(){
+    const msgEl = document.getElementById('ownerActivateMsg');
+    const tenYears = Date.now() + (10 * 365 * 86400000);
+    localStorage.setItem('cvSubscriptionExpiry', String(tenYears));
+    msgEl.textContent = '✅ Bu cihaz limitsiz aktivləşdirildi (10 il). İndi cv-generator saytında sərbəst yükləyə bilərsən.';
+    msgEl.style.color = '#15803d';
+});
 document.getElementById('logoutBtn').addEventListener('click', function(){
     sessionStorage.removeItem('cvAdminAuthed');
     location.reload();
