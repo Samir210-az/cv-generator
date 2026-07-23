@@ -1542,9 +1542,13 @@ function addExperience(data, save=true){
             '<div class="form-group"><label>' + x.expStart + '</label><input class="exp-start" value="' + (data?.start||'') + '" placeholder="' + x.expStart + '"></div>' +
             '<div class="form-group"><label>' + x.expEnd + '</label><input class="exp-end" value="' + (data?.end||'') + '" placeholder="' + x.expEnd + '"></div>' +
         '</div>' +
-        '<div class="form-group"><label>' + x.expDesc + '</label><textarea class="exp-desc" rows="2" placeholder="' + x.expDesc + '">' + (data?.desc||'') + '</textarea></div>';
+        '<div class="form-group"><label>' + x.expDesc + '</label><textarea class="exp-desc" rows="2" placeholder="' + x.expDesc + '">' + (data?.desc||'') + '</textarea>' +
+            '<div class="text-muted" style="margin-top:6px;font-size:0.76rem;">💡 Təklif olunan ifadələr (kliklə əlavə et):</div>' +
+            '<div class="tag-group exp-suggest-row" style="margin-top:6px;"></div>' +
+        '</div>';
     wireEntry(el);
     document.getElementById('experienceContainer').appendChild(el);
+    renderExpSuggestions(el);
     if (save) { saveToStorage(); updatePreview(); }
 }
 function addLanguage(data, save=true){
@@ -1592,16 +1596,102 @@ function getLanguages(){ return Array.from(document.querySelectorAll('#languageC
 function getCertificates(){ return Array.from(document.querySelectorAll('#certificateContainer .dynamic-entry')).map(el=>({name:el.querySelector('.cert-name').value, org:el.querySelector('.cert-org').value, year:el.querySelector('.cert-year').value})); }
 function getProjects(){ return Array.from(document.querySelectorAll('#projectContainer .dynamic-entry')).map(el=>({company:el.querySelector('.proj-company').value, list:el.querySelector('.proj-list').value})); }
 
+const PROFESSION_DATA = {
+    'Biznes və İdarəetmə': ['Baş Menecer','İcraçı Direktor','Əməliyyatlar üzrə Menecer','Ofis Meneceri','Layihə Meneceri','Komanda Lideri','Biznesin İnkişafı üzrə Menecer','İnzibati Köməkçi','İcraçı Köməkçi','Resepşinist'],
+    'Maliyyə və Mühasibatlıq': ['Mühasib','Baş Mühasib','Auditor','Maliyyə Analitiki','Bankir','Kassir','Vergi üzrə Mütəxəssis','Əmək Haqqı üzrə Mütəxəssis','Sığorta üzrə Mütəxəssis'],
+    'İnformasiya Texnologiyaları': ['Proqram Təminatı Mütəxəssisi','Front-end Developer','Back-end Developer','Full Stack Developer','Mobil Tətbiq Developeri','UI Dizayner','UX Dizayner','Qrafik Dizayner','DevOps Mühəndisi','Sistem Administratoru','Şəbəkə Mühəndisi','Kibertəhlükəsizlik üzrə Mütəxəssis','QA Mühəndisi','Texniki Dəstək Mütəxəssisi','Data Analitik','AI Mühəndisi'],
+    'Səhiyyə': ['Həkim','Ailə Həkimi','Cərrah','Diş Həkimi','Əczaçı','Tibb Bacısı','Klinik Psixoloq','Psixoloq','Psixiatr','Psixoterapevt','Loqoped','Erqoterapevt','Fizioterapevt','Laborant','Radioloq','Qidalanma üzrə Mütəxəssis'],
+    'Təhsil': ['Müəllim','Uşaq Bağçası Tərbiyəçisi','Universitet Müəllimi','Professor','Repetitor','Məktəb Direktoru','Xüsusi Təhsil Müəllimi','Təlimçi','İnstruktor'],
+    'Mühəndislik': ['Tikinti Mühəndisi','Mexanika Mühəndisi','Elektrik Mühəndisi','Elektronika Mühəndisi','Sənaye Mühəndisi','Kimya Mühəndisi','Neft Mühəndisi','Ekologiya Mühəndisi','Memar','İnteryer Dizayner'],
+    'Marketinq və Satış': ['Satış Meneceri','Satış Nümayəndəsi','Marketinq Meneceri','Rəqəmsal Marketinq üzrə Mütəxəssis','SEO Mütəxəssisi','SMM Mütəxəssisi','Kopirayter','Kontent Yaradıcısı','Brend Meneceri','PR Mütəxəssisi'],
+    'Media və Yaradıcılıq': ['Fotoqraf','Videoqraf','Video Montajçı','Motion Dizayner','Animator','İllüstrator','Jurnalist','Aparıcı (TV)','Radio Aparıcısı','Yazıçı'],
+    'Hüquq və Dövlət Qulluğu': ['Hüquqşünas','Hüquqi Məsləhətçi','Prokuror','Hakim','Notarius','Dövlət Qulluqçusu','Gömrük Əməkdaşı','Vergi Əməkdaşı'],
+    'Logistika və Nəqliyyat': ['Logistika Meneceri','Təchizat Zənciri üzrə Mütəxəssis','Satınalma üzrə Mütəxəssis','Anbar Meneceri','Sürücü','Kuryer','Dispetçer','Pilot','Bort Zabiti (Stüardessa)','Gəmi Zabiti'],
+    'Qonaqpərvərlik və Turizm': ['Otel Meneceri','Resepşinist','Turizm üzrə Məsləhətçi','Tur Bələdçisi','Baş Aşpaz','Aşpaz','Ofisiant','Barista','Çörəkçi','Tədbir Meneceri'],
+    'Tikinti və Peşə Sənətkarlığı': ['Elektrik','Santexnik','Qaynaqçı','Dülgər','Bənna','Rəngsaz','HVAC Texniki','Tikinti Sahə Rəisi'],
+    'Gözəllik və Sağlamlıq': ['Saç Ustası','Kişi Bərbəri','Vizajist','Kosmetoloq','Manikürçü','Masajist','Fitness Təlimçisi','Yoga Təlimçisi'],
+    'Kənd Təsərrüfatı və Ətraf Mühit': ['Fermer','Aqronom','Baytar','Landşaft Dizayneri','Ekologiya üzrə Mütəxəssis','Qida Texnoloqu'],
+    'Digər': ['Frilanser','Sahibkar','Konsultant','Tədqiqatçı','QHT üzrə Mütəxəssis','Sosial İşçi','Müştəri Xidmətləri Nümayəndəsi','Çağrı Mərkəzi Operatoru','Təhlükəsizlik Əməkdaşı','Polis Əməkdaşı','Hərbi Qulluqçu','Yanğınsöndürən']
+};
 const SKILL_SUGGESTIONS = {
     az: ['Məsuliyyətli','Komanda işi','Liderlik','Vaxtın idarə edilməsi','Analitik düşüncə','Kreativlik','Ünsiyyət bacarığı','Problem həll etmə','Çeviklik','Detallara diqqət','Stress altında işləmə','Təşkilatçılıq','Microsoft Office','Layihə idarəetməsi','Danışıqlar aparmaq','Sürətli öyrənmə','Müştəri xidməti','Qərar qəbuletmə'],
     en: ['Responsible','Teamwork','Leadership','Time Management','Analytical Thinking','Creativity','Communication Skills','Problem Solving','Adaptability','Attention to Detail','Works Well Under Pressure','Organization','Microsoft Office','Project Management','Negotiation','Fast Learner','Customer Service','Decision Making'],
     ru: ['Ответственность','Командная работа','Лидерство','Тайм-менеджмент','Аналитическое мышление','Креативность','Коммуникабельность','Решение проблем','Гибкость','Внимание к деталям','Работа в условиях стресса','Организованность','Microsoft Office','Управление проектами','Переговоры','Быстрое обучение','Обслуживание клиентов','Принятие решений']
 };
+/* Seçilmiş peşənin hansı kateqoriyaya aid olduğunu tapır (sərbəst yazılmış peşələr üçün null qaytarır) */
+function getProfessionCategory(jobVal){
+    if (!jobVal) return null;
+    const v = jobVal.trim().toLowerCase();
+    for (const cat in PROFESSION_DATA) {
+        if (PROFESSION_DATA[cat].some(function(p){ return p.toLowerCase() === v; })) return cat;
+    }
+    return null;
+}
+/* Peşə kateqoriyasına görə fərqli bacarıq təklifləri (yalnız AZ dilində — digər dillərdə ümumi siyahı işə düşür) */
+const SKILL_SUGGESTIONS_BY_CATEGORY = {
+    'Biznes və İdarəetmə': ['Liderlik','Komanda idarəetməsi','Strateji planlama','Qərar qəbuletmə','Vaxtın idarə edilməsi','Danışıqlar aparmaq','Büdcə idarəetməsi','Problem həll etmə','Təşkilatçılıq','Ünsiyyət bacarığı'],
+    'Maliyyə və Mühasibatlıq': ['Analitik düşüncə','Maliyyə hesabatlılığı','Excel/Maliyyə modelləşdirmə','Detallara diqqət','Vergi qanunvericiliyi','Büdcə planlaması','Auditə hazırlıq','Riyazi dəqiqlik','Məxfilik','Vaxtında icra'],
+    'İnformasiya Texnologiyaları': ['Problem həll etmə','Komanda işi','Alqoritmik düşüncə','Git/Version Control','Debaqinq','Sürətli öyrənmə','Kod keyfiyyəti','Layihə planlaması','Çeviklik (Agile)','Texniki sənədləşdirmə'],
+    'Səhiyyə': ['Diqqətlilik','Empatiya','Stress altında işləmə','Komanda işi','Tibbi etika','Sürətli qərar qəbuletmə','Pasiyent qayğısı','Məxfilik','Dözümlülük','Ünsiyyət bacarığı'],
+    'Təhsil': ['Ünsiyyət bacarığı','Səbr','Tədris planlaması','Fərdi yanaşma','Motivasiya vermə','Qiymətləndirmə bacarığı','Yaradıcılıq','Səbrlə dinləmə','Təqdimat bacarığı','Uyğunlaşma qabiliyyəti'],
+    'Mühəndislik': ['Texniki hesablamalar','Problem həll etmə','Detallara diqqət','AutoCAD/Layihələndirmə','Təhlükəsizlik standartları','Komanda işi','Layihə idarəetməsi','Analitik düşüncə','Dözümlülük','Keyfiyyətə nəzarət'],
+    'Marketinq və Satış': ['İkna etmə','Yaradıcılıq','Danışıqlar aparmaq','Bazar araşdırması','Məlumatlara əsaslanan düşüncə','Ünsiyyət bacarığı','Hədəf yönümlülük','Sosial media bilgisi','Brend strategiyası','Müştəri münasibətləri'],
+    'Media və Yaradıcılıq': ['Yaradıcılıq','Vizual estetika','Hekayə qurma','Detallara diqqət','Montaj bacarığı','Vaxt idarəetməsi','Tənqidi düşüncə','Orijinallıq','Texniki bilik','Komanda işi'],
+    'Hüquq və Dövlət Qulluğu': ['Analitik düşüncə','Detallara diqqət','Hüquqi araşdırma','Danışıqlar aparmaq','Məxfilik','Qərar qəbuletmə','Yazılı ünsiyyət','Etik davranış','İnandırıcılıq','Vaxtında icra'],
+    'Logistika və Nəqliyyat': ['Planlama','Problem həll etmə','Vaxt idarəetməsi','Diqqətlilik','Sürətli qərar qəbuletmə','Komanda işi','Təhlükəsizlik qaydalarına riayət','Stress altında işləmə','Marşrut planlaması','Məsuliyyət'],
+    'Qonaqpərvərlik və Turizm': ['Müştəri xidməti','Ünsiyyət bacarığı','Çoxtapşırıqlılıq','Stress altında işləmə','Komanda işi','Nəzakət','Problem həll etmə','Detallara diqqət','Xarici dil bilgisi','Sürətli xidmət'],
+    'Tikinti və Peşə Sənətkarlığı': ['Fiziki dözümlülük','Təhlükəsizlik qaydalarına riayət','Dəqiqlik','Alətlərdən istifadə bacarığı','Komanda işi','Problem həll etmə','Vaxtında icra','Keyfiyyətə diqqət','Fiziki güc','Məsuliyyət'],
+    'Gözəllik və Sağlamlıq': ['Yaradıcılıq','Müştəri xidməti','Diqqətlilik','Estetik zövq','Ünsiyyət bacarığı','Səliqəlilik','Sənitar qaydalara riayət','Səbr','Sürətli işləmə','Trend izləmə'],
+    'Kənd Təsərrüfatı və Ətraf Mühit': ['Diqqətlilik','Fiziki dözümlülük','Planlama','Problem həll etmə','Ətraf mühitə həssaslıq','Məsuliyyət','Fiziki güc','Sistemli iş','Hava şəraitinə uyğunlaşma','Komanda işi'],
+    'Digər': ['Məsuliyyətli','Komanda işi','Liderlik','Vaxtın idarə edilməsi','Analitik düşüncə','Kreativlik','Ünsiyyət bacarığı','Problem həll etmə','Çeviklik','Detallara diqqət']
+};
+/* Peşə kateqoriyasına görə iş təcrübəsi üçün hazır ifadə təklifləri */
+const EXP_SUGGESTIONS_BY_CATEGORY = {
+    'Biznes və İdarəetmə': ['Komandanın gündəlik iş axınını təşkil edib nəticələri izlədim.','Şirkət daxili prosesləri təkmilləşdirərək səmərəliliyi artırdım.','Aylıq hesabatları hazırlayıb rəhbərliyə təqdim etdim.','Yeni işçilərin adaptasiya prosesini əlaqələndirdim.'],
+    'Maliyyə və Mühasibatlıq': ['Aylıq maliyyə hesabatlarını vaxtında və dəqiq hazırladım.','Xərcləri təhlil edərək büdcə səmərəliliyini artırdım.','Vergi bəyannamələrinin hazırlanmasında iştirak etdim.','Audit prosesləri üçün lazımi sənədləri hazırladım.'],
+    'İnformasiya Texnologiyaları': ['Komanda ilə birlikdə yeni funksionallıqlar hazırlayıb tətbiq etdim.','Mövcud kod bazasını optimallaşdıraraq performansı artırdım.','Layihələrin vaxtında və keyfiyyətlə təhvil verilməsini təmin etdim.','Xətaları (bug) müəyyən edib aradan qaldırdım.'],
+    'Səhiyyə': ['Pasiyentlərə keyfiyyətli tibbi qayğı göstərdim.','Tibbi sənədləşməni dəqiq və vaxtında apardım.','Həkim komandası ilə əlaqəli işlədim.','Pasiyent təhlükəsizliyi standartlarına tam riayət etdim.'],
+    'Təhsil': ['Şagirdlərin fərdi ehtiyaclarına uyğun dərs planları hazırladım.','Tədris materiallarını yaradıcı üsullarla təqdim etdim.','Valideynlərlə mütəmadi əlaqə saxlayaraq inkişafı izlədim.','Sinif daxilində motivasiyaedici mühit yaratdım.'],
+    'Mühəndislik': ['Layihə tələblərinə uyğun texniki həllər hazırladım.','Təhlükəsizlik standartlarına tam riayət etməklə iş apardım.','Komanda ilə birlikdə layihələri vaxtında təhvil verdim.','Texniki sənədləşməni dəqiq apardım.'],
+    'Marketinq və Satış': ['Satış hədəflərini davamlı olaraq yerinə yetirdim və aşdım.','Yeni müştəri bazası formalaşdıraraq gəliri artırdım.','Marketinq kampaniyalarını planlayıb icra etdim.','Müştəri məmnuniyyətini yüksək səviyyədə saxladım.'],
+    'Media və Yaradıcılıq': ['Yaradıcı kontent hazırlayıb auditoriya ilə paylaşdım.','Layihələri vaxtında və yüksək keyfiyyətlə təhvil verdim.','Vizual materialların hazırlanmasında iştirak etdim.','Komanda ilə birlikdə kreativ kampaniyalar hazırladım.'],
+    'Hüquq və Dövlət Qulluğu': ['Hüquqi sənədləri dəqiqliklə hazırladım və nəzərdən keçirdim.','Müştərilərə/qurumlara hüquqi məsləhət verdim.','Qanunvericiliyə uyğunluğu təmin etdim.','Danışıqlar prosesində iştirak etdim.'],
+    'Logistika və Nəqliyyat': ['Çatdırılma proseslərini vaxtında və dəqiq təşkil etdim.','Marşrutları optimallaşdıraraq xərcləri azaltdım.','Anbar ehtiyatlarını sistemli şəkildə idarə etdim.','Təhlükəsizlik qaydalarına tam riayət etdim.'],
+    'Qonaqpərvərlik və Turizm': ['Müştərilərə yüksək səviyyəli xidmət göstərdim.','Şikayətləri operativ və peşəkar şəkildə həll etdim.','Komanda ilə birlikdə xidmət keyfiyyətini artırdım.','Tədbirlərin təşkilində fəal iştirak etdim.'],
+    'Tikinti və Peşə Sənətkarlığı': ['Tapşırılan işləri vaxtında və keyfiyyətlə tamamladım.','Təhlükəsizlik qaydalarına tam riayət etdim.','Material və resurslardan səmərəli istifadə etdim.','Komanda ilə əlaqəli iş apardım.'],
+    'Gözəllik və Sağlamlıq': ['Müştərilərə fərdi yanaşaraq yüksək keyfiyyətli xidmət göstərdim.','Sanitar-gigiyenik qaydalara tam riayət etdim.','Yeni trend və texnikaları öyrənib tətbiq etdim.','Müştəri məmnuniyyətini davamlı yüksək saxladım.'],
+    'Kənd Təsərrüfatı və Ətraf Mühit': ['Məhsuldarlığı artırmaq üçün effektiv üsullar tətbiq etdim.','Resurslardan səmərəli və davamlı istifadəni təmin etdim.','Sahə/təsərrüfat işlərini planlı şəkildə idarə etdim.','Ətraf mühit standartlarına riayət etdim.'],
+    'Digər': ['Tapşırılan işləri vaxtında və keyfiyyətlə tamamladım.','Komanda ilə səmərəli əməkdaşlıq etdim.','Prosesləri təkmilləşdirərək nəticələri yaxşılaşdırdım.','Məsuliyyət daşıdığım sahədə davamlı inkişaf göstərdim.']
+};
+function renderExpSuggestions(entryEl){
+    const row = entryEl.querySelector('.exp-suggest-row');
+    if (!row) return;
+    const cat = getProfessionCategory(document.getElementById('jobTitle').value) || 'Digər';
+    const list = EXP_SUGGESTIONS_BY_CATEGORY[cat] || EXP_SUGGESTIONS_BY_CATEGORY['Digər'];
+    row.innerHTML = '';
+    list.forEach(function(phrase){
+        const chip = document.createElement('span');
+        chip.className = 'suggest-chip';
+        chip.textContent = phrase.length > 46 ? (phrase.slice(0,44) + '…') : phrase;
+        chip.title = phrase;
+        chip.addEventListener('click', function(){
+            const ta = entryEl.querySelector('.exp-desc');
+            ta.value = ta.value ? (ta.value.replace(/\s+$/,'') + '\n' + phrase) : phrase;
+            ta.dispatchEvent(new Event('input', { bubbles:true }));
+        });
+        row.appendChild(chip);
+    });
+}
+function refreshAllExpSuggestions(){
+    document.querySelectorAll('#experienceContainer .dynamic-entry').forEach(function(entryEl){ renderExpSuggestions(entryEl); });
+}
+
 function renderSkillSuggestions(){
     const c = document.getElementById('skillSuggestContainer');
     if (!c) return;
     c.innerHTML = '';
-    const list = SKILL_SUGGESTIONS[currentLang] || SKILL_SUGGESTIONS.az;
+    const cat = getProfessionCategory(document.getElementById('jobTitle') ? document.getElementById('jobTitle').value : '');
+    const list = (currentLang === 'az' && cat && SKILL_SUGGESTIONS_BY_CATEGORY[cat]) ? SKILL_SUGGESTIONS_BY_CATEGORY[cat] : (SKILL_SUGGESTIONS[currentLang] || SKILL_SUGGESTIONS.az);
     const existingNames = (window.skills||[]).map(s => (typeof s==='string'?s:s.name).toLowerCase());
     list.forEach(name=>{
         const chip = document.createElement('span');
@@ -2423,23 +2513,6 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ---------- Peşə sahəsi: kateqoriyalı, axtarışlı seçici ---------- */
-const PROFESSION_DATA = {
-    'Biznes və İdarəetmə': ['Baş Menecer','İcraçı Direktor','Əməliyyatlar üzrə Menecer','Ofis Meneceri','Layihə Meneceri','Komanda Lideri','Biznesin İnkişafı üzrə Menecer','İnzibati Köməkçi','İcraçı Köməkçi','Resepşinist'],
-    'Maliyyə və Mühasibatlıq': ['Mühasib','Baş Mühasib','Auditor','Maliyyə Analitiki','Bankir','Kassir','Vergi üzrə Mütəxəssis','Əmək Haqqı üzrə Mütəxəssis','Sığorta üzrə Mütəxəssis'],
-    'İnformasiya Texnologiyaları': ['Proqram Təminatı Mütəxəssisi','Front-end Developer','Back-end Developer','Full Stack Developer','Mobil Tətbiq Developeri','UI Dizayner','UX Dizayner','Qrafik Dizayner','DevOps Mühəndisi','Sistem Administratoru','Şəbəkə Mühəndisi','Kibertəhlükəsizlik üzrə Mütəxəssis','QA Mühəndisi','Texniki Dəstək Mütəxəssisi','Data Analitik','AI Mühəndisi'],
-    'Səhiyyə': ['Həkim','Ailə Həkimi','Cərrah','Diş Həkimi','Əczaçı','Tibb Bacısı','Klinik Psixoloq','Psixoloq','Psixiatr','Psixoterapevt','Loqoped','Erqoterapevt','Fizioterapevt','Laborant','Radioloq','Qidalanma üzrə Mütəxəssis'],
-    'Təhsil': ['Müəllim','Uşaq Bağçası Tərbiyəçisi','Universitet Müəllimi','Professor','Repetitor','Məktəb Direktoru','Xüsusi Təhsil Müəllimi','Təlimçi','İnstruktor'],
-    'Mühəndislik': ['Tikinti Mühəndisi','Mexanika Mühəndisi','Elektrik Mühəndisi','Elektronika Mühəndisi','Sənaye Mühəndisi','Kimya Mühəndisi','Neft Mühəndisi','Ekologiya Mühəndisi','Memar','İnteryer Dizayner'],
-    'Marketinq və Satış': ['Satış Meneceri','Satış Nümayəndəsi','Marketinq Meneceri','Rəqəmsal Marketinq üzrə Mütəxəssis','SEO Mütəxəssisi','SMM Mütəxəssisi','Kopirayter','Kontent Yaradıcısı','Brend Meneceri','PR Mütəxəssisi'],
-    'Media və Yaradıcılıq': ['Fotoqraf','Videoqraf','Video Montajçı','Motion Dizayner','Animator','İllüstrator','Jurnalist','Aparıcı (TV)','Radio Aparıcısı','Yazıçı'],
-    'Hüquq və Dövlət Qulluğu': ['Hüquqşünas','Hüquqi Məsləhətçi','Prokuror','Hakim','Notarius','Dövlət Qulluqçusu','Gömrük Əməkdaşı','Vergi Əməkdaşı'],
-    'Logistika və Nəqliyyat': ['Logistika Meneceri','Təchizat Zənciri üzrə Mütəxəssis','Satınalma üzrə Mütəxəssis','Anbar Meneceri','Sürücü','Kuryer','Dispetçer','Pilot','Bort Zabiti (Stüardessa)','Gəmi Zabiti'],
-    'Qonaqpərvərlik və Turizm': ['Otel Meneceri','Resepşinist','Turizm üzrə Məsləhətçi','Tur Bələdçisi','Baş Aşpaz','Aşpaz','Ofisiant','Barista','Çörəkçi','Tədbir Meneceri'],
-    'Tikinti və Peşə Sənətkarlığı': ['Elektrik','Santexnik','Qaynaqçı','Dülgər','Bənna','Rəngsaz','HVAC Texniki','Tikinti Sahə Rəisi'],
-    'Gözəllik və Sağlamlıq': ['Saç Ustası','Kişi Bərbəri','Vizajist','Kosmetoloq','Manikürçü','Masajist','Fitness Təlimçisi','Yoga Təlimçisi'],
-    'Kənd Təsərrüfatı və Ətraf Mühit': ['Fermer','Aqronom','Baytar','Landşaft Dizayneri','Ekologiya üzrə Mütəxəssis','Qida Texnoloqu'],
-    'Digər': ['Frilanser','Sahibkar','Konsultant','Tədqiqatçı','QHT üzrə Mütəxəssis','Sosial İşçi','Müştəri Xidmətləri Nümayəndəsi','Çağrı Mərkəzi Operatoru','Təhlükəsizlik Əməkdaşı','Polis Əməkdaşı','Hərbi Qulluqçu','Yanğınsöndürən']
-};
 function buildProfessionDropdown(filter){
     const wrap = document.getElementById('profCategories');
     if (!wrap) return;
@@ -2482,7 +2555,10 @@ function closeProfDropdown(){
 }
 const jobTitleEl = document.getElementById('jobTitle');
 const profSearchEl = document.getElementById('profSearchInput');
-if (jobTitleEl) jobTitleEl.addEventListener('focus', openProfDropdown);
+if (jobTitleEl) {
+    jobTitleEl.addEventListener('focus', openProfDropdown);
+    jobTitleEl.addEventListener('input', function(){ renderSkillSuggestions(); refreshAllExpSuggestions(); });
+}
 if (profSearchEl) profSearchEl.addEventListener('input', function(){ buildProfessionDropdown(this.value); });
 document.addEventListener('click', function(e){
     const box = document.querySelector('.prof-select-box');
