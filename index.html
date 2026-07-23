@@ -99,6 +99,16 @@ body {
 .template-switch { display:flex; gap:6px; background:#f0f4fa; border-radius:40px; padding:4px; flex-wrap:wrap; max-width:520px; }
 .template-switch button { border:none; background:transparent; padding:8px 14px; border-radius:30px; font-size:0.8rem; font-weight:700; cursor:pointer; color:#45597c; transition:0.2s; white-space:nowrap; display:flex; align-items:center; gap:6px; }
 .template-switch button.active { background:#16213f; color:#fff; }
+.tpl-switch-wrap { position:relative; display:inline-block; }
+.tpl-switch-trigger { display:flex; align-items:center; gap:8px; background:#16213f; color:#fff; border:none; padding:11px 20px; border-radius:30px; font-weight:700; font-size:0.85rem; cursor:pointer; box-shadow:0 6px 16px rgba(22,33,63,0.25); transition:0.18s; }
+.tpl-switch-trigger:hover { background:#0d1730; transform:translateY(-1px); }
+.tpl-switch-arrow { font-size:0.7rem; transition:transform 0.2s; }
+.tpl-switch-wrap.open .tpl-switch-arrow { transform:rotate(180deg); }
+.template-switch.tpl-switch-panel { display:none; flex-direction:column; flex-wrap:nowrap; gap:16px; position:absolute; top:calc(100% + 8px); right:0; width:320px; max-width:88vw; max-height:400px; overflow-y:auto; background:#fff; border-radius:18px; box-shadow:0 24px 55px rgba(20,40,70,0.22); padding:16px; z-index:200; }
+.tpl-switch-wrap.open .template-switch.tpl-switch-panel { display:flex; }
+.tpl-switch-group-title { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#8695b8; margin-bottom:8px; padding-left:2px; }
+.tpl-switch-grid { display:flex; flex-wrap:wrap; gap:6px; max-width:none; }
+@media (max-width:640px) { .template-switch.tpl-switch-panel { right:auto; left:0; width:280px; } }
 
 #cvPreviewWrap { border-radius:14px; overflow:hidden; box-shadow:0 2px 18px rgba(20,40,70,0.08); }
 .cv-canvas { background:#fff; font-size:0.92rem; line-height:1.55; }
@@ -852,7 +862,7 @@ body {
 }
 
 /* --- Hero v2 --- */
-.landing-hero { overflow:hidden; }
+.landing-hero { overflow-x:hidden; overflow-y:visible; }
 .hero-bg-blur { position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
 .hero-bg-blur span { position:absolute; border-radius:50%; filter:blur(60px); opacity:.35; }
 .hero-bg-blur span:nth-child(1) { width:420px; height:420px; background:var(--pri); top:-160px; left:-120px; }
@@ -1035,7 +1045,7 @@ body {
 @media (max-width:520px) { .landing-footer-grid { grid-template-columns:1fr; } }
 
 @media print {
-    .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer, .gallery-wrap, .preview-modal, .floating-tpl-btn, .landing-hero, .install-banner, .site-nav, .stats-section, .landing-section, .final-cta-section, .landing-footer { display:none !important; }
+    .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .tpl-switch-wrap, .site-footer, .gallery-wrap, .preview-modal, .floating-tpl-btn, .landing-hero, .install-banner, .site-nav, .stats-section, .landing-section, .final-cta-section, .landing-footer { display:none !important; }
     .preview-panel { border:none !important; box-shadow:none !important; padding:0 !important; }
     /* Mobil ekran-genişliyi əsaslı kiçildilmiş düzülüşü çap zamanı ləğv edirik ki, sidebar/2-sütun şablonları düzgün çapa getsin */
     .tpl-sidebar td.cv-sidebar, .tpl-tech td.cv-sidebar, .tpl-business td.cv-sidebar, .tpl-ekspert td.cv-sidebar, .tpl-nailiyyet td.cv-sidebar, .tpl-zerif td.cv-sidebar { display:table-cell !important; width:34% !important; }
@@ -1542,32 +1552,55 @@ body {
                 <button class="btn-clear" id="backToGalleryBtn" style="padding:8px 16px;border-radius:30px;font-weight:700;font-size:0.8rem;">◀ <span id="backToGalleryLbl">Şablonlar</span></button>
                 <h2 id="previewTitle">👁 Canlı Önizləmə</h2>
             </div>
-            <div class="template-switch">
-                <button data-tpl="modern" class="active" id="tplBtnModern"><span class="tpl-label">Modern</span></button>
-                <button data-tpl="minimal" id="tplBtnMinimal"><span class="tpl-label">Minimal</span></button>
-                <button data-tpl="classic" id="tplBtnClassic"><span class="tpl-label">Klassik</span></button>
-                <button data-tpl="sidebar" id="tplBtnSidebar"><span class="tpl-label">Professional</span></button>
-                <button data-tpl="corporate" id="tplBtnCorporate"><span class="tpl-label">Korporativ</span></button>
-                <button data-tpl="elite" id="tplBtnElite"><span class="tpl-label">Elit</span></button>
-                <button data-tpl="creative" id="tplBtnCreative"><span class="tpl-label">Yaradıcı</span></button>
-                <button data-tpl="tech" id="tplBtnTech"><span class="tpl-label">Texnoloji</span></button>
-                <button data-tpl="ats" id="tplBtnAts"><span class="tpl-label">ATS Standart</span></button>
-                <button data-tpl="business" id="tplBtnBusiness"><span class="tpl-label">Biznes</span></button>
-                <button data-tpl="ekspert" id="tplBtnEkspert"><span class="tpl-label">Ekspert</span></button>
-                <button data-tpl="nailiyyet" id="tplBtnNailiyyet"><span class="tpl-label">Nailiyyət</span></button>
-                <button data-tpl="zerif" id="tplBtnZerif"><span class="tpl-label">Zərif</span></button>
-                <button data-tpl="lux" id="tplBtnLux"><span class="tpl-label">Lüks</span></button>
-                <button data-tpl="startup" id="tplBtnStartup"><span class="tpl-label">Startap</span></button>
-                <button data-tpl="akademik" id="tplBtnAkademik"><span class="tpl-label">Akademik</span></button>
-                <button data-tpl="eduwarm" id="tplBtnEduwarm"><span class="tpl-label">Müəllim — İlıq</span></button>
-                <button data-tpl="educlassic" id="tplBtnEduclassic"><span class="tpl-label">Müəllim — Akademik</span></button>
-                <button data-tpl="edubright" id="tplBtnEdubright"><span class="tpl-label">Müəllim — Canlı</span></button>
-                <button data-tpl="medclinic" id="tplBtnMedclinic"><span class="tpl-label">Həkim — Klinik</span></button>
-                <button data-tpl="medtrust" id="tplBtnMedtrust"><span class="tpl-label">Həkim — Etibar</span></button>
-                <button data-tpl="medcare" id="tplBtnMedcare"><span class="tpl-label">Həkim — Qayğı</span></button>
-                <button data-tpl="devcode" id="tplBtnDevcode"><span class="tpl-label">Developer — Kod</span></button>
-                <button data-tpl="devminimal" id="tplBtnDevminimal"><span class="tpl-label">Developer — Minimal</span></button>
-                <button data-tpl="devneon" id="tplBtnDevneon"><span class="tpl-label">Developer — Neon</span></button>
+            <div class="tpl-switch-wrap" id="tplSwitchWrap">
+                <button type="button" class="tpl-switch-trigger" id="tplSwitchTrigger">🎨 <span id="tplSwitchCurrentLbl">Modern</span> <span class="tpl-switch-arrow">▾</span></button>
+                <div class="template-switch tpl-switch-panel" id="templateSwitchPanel">
+                    <div class="tpl-switch-group">
+                        <div class="tpl-switch-group-title">Ümumi Şablonlar</div>
+                        <div class="tpl-switch-grid">
+                            <button data-tpl="modern" class="active" id="tplBtnModern"><span class="tpl-label">Modern</span></button>
+                            <button data-tpl="minimal" id="tplBtnMinimal"><span class="tpl-label">Minimal</span></button>
+                            <button data-tpl="classic" id="tplBtnClassic"><span class="tpl-label">Klassik</span></button>
+                            <button data-tpl="sidebar" id="tplBtnSidebar"><span class="tpl-label">Professional</span></button>
+                            <button data-tpl="corporate" id="tplBtnCorporate"><span class="tpl-label">Korporativ</span></button>
+                            <button data-tpl="elite" id="tplBtnElite"><span class="tpl-label">Elit</span></button>
+                            <button data-tpl="creative" id="tplBtnCreative"><span class="tpl-label">Yaradıcı</span></button>
+                            <button data-tpl="tech" id="tplBtnTech"><span class="tpl-label">Texnoloji</span></button>
+                            <button data-tpl="ats" id="tplBtnAts"><span class="tpl-label">ATS Standart</span></button>
+                            <button data-tpl="business" id="tplBtnBusiness"><span class="tpl-label">Biznes</span></button>
+                            <button data-tpl="ekspert" id="tplBtnEkspert"><span class="tpl-label">Ekspert</span></button>
+                            <button data-tpl="nailiyyet" id="tplBtnNailiyyet"><span class="tpl-label">Nailiyyət</span></button>
+                            <button data-tpl="zerif" id="tplBtnZerif"><span class="tpl-label">Zərif</span></button>
+                            <button data-tpl="lux" id="tplBtnLux"><span class="tpl-label">Lüks</span></button>
+                            <button data-tpl="startup" id="tplBtnStartup"><span class="tpl-label">Startap</span></button>
+                            <button data-tpl="akademik" id="tplBtnAkademik"><span class="tpl-label">Akademik</span></button>
+                        </div>
+                    </div>
+                    <div class="tpl-switch-group">
+                        <div class="tpl-switch-group-title">📚 Müəllim üçün</div>
+                        <div class="tpl-switch-grid">
+                            <button data-tpl="eduwarm" id="tplBtnEduwarm"><span class="tpl-label">İlıq</span></button>
+                            <button data-tpl="educlassic" id="tplBtnEduclassic"><span class="tpl-label">Akademik</span></button>
+                            <button data-tpl="edubright" id="tplBtnEdubright"><span class="tpl-label">Canlı</span></button>
+                        </div>
+                    </div>
+                    <div class="tpl-switch-group">
+                        <div class="tpl-switch-group-title">🩺 Həkim üçün</div>
+                        <div class="tpl-switch-grid">
+                            <button data-tpl="medclinic" id="tplBtnMedclinic"><span class="tpl-label">Klinik</span></button>
+                            <button data-tpl="medtrust" id="tplBtnMedtrust"><span class="tpl-label">Etibar</span></button>
+                            <button data-tpl="medcare" id="tplBtnMedcare"><span class="tpl-label">Qayğı</span></button>
+                        </div>
+                    </div>
+                    <div class="tpl-switch-group">
+                        <div class="tpl-switch-group-title">💻 Developer üçün</div>
+                        <div class="tpl-switch-grid">
+                            <button data-tpl="devcode" id="tplBtnDevcode"><span class="tpl-label">Kod</span></button>
+                            <button data-tpl="devminimal" id="tplBtnDevminimal"><span class="tpl-label">Minimal</span></button>
+                            <button data-tpl="devneon" id="tplBtnDevneon"><span class="tpl-label">Neon</span></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="cvPreviewWrap"><div id="cvPreview" class="cv-canvas tpl-modern"></div></div>
@@ -1634,9 +1667,9 @@ body {
 
 <script>
 const LANG = {
-    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', skillSuggestLbl:'Hazır siyahıdan seç:', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'Təhsil', cvExperience:'İş təcrübəsi', cvLanguages:'Dillər', cvCertificates:'Sertifikatlar', cvSkills:'Bacarıqlar', cvProjects:'Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', tplAts:'ATS Standart', tplBusiness:'Biznes', tplEkspert:'Ekspert', tplNailiyyet:'Nailiyyət', tplZerif:'Zərif', tplLux:'Lüks', tplStartup:'Startap', tplAkademik:'Akademik', tplEduwarm:'Müəllim — İlıq', tplEduclassic:'Müəllim — Akademik', tplEdubright:'Müəllim — Canlı', tplMedclinic:'Həkim — Klinik', tplMedtrust:'Həkim — Etibar', tplMedcare:'Həkim — Qayğı', tplDevcode:'Developer — Kod', tplDevminimal:'Developer — Minimal', tplDevneon:'Developer — Neon', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'WhatsApp açıldı — ödənişi təsdiqləyin, hesabınız qısa müddətdə aktivləşdiriləcək.', activationLabel:'Artıq ödədiniz? Nömrənizi daxil edin:', activationBtnLbl:'Aktivləşdir', heroTitle:'Bir neçə dəqiqəyə peşəkar CV yarat', heroSubtitle:'25 peşəkar şablon, Azərbaycan dilində, Word və PDF formatında — özünüzü işəgötürənə ən yaxşı formada təqdim edin.', heroBadge1:'25 Peşəkar Şablon', heroBadge2:'Azərbaycan dilində', heroBadge3:'Word / PDF Yüklə', heroCtaLbl:'CV Yaratmağa Başla', heroInstallLbl:'Tətbiqi Telefonuna Yüklə', installBannerTitle:'CV Generator-u yüklə', installBannerSub:'Tez giriş üçün telefonunuza əlavə et', installBannerBtnLbl:'Yüklə' },
-    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', skillSuggestLbl:'Quick pick from list:', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'Education', cvExperience:'Work Experience', cvLanguages:'Languages', cvCertificates:'Certificates', cvSkills:'Skills', cvProjects:'Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', tplAts:'ATS Standard', tplBusiness:'Business', tplEkspert:'Expertise', tplNailiyyet:'Achievement', tplZerif:'Elegant', tplLux:'Luxury', tplStartup:'Startup', tplAkademik:'Academic', tplEduwarm:'Teacher — Warm', tplEduclassic:'Teacher — Academic', tplEdubright:'Teacher — Bright', tplMedclinic:'Doctor — Clinic', tplMedtrust:'Doctor — Trust', tplMedcare:'Doctor — Care', tplDevcode:'Developer — Code', tplDevminimal:'Developer — Minimal', tplDevneon:'Developer — Neon', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'WhatsApp opened — confirm your payment and your access will be activated shortly.', activationLabel:'Already paid? Enter your phone number:', activationBtnLbl:'Activate', heroTitle:'Build a professional CV in minutes', heroSubtitle:'25 professional templates, in Azerbaijani, exportable as Word and PDF — present yourself to employers in the best way.', heroBadge1:'25 Pro Templates', heroBadge2:'In Azerbaijani', heroBadge3:'Word / PDF Export', heroCtaLbl:'Start Building My CV', heroInstallLbl:'Install App on Your Phone', installBannerTitle:'Install CV Generator', installBannerSub:'Add to your home screen for quick access', installBannerBtnLbl:'Install' },
-    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', skillSuggestLbl:'Выберите из списка:', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'Образование', cvExperience:'Опыт работы', cvLanguages:'Языки', cvCertificates:'Сертификаты', cvSkills:'Навыки', cvProjects:'Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', tplAts:'ATS Стандарт', tplBusiness:'Бизнес', tplEkspert:'Экспертиза', tplNailiyyet:'Достижение', tplZerif:'Элегант', tplLux:'Люкс', tplStartup:'Стартап', tplAkademik:'Академический', tplEduwarm:'Учитель — Тёплый', tplEduclassic:'Учитель — Академ.', tplEdubright:'Учитель — Яркий', tplMedclinic:'Врач — Клиника', tplMedtrust:'Врач — Доверие', tplMedcare:'Врач — Забота', tplDevcode:'Разработчик — Код', tplDevminimal:'Разработчик — Мин.', tplDevneon:'Разработчик — Неон', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'WhatsApp открыт — подтвердите оплату, доступ будет активирован в ближайшее время.', activationLabel:'Уже оплатили? Введите номер телефона:', activationBtnLbl:'Активировать', heroTitle:'Создайте профессиональное резюме за минуты', heroSubtitle:'25 профессиональных шаблонов на азербайджанском языке, экспорт в Word и PDF — представьте себя работодателю наилучшим образом.', heroBadge1:'25 шаблонов', heroBadge2:'На азербайджанском', heroBadge3:'Word / PDF экспорт', heroCtaLbl:'Создать резюме', heroInstallLbl:'Установить приложение', installBannerTitle:'Установите CV Generator', installBannerSub:'Добавьте на главный экран для быстрого доступа', installBannerBtnLbl:'Установить' }
+    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', skillSuggestLbl:'Hazır siyahıdan seç:', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'Təhsil', cvExperience:'İş təcrübəsi', cvLanguages:'Dillər', cvCertificates:'Sertifikatlar', cvSkills:'Bacarıqlar', cvProjects:'Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', tplAts:'ATS Standart', tplBusiness:'Biznes', tplEkspert:'Ekspert', tplNailiyyet:'Nailiyyət', tplZerif:'Zərif', tplLux:'Lüks', tplStartup:'Startap', tplAkademik:'Akademik', tplEduwarm:'Müəllim — İlıq', tplEduclassic:'Müəllim — Akademik', tplEdubright:'Müəllim — Canlı', tplMedclinic:'Həkim — Klinik', tplMedtrust:'Həkim — Etibar', tplMedcare:'Həkim — Qayğı', tplDevcode:'Developer — Kod', tplDevminimal:'Developer — Minimal', tplDevneon:'Developer — Neon', jobInputPlaceholder:'Yazın və ya siyahıdan seçin...', profSearchPlaceholder:'Peşə axtar...', profEmptyTxt:'Uyğun peşə tapılmadı — sərbəst yaza bilərsiniz.', expSuggestLbl:'💡 Təklif olunan ifadələr (kliklə əlavə et):', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'WhatsApp açıldı — ödənişi təsdiqləyin, hesabınız qısa müddətdə aktivləşdiriləcək.', activationLabel:'Artıq ödədiniz? Nömrənizi daxil edin:', activationBtnLbl:'Aktivləşdir', heroTitle:'Bir neçə dəqiqəyə peşəkar CV yarat', heroSubtitle:'25 peşəkar şablon, Azərbaycan dilində, Word və PDF formatında — özünüzü işəgötürənə ən yaxşı formada təqdim edin.', heroBadge1:'25 Peşəkar Şablon', heroBadge2:'Azərbaycan dilində', heroBadge3:'Word / PDF Yüklə', heroCtaLbl:'CV Yaratmağa Başla', heroInstallLbl:'Tətbiqi Telefonuna Yüklə', installBannerTitle:'CV Generator-u yüklə', installBannerSub:'Tez giriş üçün telefonunuza əlavə et', installBannerBtnLbl:'Yüklə' },
+    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', skillSuggestLbl:'Quick pick from list:', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'Education', cvExperience:'Work Experience', cvLanguages:'Languages', cvCertificates:'Certificates', cvSkills:'Skills', cvProjects:'Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', tplAts:'ATS Standard', tplBusiness:'Business', tplEkspert:'Expertise', tplNailiyyet:'Achievement', tplZerif:'Elegant', tplLux:'Luxury', tplStartup:'Startup', tplAkademik:'Academic', tplEduwarm:'Teacher — Warm', tplEduclassic:'Teacher — Academic', tplEdubright:'Teacher — Bright', tplMedclinic:'Doctor — Clinic', tplMedtrust:'Doctor — Trust', tplMedcare:'Doctor — Care', tplDevcode:'Developer — Code', tplDevminimal:'Developer — Minimal', tplDevneon:'Developer — Neon', jobInputPlaceholder:'Type or choose from list...', profSearchPlaceholder:'Search profession...', profEmptyTxt:'No matching profession found — you can type freely.', expSuggestLbl:'💡 Suggested phrases (click to add):', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'WhatsApp opened — confirm your payment and your access will be activated shortly.', activationLabel:'Already paid? Enter your phone number:', activationBtnLbl:'Activate', heroTitle:'Build a professional CV in minutes', heroSubtitle:'25 professional templates, in Azerbaijani, exportable as Word and PDF — present yourself to employers in the best way.', heroBadge1:'25 Pro Templates', heroBadge2:'In Azerbaijani', heroBadge3:'Word / PDF Export', heroCtaLbl:'Start Building My CV', heroInstallLbl:'Install App on Your Phone', installBannerTitle:'Install CV Generator', installBannerSub:'Add to your home screen for quick access', installBannerBtnLbl:'Install' },
+    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', skillSuggestLbl:'Выберите из списка:', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'Образование', cvExperience:'Опыт работы', cvLanguages:'Языки', cvCertificates:'Сертификаты', cvSkills:'Навыки', cvProjects:'Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', tplAts:'ATS Стандарт', tplBusiness:'Бизнес', tplEkspert:'Экспертиза', tplNailiyyet:'Достижение', tplZerif:'Элегант', tplLux:'Люкс', tplStartup:'Стартап', tplAkademik:'Академический', tplEduwarm:'Учитель — Тёплый', tplEduclassic:'Учитель — Академ.', tplEdubright:'Учитель — Яркий', tplMedclinic:'Врач — Клиника', tplMedtrust:'Врач — Доверие', tplMedcare:'Врач — Забота', tplDevcode:'Разработчик — Код', tplDevminimal:'Разработчик — Мин.', tplDevneon:'Разработчик — Неон', jobInputPlaceholder:'Введите или выберите из списка...', profSearchPlaceholder:'Поиск профессии...', profEmptyTxt:'Подходящая профессия не найдена — можете ввести свободно.', expSuggestLbl:'💡 Предлагаемые фразы (нажмите, чтобы добавить):', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'WhatsApp открыт — подтвердите оплату, доступ будет активирован в ближайшее время.', activationLabel:'Уже оплатили? Введите номер телефона:', activationBtnLbl:'Активировать', heroTitle:'Создайте профессиональное резюме за минуты', heroSubtitle:'25 профессиональных шаблонов на азербайджанском языке, экспорт в Word и PDF — представьте себя работодателю наилучшим образом.', heroBadge1:'25 шаблонов', heroBadge2:'На азербайджанском', heroBadge3:'Word / PDF экспорт', heroCtaLbl:'Создать резюме', heroInstallLbl:'Установить приложение', installBannerTitle:'Установите CV Generator', installBannerSub:'Добавьте на главный экран для быстрого доступа', installBannerBtnLbl:'Установить' }
 };
 
 let currentLang = 'az';
@@ -1812,9 +1845,16 @@ async function translateAllFields(fromLang, toLang){
     }
 }
 
+function syncTplSwitchTrigger(){
+    const activeBtn = document.querySelector('.template-switch button.active .tpl-label');
+    const lbl = document.getElementById('tplSwitchCurrentLbl');
+    if (activeBtn && lbl) lbl.textContent = activeBtn.textContent;
+}
 function setTemplate(tpl){
     currentTemplate = tpl;
     document.querySelectorAll('.template-switch button').forEach(b=>b.classList.toggle('active', b.dataset.tpl===tpl));
+    syncTplSwitchTrigger();
+    document.getElementById('tplSwitchWrap').classList.remove('open');
     saveToStorage();
     updatePreview();
 }
@@ -1854,32 +1894,42 @@ function updateGalleryLabels(){
 
 function refreshDynamicPlaceholders(){
     const x = t();
+    function setLbl(inputEl, text){ if (inputEl && inputEl.previousElementSibling && inputEl.previousElementSibling.tagName === 'LABEL') inputEl.previousElementSibling.textContent = text; }
     document.querySelectorAll('#educationContainer .dynamic-entry').forEach(el=>{
-        el.querySelector('.edu-school').placeholder = x.eduSchool;
-        el.querySelector('.edu-major').placeholder = x.eduMajor;
-        el.querySelector('.edu-start').placeholder = x.eduStart;
-        el.querySelector('.edu-end').placeholder = x.eduEnd;
+        const school = el.querySelector('.edu-school'), major = el.querySelector('.edu-major'), start = el.querySelector('.edu-start'), end = el.querySelector('.edu-end');
+        if (school) { school.placeholder = x.eduSchool; setLbl(school, x.eduSchool); }
+        if (major) { major.placeholder = x.eduMajor; setLbl(major, x.eduMajor); }
+        if (start) { start.placeholder = x.eduStart; setLbl(start, x.eduStart); }
+        if (end) { end.placeholder = x.eduEnd; setLbl(end, x.eduEnd); }
     });
     document.querySelectorAll('#experienceContainer .dynamic-entry').forEach(el=>{
-        el.querySelector('.exp-company').placeholder = x.expCompany;
-        el.querySelector('.exp-role').placeholder = x.expRole;
-        el.querySelector('.exp-start').placeholder = x.expStart;
-        el.querySelector('.exp-end').placeholder = x.expEnd;
-        el.querySelector('.exp-desc').placeholder = x.expDesc;
+        const company = el.querySelector('.exp-company'), role = el.querySelector('.exp-role'), start = el.querySelector('.exp-start'), end = el.querySelector('.exp-end'), desc = el.querySelector('.exp-desc');
+        if (company) { company.placeholder = x.expCompany; setLbl(company, x.expCompany); }
+        if (role) { role.placeholder = x.expRole; setLbl(role, x.expRole); }
+        if (start) { start.placeholder = x.expStart; setLbl(start, x.expStart); }
+        if (end) { end.placeholder = x.expEnd; setLbl(end, x.expEnd); }
+        if (desc) { desc.placeholder = x.expDesc; setLbl(desc, x.expDesc); }
     });
     document.querySelectorAll('#languageContainer .dynamic-entry').forEach(el=>{
-        el.querySelector('.lang-name').placeholder = x.langName;
-        el.querySelector('.lang-level').placeholder = x.langLevel;
+        const name = el.querySelector('.lang-name'), level = el.querySelector('.lang-level');
+        if (name) { name.placeholder = x.langName; setLbl(name, x.langName); }
+        if (level) { level.placeholder = x.langLevel; setLbl(level, x.langLevel); }
     });
     document.querySelectorAll('#certificateContainer .dynamic-entry').forEach(el=>{
-        el.querySelector('.cert-name').placeholder = x.certName;
-        el.querySelector('.cert-org').placeholder = x.certOrg;
-        el.querySelector('.cert-year').placeholder = x.certYear;
+        const name = el.querySelector('.cert-name'), org = el.querySelector('.cert-org'), year = el.querySelector('.cert-year');
+        if (name) { name.placeholder = x.certName; setLbl(name, x.certName); }
+        if (org) { org.placeholder = x.certOrg; setLbl(org, x.certOrg); }
+        if (year) { year.placeholder = x.certYear; setLbl(year, x.certYear); }
     });
     document.querySelectorAll('#projectContainer .dynamic-entry').forEach(el=>{
-        el.querySelector('.proj-company').placeholder = x.projCompany;
-        el.querySelector('.proj-list').placeholder = x.projList;
+        const company = el.querySelector('.proj-company'), list = el.querySelector('.proj-list');
+        if (company) { company.placeholder = x.projCompany; setLbl(company, x.projCompany); }
+        if (list) { list.placeholder = x.projList; setLbl(list, x.projList); }
     });
+    document.querySelectorAll('#experienceContainer .exp-suggest-hint').forEach(el=>{ el.textContent = x.expSuggestLbl; });
+    const jobEl = document.getElementById('jobTitle'); if (jobEl) jobEl.placeholder = x.jobInputPlaceholder;
+    const profSearchElRef = document.getElementById('profSearchInput'); if (profSearchElRef) profSearchElRef.placeholder = x.profSearchPlaceholder;
+    refreshAllExpSuggestions();
 }
 
 function wireEntry(el){
@@ -1918,7 +1968,7 @@ function addExperience(data, save=true){
             '<div class="form-group"><label>' + x.expEnd + '</label><input class="exp-end" value="' + (data?.end||'') + '" placeholder="' + x.expEnd + '"></div>' +
         '</div>' +
         '<div class="form-group"><label>' + x.expDesc + '</label><textarea class="exp-desc" rows="2" placeholder="' + x.expDesc + '">' + (data?.desc||'') + '</textarea>' +
-            '<div class="text-muted" style="margin-top:6px;font-size:0.76rem;">💡 Təklif olunan ifadələr (kliklə əlavə et):</div>' +
+            '<div class="text-muted exp-suggest-hint" style="margin-top:6px;font-size:0.76rem;">💡 Təklif olunan ifadələr (kliklə əlavə et):</div>' +
             '<div class="tag-group exp-suggest-row" style="margin-top:6px;"></div>' +
         '</div>';
     wireEntry(el);
@@ -2887,6 +2937,21 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+/* Şablon seçici trigger/panel */
+const tplSwitchWrapEl = document.getElementById('tplSwitchWrap');
+const tplSwitchTriggerEl = document.getElementById('tplSwitchTrigger');
+if (tplSwitchTriggerEl && tplSwitchWrapEl) {
+    tplSwitchTriggerEl.addEventListener('click', function(e){
+        e.stopPropagation();
+        tplSwitchWrapEl.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+        if (tplSwitchWrapEl.classList.contains('open') && !tplSwitchWrapEl.contains(e.target)) {
+            tplSwitchWrapEl.classList.remove('open');
+        }
+    });
+}
+
 /* ---------- Peşə sahəsi: kateqoriyalı, axtarışlı seçici ---------- */
 function buildProfessionDropdown(filter){
     const wrap = document.getElementById('profCategories');
@@ -2905,7 +2970,7 @@ function buildProfessionDropdown(filter){
             '<div class="prof-cat-items">' + filtered.map(function(it){ return '<div class="prof-item" data-val="' + escapeHtml(it) + '">' + escapeHtml(it) + '</div>'; }).join('') + '</div>';
         wrap.appendChild(catEl);
     });
-    if (!anyMatch) { wrap.innerHTML = '<div class="prof-empty">Uyğun peşə tapılmadı — sərbəst yaza bilərsiniz.</div>'; }
+    if (!anyMatch) { wrap.innerHTML = '<div class="prof-empty">' + escapeHtml(t().profEmptyTxt) + '</div>'; }
     wrap.querySelectorAll('.prof-cat-head').forEach(function(head){
         head.addEventListener('click', function(){ head.parentElement.classList.toggle('open'); });
     });
@@ -3035,6 +3100,7 @@ initRevealAnimations();
 renderHeroMockup();
 renderTplShowcase('modern');
 buildGalleryPreviews();
+syncTplSwitchTrigger();
 
 showHero();
 </script>
