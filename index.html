@@ -4,6 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Professional CV Generator</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#1d5fd6" />
+<link rel="apple-touch-icon" href="assets/icon-192.png" />
+<link rel="icon" type="image/png" href="assets/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="CV Generator" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Lora:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -430,6 +437,28 @@ body {
 .hero-badge { background:#fff; border:1px solid #e9eef5; border-radius:30px; padding:7px 14px; font-size:0.78rem; font-weight:700; color:#16213f; box-shadow:0 4px 14px rgba(20,40,70,0.06); }
 .hero-cta { background:#1d5fd6; color:#fff; border:none; padding:14px 32px; border-radius:14px; font-weight:800; font-size:0.98rem; cursor:pointer; box-shadow:0 10px 28px rgba(29,95,214,0.32); transition:0.2s; }
 .hero-cta:hover { background:#164ec2; transform:translateY(-2px); box-shadow:0 14px 34px rgba(29,95,214,0.4); }
+.hero-install-btn { margin-top:12px; background:#fff; color:#1d5fd6; border:1.5px solid #c7d8f7; padding:10px 22px; border-radius:14px; font-weight:700; font-size:0.85rem; cursor:pointer; transition:0.2s; }
+.hero-install-btn:hover { background:#eef4ff; }
+
+.install-banner {
+    position:fixed; left:14px; right:14px; bottom:14px; z-index:80;
+    background:#16213f; color:#fff; border-radius:16px; padding:12px 12px 12px 14px;
+    display:flex; align-items:center; gap:12px; box-shadow:0 12px 32px rgba(0,0,0,0.3);
+    max-width:460px; margin:0 auto;
+}
+.install-banner-icon { width:42px; height:42px; border-radius:10px; flex-shrink:0; object-fit:cover; }
+.install-banner-text { flex:1; display:flex; flex-direction:column; gap:1px; min-width:0; }
+.install-banner-text strong { font-size:0.86rem; }
+.install-banner-text span { font-size:0.74rem; color:#b7c2dc; }
+.install-banner-btn { background:#1d5fd6; color:#fff; border:none; padding:8px 16px; border-radius:10px; font-weight:700; font-size:0.8rem; cursor:pointer; white-space:nowrap; }
+.install-banner-btn:hover { background:#164ec2; }
+.install-banner-close { background:transparent; border:none; color:#8695b8; font-size:1rem; cursor:pointer; padding:4px 6px; flex-shrink:0; }
+.install-banner-close:hover { color:#fff; }
+@media (max-width:520px) {
+    .install-banner { left:10px; right:10px; bottom:10px; padding:10px; }
+    .install-banner-text strong { font-size:0.8rem; }
+    .install-banner-text span { font-size:0.7rem; }
+}
 @media (max-width:520px) {
     .landing-hero h1 { font-size:1.5rem; }
     .landing-hero .hero-inner > p { font-size:0.85rem; }
@@ -540,7 +569,7 @@ body {
     #cvPreviewWrap .cv-canvas .cv-item { margin-bottom: 5px !important; }
 }
 @media print {
-    .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer, .gallery-wrap, .preview-modal, .floating-tpl-btn, .landing-hero { display:none !important; }
+    .form-panel, .btn-group, .preview-panel h2, .lang-selector, .template-switch, .site-footer, .gallery-wrap, .preview-modal, .floating-tpl-btn, .landing-hero, .install-banner { display:none !important; }
     .preview-panel { border:none !important; box-shadow:none !important; padding:0 !important; }
     /* Mobil ekran-genişliyi əsaslı kiçildilmiş düzülüşü çap zamanı ləğv edirik ki, sidebar/2-sütun şablonları düzgün çapa getsin */
     .tpl-sidebar td.cv-sidebar, .tpl-tech td.cv-sidebar, .tpl-business td.cv-sidebar, .tpl-ekspert td.cv-sidebar, .tpl-nailiyyet td.cv-sidebar, .tpl-zerif td.cv-sidebar { display:table-cell !important; width:34% !important; }
@@ -598,7 +627,18 @@ body {
         </div>
 
         <button class="hero-cta" id="heroCtaBtn"><span id="heroCtaLbl">CV Yaratmağa Başla</span> ↓</button>
+        <button class="hero-install-btn hidden" id="heroInstallBtn">📲 <span id="heroInstallLbl">Tətbiqi Telefonuna Yüklə</span></button>
     </div>
+</div>
+
+<div class="install-banner hidden" id="installBanner">
+    <img src="assets/icon-192.png" alt="" class="install-banner-icon" />
+    <div class="install-banner-text">
+        <strong id="installBannerTitle">CV Generator-u yüklə</strong>
+        <span id="installBannerSub">Tez giriş üçün telefonunuza əlavə et</span>
+    </div>
+    <button class="install-banner-btn" id="installBannerInstallBtn"><span id="installBannerBtnLbl">Yüklə</span></button>
+    <button class="install-banner-close" id="installBannerCloseBtn">✕</button>
 </div>
 
 <div class="gallery-wrap hidden" id="templateGallery">
@@ -858,9 +898,9 @@ body {
 
 <script>
 const LANG = {
-    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', skillSuggestLbl:'Hazır siyahıdan seç:', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'Təhsil', cvExperience:'İş təcrübəsi', cvLanguages:'Dillər', cvCertificates:'Sertifikatlar', cvSkills:'Bacarıqlar', cvProjects:'Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', tplAts:'ATS Standart', tplBusiness:'Biznes', tplEkspert:'Ekspert', tplNailiyyet:'Nailiyyət', tplZerif:'Zərif', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'WhatsApp açıldı — ödənişi təsdiqləyin, hesabınız qısa müddətdə aktivləşdiriləcək.', activationLabel:'Artıq ödədiniz? Nömrənizi daxil edin:', activationBtnLbl:'Aktivləşdir', heroTitle:'Bir neçə dəqiqəyə peşəkar CV yarat', heroSubtitle:'13 peşəkar şablon, Azərbaycan dilində, Word və PDF formatında — özünüzü işəgötürənə ən yaxşı formada təqdim edin.', heroBadge1:'13 Peşəkar Şablon', heroBadge2:'Azərbaycan dilində', heroBadge3:'Word / PDF Yüklə', heroCtaLbl:'CV Yaratmağa Başla' },
-    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', skillSuggestLbl:'Quick pick from list:', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'Education', cvExperience:'Work Experience', cvLanguages:'Languages', cvCertificates:'Certificates', cvSkills:'Skills', cvProjects:'Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', tplAts:'ATS Standard', tplBusiness:'Business', tplEkspert:'Expertise', tplNailiyyet:'Achievement', tplZerif:'Elegant', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'WhatsApp opened — confirm your payment and your access will be activated shortly.', activationLabel:'Already paid? Enter your phone number:', activationBtnLbl:'Activate', heroTitle:'Build a professional CV in minutes', heroSubtitle:'13 professional templates, in Azerbaijani, exportable as Word and PDF — present yourself to employers in the best way.', heroBadge1:'13 Pro Templates', heroBadge2:'In Azerbaijani', heroBadge3:'Word / PDF Export', heroCtaLbl:'Start Building My CV' },
-    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', skillSuggestLbl:'Выберите из списка:', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'Образование', cvExperience:'Опыт работы', cvLanguages:'Языки', cvCertificates:'Сертификаты', cvSkills:'Навыки', cvProjects:'Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', tplAts:'ATS Стандарт', tplBusiness:'Бизнес', tplEkspert:'Экспертиза', tplNailiyyet:'Достижение', tplZerif:'Элегант', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'WhatsApp открыт — подтвердите оплату, доступ будет активирован в ближайшее время.', activationLabel:'Уже оплатили? Введите номер телефона:', activationBtnLbl:'Активировать', heroTitle:'Создайте профессиональное резюме за минуты', heroSubtitle:'13 профессиональных шаблонов на азербайджанском языке, экспорт в Word и PDF — представьте себя работодателю наилучшим образом.', heroBadge1:'13 шаблонов', heroBadge2:'На азербайджанском', heroBadge3:'Word / PDF экспорт', heroCtaLbl:'Создать резюме' }
+    az: { formTitle:'📝 CV Məlumatları', lblFirstName:'Ad', lblLastName:'Soyad', lblFatherName:'Ata adı (isteğe bağlı)', lblJobTitle:'Vəzifə / Başlıq', lblBirthDate:'Doğum tarixi', lblPhone:'Telefon', lblEmail:'Email', lblAddress:'Ünvan', lblAvatar:'Şəkil yüklə (PNG, JPG)', eduTitle:'🎓 Təhsil', eduAddBtn:'+ Əlavə et', expTitle:'💼 İş təcrübəsi', expAddBtn:'+ Əlavə et', langTitle:'🌐 Dillər', langAddBtn:'+ Əlavə et', certTitle:'📜 Sertifikatlar', certAddBtn:'+ Əlavə et', projTitle:'🏗 Layihələr', projAddBtn:'+ Əlavə et', projCompany:'Şirkət / Qrup', projList:'Layihələr (vergüllə ayırın)', skillTitle:'⭐ Bacarıq / Keyfiyyət', skillAddBtn:'Əlavə et', skillPlaceholder:'Yeni bacarıq...', skillSuggestLbl:'Hazır siyahıdan seç:', btnWord:'📄 Word yüklə', btnPdf:'📑 PDF yüklə', btnClear:'🗑 Bütün məlumatları təmizlə', storageInfo:'Məlumatlar avtomatik olaraq lokal yaddaşda saxlanılır.', previewTitle:'👁 Canlı Önizləmə', cvContact:'Əlaqə', cvEducation:'Təhsil', cvExperience:'İş təcrübəsi', cvLanguages:'Dillər', cvCertificates:'Sertifikatlar', cvSkills:'Bacarıqlar', cvProjects:'Layihələr', eduSchool:'Məktəb / Universitet', eduMajor:'İxtisas', eduStart:'Başlama ili', eduEnd:'Bitmə ili', expCompany:'Şirkət adı', expRole:'Vəzifə', expStart:'Başlama', expEnd:'Bitmə', expDesc:'Layihə və ya məsuliyyətlər', langName:'Dil', langLevel:'Səviyyə (məs. Sərbəst)', certName:'Sertifikat adı', certOrg:'Təşkilat', certYear:'İl', tplModern:'Modern', tplClassic:'Klassik', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elit', tplCreative:'Yaradıcı', tplTech:'Texnoloji', tplCorporate:'Korporativ', tplAts:'ATS Standart', tplBusiness:'Biznes', tplEkspert:'Ekspert', tplNailiyyet:'Nailiyyət', tplZerif:'Zərif', defaultFirst:'Ad', defaultLast:'Soyad', defaultJob:'Vəzifə', generating:'Hazırlanır...', translateConfirm:'Mövcud məlumatları da yeni dilə avtomatik tərcümə edim?', premiumAlert:'Bu premium şablondur (5 AZN). Aktivləşdirmək üçün @s_akhundoff ilə əlaqə saxlayın.', galleryTitle:'Şablonunuzu seçin', gallerySubtitle:'Bəyəndiyiniz dizaynı seçin, məlumatlarınızı doldurun — CV-niz canlı olaraq həmin şablonda formalaşsın.', backToGallery:'Şablonlar', priceFree:'Pulsuz', chooseBtn:'Bu şablonu seç', btnPreview:'🔍 Tam Önizləmə', paywallTitle:'CV-niz hazırdır!', paywallSubtitle:'Yükləmək üçün abunə planı seçin', plan3DayName:'3 Günlük Tam Giriş', plan3MonthName:'3 Aylıq Tam Giriş', planFeatureAccess:'Bütün şablonlara giriş', planFeatureDownload:'Limitsiz Word/PDF yükləmə', planFeatureEasy:'Asan, problemsiz istifadə', planFeatureEdit:'Limitsiz redaktə', paywallChoose:'Seç', paywallNoteTxt:'WhatsApp açıldı — ödənişi təsdiqləyin, hesabınız qısa müddətdə aktivləşdiriləcək.', activationLabel:'Artıq ödədiniz? Nömrənizi daxil edin:', activationBtnLbl:'Aktivləşdir', heroTitle:'Bir neçə dəqiqəyə peşəkar CV yarat', heroSubtitle:'13 peşəkar şablon, Azərbaycan dilində, Word və PDF formatında — özünüzü işəgötürənə ən yaxşı formada təqdim edin.', heroBadge1:'13 Peşəkar Şablon', heroBadge2:'Azərbaycan dilində', heroBadge3:'Word / PDF Yüklə', heroCtaLbl:'CV Yaratmağa Başla', heroInstallLbl:'Tətbiqi Telefonuna Yüklə', installBannerTitle:'CV Generator-u yüklə', installBannerSub:'Tez giriş üçün telefonunuza əlavə et', installBannerBtnLbl:'Yüklə' },
+    en: { formTitle:'📝 CV Information', lblFirstName:'First Name', lblLastName:'Last Name', lblFatherName:"Father's name (optional)", lblJobTitle:'Job Title / Position', lblBirthDate:'Date of Birth', lblPhone:'Phone', lblEmail:'Email', lblAddress:'Address', lblAvatar:'Upload photo (PNG, JPG)', eduTitle:'🎓 Education', eduAddBtn:'+ Add', expTitle:'💼 Work Experience', expAddBtn:'+ Add', langTitle:'🌐 Languages', langAddBtn:'+ Add', certTitle:'📜 Certificates', certAddBtn:'+ Add', projTitle:'🏗 Projects', projAddBtn:'+ Add', projCompany:'Company / Group', projList:'Projects (comma separated)', skillTitle:'⭐ Skills / Qualities', skillAddBtn:'Add', skillPlaceholder:'New skill...', skillSuggestLbl:'Quick pick from list:', btnWord:'📄 Download Word', btnPdf:'📑 Download PDF', btnClear:'🗑 Clear all data', storageInfo:'Data is automatically saved in local storage.', previewTitle:'👁 Live Preview', cvContact:'Contact', cvEducation:'Education', cvExperience:'Work Experience', cvLanguages:'Languages', cvCertificates:'Certificates', cvSkills:'Skills', cvProjects:'Projects', eduSchool:'School / University', eduMajor:'Major / Field', eduStart:'Start year', eduEnd:'End year', expCompany:'Company', expRole:'Role', expStart:'Start', expEnd:'End', expDesc:'Project or responsibilities', langName:'Language', langLevel:'Level (e.g. Fluent)', certName:'Certificate name', certOrg:'Organization', certYear:'Year', tplModern:'Modern', tplClassic:'Classic', tplSidebar:'Professional', tplMinimal:'Minimal', tplElite:'Elite', tplCreative:'Creative', tplTech:'Tech', tplCorporate:'Corporate', tplAts:'ATS Standard', tplBusiness:'Business', tplEkspert:'Expertise', tplNailiyyet:'Achievement', tplZerif:'Elegant', defaultFirst:'First Name', defaultLast:'Last Name', defaultJob:'Job Title', generating:'Generating...', translateConfirm:'Automatically translate existing data into the new language?', premiumAlert:'This is a premium template (5 AZN). Contact @s_akhundoff to unlock it.', galleryTitle:'Choose your template', gallerySubtitle:'Pick a design you like, fill in your details — your CV takes shape live in that template.', backToGallery:'Templates', priceFree:'Free', chooseBtn:'Choose this template', btnPreview:'🔍 Full Preview', paywallTitle:'Your CV is ready!', paywallSubtitle:'Choose a plan to download', plan3DayName:'3-Day Full Access', plan3MonthName:'3-Month Full Access', planFeatureAccess:'Access to all templates', planFeatureDownload:'Unlimited Word/PDF downloads', planFeatureEasy:'Easy, hassle-free use', planFeatureEdit:'Unlimited editing', paywallChoose:'Choose', paywallNoteTxt:'WhatsApp opened — confirm your payment and your access will be activated shortly.', activationLabel:'Already paid? Enter your phone number:', activationBtnLbl:'Activate', heroTitle:'Build a professional CV in minutes', heroSubtitle:'13 professional templates, in Azerbaijani, exportable as Word and PDF — present yourself to employers in the best way.', heroBadge1:'13 Pro Templates', heroBadge2:'In Azerbaijani', heroBadge3:'Word / PDF Export', heroCtaLbl:'Start Building My CV', heroInstallLbl:'Install App on Your Phone', installBannerTitle:'Install CV Generator', installBannerSub:'Add to your home screen for quick access', installBannerBtnLbl:'Install' },
+    ru: { formTitle:'📝 Данные резюме', lblFirstName:'Имя', lblLastName:'Фамилия', lblFatherName:'Отчество (необязательно)', lblJobTitle:'Должность', lblBirthDate:'Дата рождения', lblPhone:'Телефон', lblEmail:'Email', lblAddress:'Адрес', lblAvatar:'Загрузить фото (PNG, JPG)', eduTitle:'🎓 Образование', eduAddBtn:'+ Добавить', expTitle:'💼 Опыт работы', expAddBtn:'+ Добавить', langTitle:'🌐 Языки', langAddBtn:'+ Добавить', certTitle:'📜 Сертификаты', certAddBtn:'+ Добавить', projTitle:'🏗 Проекты', projAddBtn:'+ Добавить', projCompany:'Компания / Группа', projList:'Проекты (через запятую)', skillTitle:'⭐ Навыки / Качества', skillAddBtn:'Добавить', skillPlaceholder:'Новый навык...', skillSuggestLbl:'Выберите из списка:', btnWord:'📄 Скачать Word', btnPdf:'📑 Скачать PDF', btnClear:'🗑 Очистить все данные', storageInfo:'Данные автоматически сохраняются в локальном хранилище.', previewTitle:'👁 Предпросмотр', cvContact:'Контакты', cvEducation:'Образование', cvExperience:'Опыт работы', cvLanguages:'Языки', cvCertificates:'Сертификаты', cvSkills:'Навыки', cvProjects:'Проекты', eduSchool:'Школа / Университет', eduMajor:'Специальность', eduStart:'Год начала', eduEnd:'Год окончания', expCompany:'Компания', expRole:'Должность', expStart:'Начало', expEnd:'Окончание', expDesc:'Проект или обязанности', langName:'Язык', langLevel:'Уровень (напр. Свободно)', certName:'Название сертификата', certOrg:'Организация', certYear:'Год', tplModern:'Модерн', tplClassic:'Классика', tplSidebar:'Профессиональный', tplMinimal:'Минимал', tplElite:'Элит', tplCreative:'Креатив', tplTech:'Технологичный', tplCorporate:'Корпоративный', tplAts:'ATS Стандарт', tplBusiness:'Бизнес', tplEkspert:'Экспертиза', tplNailiyyet:'Достижение', tplZerif:'Элегант', defaultFirst:'Имя', defaultLast:'Фамилия', defaultJob:'Должность', generating:'Генерация...', translateConfirm:'Автоматически перевести существующие данные на новый язык?', premiumAlert:'Это премиум-шаблон (5 AZN). Свяжитесь с @s_akhundoff, чтобы разблокировать.', galleryTitle:'Выберите шаблон', gallerySubtitle:'Выберите понравившийся дизайн, заполните данные — резюме сразу примет вид этого шаблона.', backToGallery:'Шаблоны', priceFree:'Бесплатно', chooseBtn:'Выбрать шаблон', btnPreview:'🔍 Полный просмотр', paywallTitle:'Ваше резюме готово!', paywallSubtitle:'Выберите план для скачивания', plan3DayName:'3-дневный полный доступ', plan3MonthName:'3-месячный полный доступ', planFeatureAccess:'Доступ ко всем шаблонам', planFeatureDownload:'Неограниченная загрузка Word/PDF', planFeatureEasy:'Просто и удобно', planFeatureEdit:'Неограниченное редактирование', paywallChoose:'Выбрать', paywallNoteTxt:'WhatsApp открыт — подтвердите оплату, доступ будет активирован в ближайшее время.', activationLabel:'Уже оплатили? Введите номер телефона:', activationBtnLbl:'Активировать', heroTitle:'Создайте профессиональное резюме за минуты', heroSubtitle:'13 профессиональных шаблонов на азербайджанском языке, экспорт в Word и PDF — представьте себя работодателю наилучшим образом.', heroBadge1:'13 шаблонов', heroBadge2:'На азербайджанском', heroBadge3:'Word / PDF экспорт', heroCtaLbl:'Создать резюме', heroInstallLbl:'Установить приложение', installBannerTitle:'Установите CV Generator', installBannerSub:'Добавьте на главный экран для быстрого доступа', installBannerBtnLbl:'Установить' }
 };
 
 let currentLang = 'az';
@@ -1070,6 +1110,10 @@ function updateGalleryLabels(){
     const heroBadge2El = document.getElementById('heroBadge2'); if (heroBadge2El) heroBadge2El.textContent = x.heroBadge2;
     const heroBadge3El = document.getElementById('heroBadge3'); if (heroBadge3El) heroBadge3El.textContent = x.heroBadge3;
     const heroCtaLblEl = document.getElementById('heroCtaLbl'); if (heroCtaLblEl) heroCtaLblEl.textContent = x.heroCtaLbl;
+    const heroInstallLblEl = document.getElementById('heroInstallLbl'); if (heroInstallLblEl) heroInstallLblEl.textContent = x.heroInstallLbl;
+    const installBannerTitleEl = document.getElementById('installBannerTitle'); if (installBannerTitleEl) installBannerTitleEl.textContent = x.installBannerTitle;
+    const installBannerSubEl = document.getElementById('installBannerSub'); if (installBannerSubEl) installBannerSubEl.textContent = x.installBannerSub;
+    const installBannerBtnLblEl = document.getElementById('installBannerBtnLbl'); if (installBannerBtnLblEl) installBannerBtnLblEl.textContent = x.installBannerBtnLbl;
 }
 
 function refreshDynamicPlaceholders(){
@@ -1956,6 +2000,50 @@ document.getElementById('heroLogo').addEventListener('click', function(){
 });
 
 loadFromStorage();
+/* ---------- PWA: quraşdırma təklifi ---------- */
+let deferredInstallPrompt = null;
+function showInstallUI(){
+    const heroBtn = document.getElementById('heroInstallBtn');
+    if (heroBtn) heroBtn.classList.remove('hidden');
+    if (!localStorage.getItem('pwaInstallDismissed')) {
+        const banner = document.getElementById('installBanner');
+        if (banner) banner.classList.remove('hidden');
+    }
+}
+function hideInstallUI(){
+    const heroBtn = document.getElementById('heroInstallBtn');
+    if (heroBtn) heroBtn.classList.add('hidden');
+    const banner = document.getElementById('installBanner');
+    if (banner) banner.classList.add('hidden');
+}
+window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    showInstallUI();
+});
+window.addEventListener('appinstalled', function(){
+    deferredInstallPrompt = null;
+    hideInstallUI();
+});
+async function triggerInstall(){
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    hideInstallUI();
+}
+document.getElementById('heroInstallBtn').addEventListener('click', triggerInstall);
+document.getElementById('installBannerInstallBtn').addEventListener('click', triggerInstall);
+document.getElementById('installBannerCloseBtn').addEventListener('click', function(){
+    localStorage.setItem('pwaInstallDismissed', '1');
+    document.getElementById('installBanner').classList.add('hidden');
+});
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+        navigator.serviceWorker.register('sw.js').catch(function(err){ console.warn('SW qeydiyyat xətası:', err); });
+    });
+}
+
 showHero();
 </script>
 </body>
