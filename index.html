@@ -806,7 +806,10 @@ body {
 .tpl-flatnavy .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.25);display:inline-block;margin-left:3px;} .tpl-flatnavy .dot.on{background:#93c5fd;}
 .tpl-flatteal .ci-dot{background:#5eead4;width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:9px;}
 .tpl-flatnavy .ci-dot{background:#93c5fd;width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:9px;}
-@media (max-width:500px){ .tpl-flatteal .cv-flat-grid,.tpl-flatnavy .cv-flat-grid,.tpl-diamondpeach .cv-diamond-grid,.tpl-diamondblue .cv-diamond-grid{grid-template-columns:1fr;} }
+/* QEYD: mobil breakpoint qəsdən silindi — bu sistemdə HƏR ŞABLON sabit 780px "kanvasda" render olunur
+   və yalnız zoom ilə kiçildilir (kiçik önizləmə qutularında da), ona görə @media qaydaları düzülüşü
+   kiçik fiziki ölçülərdə səhv "yığır". Bütün digər şablonlar kimi bunlar da HƏMİŞƏ tam masaüstü
+   düzülüşdə qalmalıdır. */
 
 /* ===== YENİ STRUKTUR 5: BAR-SIDEBAR (dolu rəng başlıq zolaqları + illər kənarda) ===== */
 .tpl-barside table.cv-shell,.tpl-barsidegreen table.cv-shell{width:100%;border-collapse:collapse;}
