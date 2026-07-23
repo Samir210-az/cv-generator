@@ -807,40 +807,47 @@ body {
 .tpl-flatteal .ci-dot{background:#5eead4;width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:9px;}
 .tpl-flatnavy .ci-dot{background:#1a1a1a;width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:9px;}
 
-/* ===== YENİ STRUKTUR 8: NOEL (qara+bej sidebar, ikon-dairəli başlıqlar) ===== */
-.tpl-noelstyle td.cv-sidebar{background:#1c1c1c;color:#e5e5e5;padding:34px 22px;width:36%;vertical-align:top;}
+/* ===== YENİ STRUKTUR 8: NOEL (ağ yuxarı hissə + qara yuvarlaq KAPSUL aşağıda) ===== */
+.tpl-noelstyle table.cv-shell{width:100%;border-collapse:collapse;}
+.tpl-noelstyle td.cv-sidebar{background:#fff;padding:0;width:36%;vertical-align:top;}
 .tpl-noelstyle td.cv-main{padding:34px 30px;vertical-align:top;background:#fff;}
-.tpl-noelstyle .cv-avatar,.tpl-noelstyle .cv-avatar-placeholder{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid #d9c9a8;margin:0 auto 16px;display:block;background:#2b2b2b;color:#d9c9a8;font-size:0.68rem;}
-.tpl-noelstyle .cv-name{font-size:1.25rem;font-weight:800;text-align:center;color:#fff;text-transform:uppercase;letter-spacing:0.5px;}
-.tpl-noelstyle .cv-title{font-size:0.76rem;text-align:center;color:#999;margin-bottom:22px;text-transform:uppercase;letter-spacing:1px;}
-.tpl-noelstyle td.cv-sidebar .cv-section h4{display:flex;align-items:center;gap:8px;font-size:0.76rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#fff;margin-bottom:10px;}
-.tpl-noelstyle td.cv-sidebar .cv-section h4::before{content:'';width:20px;height:20px;border-radius:50%;background:#d9c9a8;flex-shrink:0;}
-.tpl-noelstyle td.cv-sidebar .cv-item{font-size:0.82rem;margin-bottom:8px;color:#ccc;}
-.tpl-noelstyle td.cv-sidebar .cv-item strong{color:#fff;}
-.tpl-noelstyle td.cv-sidebar .skill-row{font-size:0.8rem;color:#ccc;padding:3px 0;}
-.tpl-noelstyle td.cv-sidebar .dot{width:6px;height:6px;border-radius:50%;background:#3a3a3a;display:inline-block;margin-left:3px;}
-.tpl-noelstyle td.cv-sidebar .dot.on{background:#d9c9a8;}
-.tpl-noelstyle td.cv-sidebar .ci-dot{background:#d9c9a8;width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:9px;}
+.tpl-noelstyle .cv-noel-top{padding:32px 22px 18px;background:#fff;}
+.tpl-noelstyle .cv-avatar,.tpl-noelstyle .cv-avatar-placeholder{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #1c1c1c;margin:0 0 16px;display:block;background:#eee;color:#666;font-size:0.68rem;}
+.tpl-noelstyle .cv-name{font-size:1.15rem;font-weight:800;color:#1c1c1c;text-align:left;text-transform:uppercase;letter-spacing:0.5px;line-height:1.25;}
+.tpl-noelstyle .cv-title{display:inline-block;background:#e8e8e8;color:#555;font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:4px 10px;margin:8px 0 18px;}
+.tpl-noelstyle .cv-noel-top .cv-section{margin-top:16px;}
+.tpl-noelstyle .cv-noel-top .cv-section h4{display:flex;align-items:center;gap:8px;font-size:0.74rem;font-weight:800;text-transform:uppercase;color:#1c1c1c;margin-bottom:10px;}
+.tpl-noelstyle .cv-noel-top .cv-section h4::before{content:'';width:20px;height:20px;border-radius:50%;background:#1c1c1c;flex-shrink:0;}
+.tpl-noelstyle .cv-noel-top .cv-item{font-size:0.78rem;color:#333;margin-bottom:6px;}
+.tpl-noelstyle .cv-noel-top .cv-item strong{color:#111;}
+.tpl-noelstyle .cv-noel-capsule{background:#1c1c1c;color:#e5e5e5;padding:34px 22px 34px;border-radius:70px 70px 0 0;margin-top:6px;min-height:220px;}
+.tpl-noelstyle .cv-noel-capsule .cv-section{margin-top:20px;}
+.tpl-noelstyle .cv-noel-capsule .cv-section:first-child{margin-top:0;}
+.tpl-noelstyle .cv-noel-capsule .cv-section h4{display:flex;align-items:center;gap:8px;font-size:0.74rem;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:10px;}
+.tpl-noelstyle .cv-noel-capsule .cv-section h4::before{content:'';width:20px;height:20px;border-radius:50%;background:#fff;flex-shrink:0;}
+.tpl-noelstyle .cv-noel-capsule .cv-item{font-size:0.78rem;color:#ccc;margin-bottom:8px;}
+.tpl-noelstyle .cv-noel-capsule .cv-item strong{color:#fff;}
+.tpl-noelstyle td.cv-main .cv-section{margin-top:18px;}
+.tpl-noelstyle td.cv-main .cv-section:first-child{margin-top:0;}
 .tpl-noelstyle td.cv-main .cv-section h4{display:flex;align-items:center;gap:8px;font-size:0.85rem;text-transform:uppercase;color:#1c1c1c;margin-bottom:14px;font-weight:800;}
 .tpl-noelstyle td.cv-main .cv-section h4::before{content:'';width:22px;height:22px;border-radius:50%;background:#1c1c1c;flex-shrink:0;}
 .tpl-noelstyle td.cv-main .cv-item{margin-bottom:8px;}
 .tpl-noelstyle td.cv-main .cv-item strong{color:#111;}
 .tpl-noelstyle td.cv-main .cv-item .meta{color:#999;font-size:0.82rem;}
-.tpl-noelstyle .cv-timeline{padding-left:18px;border-left:2px solid #eee;}
-.tpl-noelstyle .tl-dot{background:#1c1c1c;border:2px solid #fff;box-shadow:0 0 0 2px #1c1c1c;}
-.tpl-noelstyle .tl-role{color:#666;font-style:italic;}
-.tpl-noelstyle .tl-desc{color:#666;font-size:0.8rem;}
+.tpl-noelstyle td.cv-main .meta{font-size:0.78rem;color:#999;}
 .tpl-noelstyle .cv-timeline{position:relative;padding-left:0;border-left:none;margin-bottom:8px;}
 .tpl-noelstyle .tl-item{position:relative;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f0f0f0;}
 .tpl-noelstyle .tl-dot{display:none;}
 .tpl-noelstyle .tl-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
 .tpl-noelstyle .tl-row strong{font-size:0.95rem;color:#111;}
 .tpl-noelstyle .tl-date{font-size:0.78rem;color:#999;white-space:nowrap;}
-.tpl-noelstyle td.cv-sidebar .skill-row{display:flex;flex-direction:column;padding:4px 0;font-size:0.8rem;color:#ccc;}
-.tpl-noelstyle td.cv-sidebar .dots{display:flex;gap:2px;margin-top:2px;}
-.tpl-noelstyle td.cv-sidebar .dot{width:15px;height:5px;border-radius:2px;background:#3a3a3a;}
-.tpl-noelstyle td.cv-sidebar .dot.on{background:#d9c9a8;}
-.tpl-noelstyle .cv-diamond-side,.tpl-noelstyle .meta{font-size:0.78rem;color:#999;}
+.tpl-noelstyle .tl-role{color:#666;font-style:italic;}
+.tpl-noelstyle .tl-desc{color:#666;font-size:0.8rem;}
+.tpl-noelstyle td.cv-main .skill-row{display:flex;flex-direction:column;padding:4px 0;font-size:0.8rem;color:#333;}
+.tpl-noelstyle td.cv-main .dots{display:flex;gap:2px;margin-top:2px;}
+.tpl-noelstyle td.cv-main .dot{width:16px;height:5px;border-radius:2px;background:#e5e5e5;}
+.tpl-noelstyle td.cv-main .dot.on{background:#1c1c1c;}
+.tpl-noelstyle .ci-dot{background:#1c1c1c;width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:9px;}
 
 /* ===== YENİ STRUKTUR 9: BRIAN (qara sidebar + narıncı diaqonal künc detalları) ===== */
 .tpl-brianstyle td.cv-sidebar{background:#1c1c1c;color:#e5e5e5;padding:34px 22px;width:36%;vertical-align:top;position:relative;overflow:hidden;}
@@ -2971,7 +2978,24 @@ function renderCvHtml(d, tpl){
         '</div></div>'
     ) : '').join('') + '</div>') : '';
 
-    if (tpl === 'sidebar' || tpl === 'tech' || tpl === 'ekspert' || tpl === 'nailiyyet' || tpl === 'zerif' || tpl === 'lux' || tpl === 'eduwarm' || tpl === 'medclinic' || tpl === 'devcode' || tpl === 'constructbold' || tpl === 'constructblueprint' || tpl === 'engtech' || tpl === 'engprecision' || tpl === 'beautyglam' || tpl === 'fityoga' || tpl === 'noelstyle' || tpl === 'brianstyle'){
+    if (tpl === 'noelstyle'){
+        return '<table class="cv-shell" cellpadding="0" cellspacing="0"><tr>' +
+            '<td class="cv-sidebar">' +
+                '<div class="cv-noel-top">' + avatarImg +
+                    '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
+                    '<div class="cv-title">' + job + '</div>' +
+                    contactBlock +
+                '</div>' +
+                '<div class="cv-noel-capsule">' + eduBlock + certBlock + '</div>' +
+            '</td>' +
+            '<td class="cv-main">' +
+                (d.birthDate?('<div class="meta" style="margin-bottom:10px;">' + escapeHtml(d.birthDate) + '</div>'):'') +
+                timelineExp + skillBlock + langBlock + projBlock +
+            '</td>' +
+        '</tr></table>';
+    }
+
+    if (tpl === 'sidebar' || tpl === 'tech' || tpl === 'ekspert' || tpl === 'nailiyyet' || tpl === 'zerif' || tpl === 'lux' || tpl === 'eduwarm' || tpl === 'medclinic' || tpl === 'devcode' || tpl === 'constructbold' || tpl === 'constructblueprint' || tpl === 'engtech' || tpl === 'engprecision' || tpl === 'beautyglam' || tpl === 'fityoga' || tpl === 'brianstyle'){
         return '<table class="cv-shell" cellpadding="0" cellspacing="0"><tr>' +
             '<td class="cv-sidebar">' + avatarImg +
                 '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
