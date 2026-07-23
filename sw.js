@@ -1,7 +1,7 @@
 const CACHE_NAME = 'cv-generator-v1';
 const APP_SHELL = [
-    '/cv-generator/',
-    '/cv-generator/index.html'
+    './',
+    './index.html'
 ];
 
 self.addEventListener('install', function (event) {
