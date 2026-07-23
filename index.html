@@ -1196,9 +1196,9 @@ body {
 
 /* --- Sticky Navbar --- */
 .site-nav { position:sticky; top:0; z-index:500; background:rgba(255,255,255,0.78); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line); margin:-24px -24px 0; padding:0 24px; }
-.site-nav-inner { max-width:1240px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:68px; gap:18px; }
+.site-nav-inner { max-width:1240px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:84px; gap:18px; }
 .nav-brand { display:flex; align-items:center; gap:10px; font-weight:800; color:var(--ink); font-size:1rem; white-space:nowrap; }
-.nav-brand img { height:40px; width:100px; border-radius:8px; object-fit:contain; }
+.nav-brand img { height:60px; width:200px; border-radius:8px; object-fit:contain; }
 .nav-links { display:flex; align-items:center; gap:28px; }
 .nav-links a { color:var(--ink-soft); text-decoration:none; font-weight:600; font-size:0.92rem; transition:color .18s; }
 .nav-links a:hover { color:var(--pri); }
@@ -1210,7 +1210,7 @@ body {
 .nav-cta-btn:hover { background:var(--pri-dark); transform:translateY(-1px); }
 .nav-toggle { display:none; background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--ink); }
 @media (max-width:860px) {
-    .nav-links { position:fixed; top:68px; left:0; right:0; background:#fff; flex-direction:column; align-items:flex-start; padding:18px 24px; gap:16px; box-shadow:0 14px 30px rgba(20,40,70,.1); transform:translateY(-12px); opacity:0; pointer-events:none; transition:.2s; }
+    .nav-links { position:fixed; top:84px; left:0; right:0; background:#fff; flex-direction:column; align-items:flex-start; padding:18px 24px; gap:16px; box-shadow:0 14px 30px rgba(20,40,70,.1); transform:translateY(-12px); opacity:0; pointer-events:none; transition:.2s; }
     .nav-links.open { transform:none; opacity:1; pointer-events:auto; }
     .nav-toggle { display:block; }
     .site-nav-inner { gap:8px; }
@@ -1286,9 +1286,10 @@ body {
 }
 @media (max-width:520px) {
     .hero-left h1 { font-size:1.55rem; }
-    .site-nav-inner { height:60px; }
-    .nav-links { top:60px; }
+    .site-nav-inner { height:72px; }
+    .nav-links { top:72px; }
     .nav-cta-btn { padding:9px 16px; font-size:0.78rem; }
+    .nav-brand img { width:120px; height:44px; }
 }
 
 /* --- Stats --- */
