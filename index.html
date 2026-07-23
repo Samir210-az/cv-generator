@@ -809,9 +809,10 @@ body {
 
 /* ===== YENİ STRUKTUR 8: NOEL (ağ yuxarı hissə + qara yuvarlaq KAPSUL aşağıda) ===== */
 .tpl-noelstyle table.cv-shell{width:100%;border-collapse:collapse;}
-.tpl-noelstyle td.cv-sidebar{background:#fff;padding:0;width:36%;vertical-align:top;}
-.tpl-noelstyle td.cv-main{padding:34px 30px;vertical-align:top;background:#fff;}
-.tpl-noelstyle .cv-noel-wrap{display:flex;flex-direction:column;height:100%;}
+.tpl-noelstyle .cv-noel-row{display:flex;align-items:stretch;width:100%;}
+.tpl-noelstyle .cv-sidebar{background:#fff;padding:0;width:36%;flex:0 0 36%;display:flex;}
+.tpl-noelstyle .cv-main{padding:34px 30px;flex:1 1 auto;background:#fff;}
+.tpl-noelstyle .cv-noel-wrap{display:flex;flex-direction:column;width:100%;}
 .tpl-noelstyle .cv-noel-top{padding:32px 22px 18px;background:#fff;flex:0 0 auto;}
 .tpl-noelstyle .cv-avatar,.tpl-noelstyle .cv-avatar-placeholder{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #1c1c1c;margin:0 0 16px;display:block;background:#eee;color:#666;font-size:0.68rem;}
 .tpl-noelstyle .cv-name{font-size:1.15rem;font-weight:800;color:#1c1c1c;text-align:left;text-transform:uppercase;letter-spacing:0.5px;line-height:1.25;}
@@ -828,14 +829,14 @@ body {
 .tpl-noelstyle .cv-noel-capsule .cv-section h4::before{content:'';width:20px;height:20px;border-radius:50%;background:#fff;flex-shrink:0;}
 .tpl-noelstyle .cv-noel-capsule .cv-item{font-size:0.78rem;color:#ccc;margin-bottom:8px;}
 .tpl-noelstyle .cv-noel-capsule .cv-item strong{color:#fff;}
-.tpl-noelstyle td.cv-main .cv-section{margin-top:18px;}
-.tpl-noelstyle td.cv-main .cv-section:first-child{margin-top:0;}
-.tpl-noelstyle td.cv-main .cv-section h4{display:flex;align-items:center;gap:8px;font-size:0.85rem;text-transform:uppercase;color:#1c1c1c;margin-bottom:14px;font-weight:800;}
-.tpl-noelstyle td.cv-main .cv-section h4::before{content:'';width:22px;height:22px;border-radius:50%;background:#1c1c1c;flex-shrink:0;}
-.tpl-noelstyle td.cv-main .cv-item{margin-bottom:8px;}
-.tpl-noelstyle td.cv-main .cv-item strong{color:#111;}
-.tpl-noelstyle td.cv-main .cv-item .meta{color:#999;font-size:0.82rem;}
-.tpl-noelstyle td.cv-main .meta{font-size:0.78rem;color:#999;}
+.tpl-noelstyle .cv-main .cv-section{margin-top:18px;}
+.tpl-noelstyle .cv-main .cv-section:first-child{margin-top:0;}
+.tpl-noelstyle .cv-main .cv-section h4{display:flex;align-items:center;gap:8px;font-size:0.85rem;text-transform:uppercase;color:#1c1c1c;margin-bottom:14px;font-weight:800;}
+.tpl-noelstyle .cv-main .cv-section h4::before{content:'';width:22px;height:22px;border-radius:50%;background:#1c1c1c;flex-shrink:0;}
+.tpl-noelstyle .cv-main .cv-item{margin-bottom:8px;}
+.tpl-noelstyle .cv-main .cv-item strong{color:#111;}
+.tpl-noelstyle .cv-main .cv-item .meta{color:#999;font-size:0.82rem;}
+.tpl-noelstyle .cv-main .meta{font-size:0.78rem;color:#999;}
 .tpl-noelstyle .cv-timeline{position:relative;padding-left:0;border-left:none;margin-bottom:8px;}
 .tpl-noelstyle .tl-item{position:relative;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f0f0f0;}
 .tpl-noelstyle .tl-dot{display:none;}
@@ -844,10 +845,10 @@ body {
 .tpl-noelstyle .tl-date{font-size:0.78rem;color:#999;white-space:nowrap;}
 .tpl-noelstyle .tl-role{color:#666;font-style:italic;}
 .tpl-noelstyle .tl-desc{color:#666;font-size:0.8rem;}
-.tpl-noelstyle td.cv-main .skill-row{display:flex;flex-direction:column;padding:4px 0;font-size:0.8rem;color:#333;}
-.tpl-noelstyle td.cv-main .dots{display:flex;gap:2px;margin-top:2px;}
-.tpl-noelstyle td.cv-main .dot{width:16px;height:5px;border-radius:2px;background:#e5e5e5;}
-.tpl-noelstyle td.cv-main .dot.on{background:#1c1c1c;}
+.tpl-noelstyle .cv-main .skill-row{display:flex;flex-direction:column;padding:4px 0;font-size:0.8rem;color:#333;}
+.tpl-noelstyle .cv-main .dots{display:flex;gap:2px;margin-top:2px;}
+.tpl-noelstyle .cv-main .dot{width:16px;height:5px;border-radius:2px;background:#e5e5e5;}
+.tpl-noelstyle .cv-main .dot.on{background:#1c1c1c;}
 .tpl-noelstyle .ci-dot{background:#1c1c1c;width:5px;height:5px;border-radius:50%;display:inline-block;margin-right:9px;}
 
 /* ===== YENİ STRUKTUR 9: BRIAN (qara sidebar + narıncı diaqonal künc detalları) ===== */
@@ -2980,20 +2981,20 @@ function renderCvHtml(d, tpl){
     ) : '').join('') + '</div>') : '';
 
     if (tpl === 'noelstyle'){
-        return '<table class="cv-shell" cellpadding="0" cellspacing="0"><tr>' +
-            '<td class="cv-sidebar"><div class="cv-noel-wrap">' +
+        return '<div class="cv-noel-row">' +
+            '<div class="cv-sidebar"><div class="cv-noel-wrap">' +
                 '<div class="cv-noel-top">' + avatarImg +
                     '<div class="cv-name">' + first + ' ' + last + (father?(' '+father):'') + '</div>' +
                     '<div class="cv-title">' + job + '</div>' +
                     contactBlock +
                 '</div>' +
                 '<div class="cv-noel-capsule">' + eduBlock + certBlock + '</div>' +
-            '</div></td>' +
-            '<td class="cv-main">' +
+            '</div></div>' +
+            '<div class="cv-main">' +
                 (d.birthDate?('<div class="meta" style="margin-bottom:10px;">' + escapeHtml(d.birthDate) + '</div>'):'') +
                 timelineExp + skillBlock + langBlock + projBlock +
-            '</td>' +
-        '</tr></table>';
+            '</div>' +
+        '</div>';
     }
 
     if (tpl === 'sidebar' || tpl === 'tech' || tpl === 'ekspert' || tpl === 'nailiyyet' || tpl === 'zerif' || tpl === 'lux' || tpl === 'eduwarm' || tpl === 'medclinic' || tpl === 'devcode' || tpl === 'constructbold' || tpl === 'constructblueprint' || tpl === 'engtech' || tpl === 'engprecision' || tpl === 'beautyglam' || tpl === 'fityoga' || tpl === 'brianstyle'){
