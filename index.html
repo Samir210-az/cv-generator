@@ -19,7 +19,9 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
+html { overflow-x:hidden; width:100%; }
 body {
+    overflow-x:hidden;
     font-family: 'Inter', system-ui, sans-serif;
     background: linear-gradient(135deg,#f4f7fb 0%,#eef1f8 100%);
     padding: 24px;
@@ -605,10 +607,10 @@ body {
 .hero-mockup-inner::after { content:''; position:absolute; left:0; right:0; bottom:0; height:70px; background:linear-gradient(to bottom, rgba(255,255,255,0), #fff); pointer-events:none; }
 .hero-float-badge { position:absolute; background:#fff; border-radius:16px; padding:10px 16px; font-weight:700; font-size:0.8rem; color:var(--ink); box-shadow:0 12px 26px rgba(20,40,70,.16); display:flex; align-items:center; gap:8px; border:1px solid var(--line); animation:heroFloat 3.6s ease-in-out infinite; }
 .hero-float-badge .dot { width:8px; height:8px; border-radius:50%; background:var(--acc); flex:none; }
-.fb1 { top:6%; left:-8%; animation-delay:0s; }
-.fb2 { top:32%; right:-14%; animation-delay:.6s; }
-.fb3 { bottom:20%; left:-14%; animation-delay:1.2s; }
-.fb4 { bottom:2%; right:-6%; animation-delay:1.8s; }
+.fb1 { top:6%; left:2%; animation-delay:0s; }
+.fb2 { top:32%; right:2%; animation-delay:.6s; }
+.fb3 { bottom:20%; left:2%; animation-delay:1.2s; }
+.fb4 { bottom:2%; right:6%; animation-delay:1.8s; }
 @keyframes heroFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
 @keyframes heroFloatMain { 0%,100% { transform:rotate(-2deg) translateY(0); } 50% { transform:rotate(-1deg) translateY(-8px); } }
 @media (max-width:980px) {
@@ -722,7 +724,34 @@ body {
 .final-cta-btn { background:#fff; color:var(--pri); border:none; padding:16px 38px; border-radius:16px; font-weight:800; font-size:1rem; cursor:pointer; box-shadow:0 16px 34px rgba(0,0,0,.2); transition:.18s; position:relative; }
 .final-cta-btn:hover { transform:translateY(-2px); box-shadow:0 20px 40px rgba(0,0,0,.26); }
 
-/* --- Landing footer --- */
+/* --- Templates showcase (1 nümunə + pill seçici) --- */
+.tpl-showcase { max-width:520px; margin:0 auto; text-align:center; }
+.tpl-showcase-label { font-weight:800; color:var(--ink); font-size:1.05rem; margin-bottom:16px; }
+.tpl-showcase-card { border-radius:var(--radius-xl); overflow:hidden; box-shadow:0 26px 60px rgba(20,40,70,.18); border:1px solid var(--line); }
+.tpl-showcase-box { position:relative; overflow:hidden; background:#f4f6fa; }
+.tpl-showcase-box .cv-canvas { width:780px; box-shadow:none !important; }
+.tpl-pill-row { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:26px; }
+.tpl-pill { background:#fff; border:1.5px solid var(--line); color:var(--ink-soft); font-weight:700; font-size:0.78rem; padding:8px 16px; border-radius:30px; cursor:pointer; transition:.18s; }
+.tpl-pill:hover { border-color:var(--pri); color:var(--pri); }
+.tpl-pill.active { background:var(--pri); border-color:var(--pri); color:#fff; }
+
+/* --- Peşə sahəsi: kateqoriyalı axtarışlı seçici --- */
+.prof-select-box { position:relative; }
+.prof-dropdown { position:absolute; top:calc(100% + 6px); left:0; right:0; background:#fff; border:1px solid #dbe4f0; border-radius:14px; box-shadow:0 20px 50px rgba(20,40,70,.18); max-height:340px; overflow-y:auto; z-index:80; display:none; }
+.prof-dropdown.open { display:block; }
+.prof-search-row { padding:10px; position:sticky; top:0; background:#fff; border-bottom:1px solid #eef1f7; z-index:1; }
+.prof-search-row input { width:100%; padding:9px 12px; border:1.5px solid #dbe4f0; border-radius:10px; font-size:0.85rem; font-family:inherit; }
+.prof-cat { border-bottom:1px solid #f1f4fa; }
+.prof-cat-head { display:flex; justify-content:space-between; align-items:center; padding:11px 14px; cursor:pointer; font-weight:700; font-size:0.82rem; color:#16213f; }
+.prof-cat-head:hover { background:#f8faff; }
+.prof-cat-arrow { transition:transform .2s; font-size:0.66rem; color:#8695b8; }
+.prof-cat.open .prof-cat-arrow { transform:rotate(90deg); }
+.prof-cat-items { max-height:0; overflow:hidden; transition:max-height .25s ease; }
+.prof-cat.open .prof-cat-items { max-height:900px; }
+.prof-item { padding:8px 22px; font-size:0.83rem; color:#45597c; cursor:pointer; }
+.prof-item:hover { background:#eef4ff; color:#1d5fd6; }
+.prof-empty { padding:16px; text-align:center; color:#8695b8; font-size:0.82rem; }
+@media (max-width:640px) { .tpl-showcase-card { max-width:320px; margin:0 auto; } }
 .landing-footer { max-width:1180px; margin:70px auto 0; padding:50px 20px 30px; border-top:1px solid var(--line); }
 .landing-footer-grid { display:grid; grid-template-columns:1.4fr repeat(4,1fr); gap:26px; margin-bottom:36px; }
 .lf-brand { display:flex; align-items:center; gap:10px; font-weight:800; color:var(--ink); margin-bottom:10px; }
@@ -842,19 +871,32 @@ body {
 <section class="landing-section" id="templates-sec">
     <div class="section-head reveal">
         <span class="section-eyebrow">Şablonlar</span>
-        <h2>13 fərqli üslub, bir neçə klik uzaqlıqda</h2>
-        <p>Bütün şablonları sərbəst önizləyib məlumatlarınızla doldura bilərsiniz.</p>
+        <h2>13 fərqli üslub, bir klik uzaqlıqda</h2>
+        <p>Aşağıdan istənilən şablona klikləyin — canlı nümunəni dərhal görəcəksiniz.</p>
     </div>
-    <div class="tpl-teaser-grid gallery-grid reveal">
-        <div class="tpl-section"><div class="tpl-label" style="font-size:1rem;">Modern</div><div class="tpl-card"><div class="tpl-badge-row"><span class="tpl-mini-badge">Modern</span></div><div class="tpl-card-preview" data-tpl="modern"></div></div></div>
-        <div class="tpl-section"><div class="tpl-label" style="font-size:1rem;">Professional</div><div class="tpl-card"><div class="tpl-badge-row"><span class="tpl-mini-badge ats">ATS</span></div><div class="tpl-card-preview" data-tpl="sidebar"></div></div></div>
-        <div class="tpl-section"><div class="tpl-label" style="font-size:1rem;">Elit</div><div class="tpl-card"><div class="tpl-badge-row"><span class="tpl-mini-badge">Premium</span></div><div class="tpl-card-preview" data-tpl="elite"></div></div></div>
-        <div class="tpl-section"><div class="tpl-label" style="font-size:1rem;">Yaradıcı</div><div class="tpl-card"><div class="tpl-badge-row"><span class="tpl-mini-badge">Modern</span></div><div class="tpl-card-preview" data-tpl="creative"></div></div></div>
-        <div class="tpl-section"><div class="tpl-label" style="font-size:1rem;">Texnoloji</div><div class="tpl-card"><div class="tpl-badge-row"><span class="tpl-mini-badge ats">ATS</span></div><div class="tpl-card-preview" data-tpl="tech"></div></div></div>
-        <div class="tpl-section"><div class="tpl-label" style="font-size:1rem;">ATS Standart</div><div class="tpl-card"><div class="tpl-badge-row"><span class="tpl-mini-badge ats">ATS</span></div><div class="tpl-card-preview" data-tpl="ats"></div></div></div>
+    <div class="tpl-showcase reveal">
+        <div class="tpl-showcase-label" id="tplShowcaseLabel">Modern</div>
+        <div class="tpl-showcase-card">
+            <div class="tpl-showcase-box" id="tplShowcasePreview" data-tpl="modern"></div>
+        </div>
+        <div class="tpl-pill-row" id="tplPillRow">
+            <button class="tpl-pill active" data-tpl="modern">Modern</button>
+            <button class="tpl-pill" data-tpl="minimal">Minimal</button>
+            <button class="tpl-pill" data-tpl="classic">Klassik</button>
+            <button class="tpl-pill" data-tpl="sidebar">Professional</button>
+            <button class="tpl-pill" data-tpl="corporate">Korporativ</button>
+            <button class="tpl-pill" data-tpl="elite">Elit</button>
+            <button class="tpl-pill" data-tpl="creative">Yaradıcı</button>
+            <button class="tpl-pill" data-tpl="tech">Texnoloji</button>
+            <button class="tpl-pill" data-tpl="ats">ATS Standart</button>
+            <button class="tpl-pill" data-tpl="business">Biznes</button>
+            <button class="tpl-pill" data-tpl="ekspert">Ekspert</button>
+            <button class="tpl-pill" data-tpl="nailiyyet">Nailiyyət</button>
+            <button class="tpl-pill" data-tpl="zerif">Zərif</button>
+        </div>
     </div>
     <div style="text-align:center;margin-top:34px;" class="reveal">
-        <button class="hero-cta" id="tplTeaserBtn">Bütün 13 şablona bax</button>
+        <button class="hero-cta" id="tplTeaserBtn">Bu şablonla CV yaratmağa başla</button>
     </div>
 </section>
 
@@ -1074,7 +1116,12 @@ body {
         </div>
         <div class="form-group"><label id="lblFatherName">Ata adı (isteğe bağlı)</label><input type="text" id="fatherName" /></div>
         <div class="form-row">
-            <div class="form-group"><label id="lblJobTitle">Vəzifə / Başlıq</label><input type="text" id="jobTitle" /></div>
+            <div class="form-group prof-select-box"><label id="lblJobTitle">Vəzifə / Başlıq</label><input type="text" id="jobTitle" autocomplete="off" placeholder="Yazın və ya siyahıdan seçin..." />
+                <div class="prof-dropdown" id="profDropdown">
+                    <div class="prof-search-row"><input type="text" id="profSearchInput" placeholder="Peşə axtar..." /></div>
+                    <div class="prof-categories" id="profCategories"></div>
+                </div>
+            </div>
             <div class="form-group"><label id="lblBirthDate">Doğum tarixi</label><input type="date" id="birthDate" /></div>
         </div>
         <div class="form-row">
@@ -2375,6 +2422,73 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+/* ---------- Peşə sahəsi: kateqoriyalı, axtarışlı seçici ---------- */
+const PROFESSION_DATA = {
+    'Biznes və İdarəetmə': ['Baş Menecer','İcraçı Direktor','Əməliyyatlar üzrə Menecer','Ofis Meneceri','Layihə Meneceri','Komanda Lideri','Biznesin İnkişafı üzrə Menecer','İnzibati Köməkçi','İcraçı Köməkçi','Resepşinist'],
+    'Maliyyə və Mühasibatlıq': ['Mühasib','Baş Mühasib','Auditor','Maliyyə Analitiki','Bankir','Kassir','Vergi üzrə Mütəxəssis','Əmək Haqqı üzrə Mütəxəssis','Sığorta üzrə Mütəxəssis'],
+    'İnformasiya Texnologiyaları': ['Proqram Təminatı Mütəxəssisi','Front-end Developer','Back-end Developer','Full Stack Developer','Mobil Tətbiq Developeri','UI Dizayner','UX Dizayner','Qrafik Dizayner','DevOps Mühəndisi','Sistem Administratoru','Şəbəkə Mühəndisi','Kibertəhlükəsizlik üzrə Mütəxəssis','QA Mühəndisi','Texniki Dəstək Mütəxəssisi','Data Analitik','AI Mühəndisi'],
+    'Səhiyyə': ['Həkim','Ailə Həkimi','Cərrah','Diş Həkimi','Əczaçı','Tibb Bacısı','Klinik Psixoloq','Psixoloq','Psixiatr','Psixoterapevt','Loqoped','Erqoterapevt','Fizioterapevt','Laborant','Radioloq','Qidalanma üzrə Mütəxəssis'],
+    'Təhsil': ['Müəllim','Uşaq Bağçası Tərbiyəçisi','Universitet Müəllimi','Professor','Repetitor','Məktəb Direktoru','Xüsusi Təhsil Müəllimi','Təlimçi','İnstruktor'],
+    'Mühəndislik': ['Tikinti Mühəndisi','Mexanika Mühəndisi','Elektrik Mühəndisi','Elektronika Mühəndisi','Sənaye Mühəndisi','Kimya Mühəndisi','Neft Mühəndisi','Ekologiya Mühəndisi','Memar','İnteryer Dizayner'],
+    'Marketinq və Satış': ['Satış Meneceri','Satış Nümayəndəsi','Marketinq Meneceri','Rəqəmsal Marketinq üzrə Mütəxəssis','SEO Mütəxəssisi','SMM Mütəxəssisi','Kopirayter','Kontent Yaradıcısı','Brend Meneceri','PR Mütəxəssisi'],
+    'Media və Yaradıcılıq': ['Fotoqraf','Videoqraf','Video Montajçı','Motion Dizayner','Animator','İllüstrator','Jurnalist','Aparıcı (TV)','Radio Aparıcısı','Yazıçı'],
+    'Hüquq və Dövlət Qulluğu': ['Hüquqşünas','Hüquqi Məsləhətçi','Prokuror','Hakim','Notarius','Dövlət Qulluqçusu','Gömrük Əməkdaşı','Vergi Əməkdaşı'],
+    'Logistika və Nəqliyyat': ['Logistika Meneceri','Təchizat Zənciri üzrə Mütəxəssis','Satınalma üzrə Mütəxəssis','Anbar Meneceri','Sürücü','Kuryer','Dispetçer','Pilot','Bort Zabiti (Stüardessa)','Gəmi Zabiti'],
+    'Qonaqpərvərlik və Turizm': ['Otel Meneceri','Resepşinist','Turizm üzrə Məsləhətçi','Tur Bələdçisi','Baş Aşpaz','Aşpaz','Ofisiant','Barista','Çörəkçi','Tədbir Meneceri'],
+    'Tikinti və Peşə Sənətkarlığı': ['Elektrik','Santexnik','Qaynaqçı','Dülgər','Bənna','Rəngsaz','HVAC Texniki','Tikinti Sahə Rəisi'],
+    'Gözəllik və Sağlamlıq': ['Saç Ustası','Kişi Bərbəri','Vizajist','Kosmetoloq','Manikürçü','Masajist','Fitness Təlimçisi','Yoga Təlimçisi'],
+    'Kənd Təsərrüfatı və Ətraf Mühit': ['Fermer','Aqronom','Baytar','Landşaft Dizayneri','Ekologiya üzrə Mütəxəssis','Qida Texnoloqu'],
+    'Digər': ['Frilanser','Sahibkar','Konsultant','Tədqiqatçı','QHT üzrə Mütəxəssis','Sosial İşçi','Müştəri Xidmətləri Nümayəndəsi','Çağrı Mərkəzi Operatoru','Təhlükəsizlik Əməkdaşı','Polis Əməkdaşı','Hərbi Qulluqçu','Yanğınsöndürən']
+};
+function buildProfessionDropdown(filter){
+    const wrap = document.getElementById('profCategories');
+    if (!wrap) return;
+    const f = (filter||'').trim().toLocaleLowerCase('az');
+    wrap.innerHTML = '';
+    let anyMatch = false;
+    Object.keys(PROFESSION_DATA).forEach(function(cat){
+        const items = PROFESSION_DATA[cat].slice().sort(function(a,b){ return a.localeCompare(b,'az'); });
+        const filtered = f ? items.filter(function(it){ return it.toLocaleLowerCase('az').indexOf(f) !== -1; }) : items;
+        if (f && filtered.length === 0) return;
+        anyMatch = true;
+        const catEl = document.createElement('div');
+        catEl.className = 'prof-cat' + (f ? ' open' : '');
+        catEl.innerHTML = '<div class="prof-cat-head"><span>' + escapeHtml(cat) + '</span><span class="prof-cat-arrow">▶</span></div>' +
+            '<div class="prof-cat-items">' + filtered.map(function(it){ return '<div class="prof-item" data-val="' + escapeHtml(it) + '">' + escapeHtml(it) + '</div>'; }).join('') + '</div>';
+        wrap.appendChild(catEl);
+    });
+    if (!anyMatch) { wrap.innerHTML = '<div class="prof-empty">Uyğun peşə tapılmadı — sərbəst yaza bilərsiniz.</div>'; }
+    wrap.querySelectorAll('.prof-cat-head').forEach(function(head){
+        head.addEventListener('click', function(){ head.parentElement.classList.toggle('open'); });
+    });
+    wrap.querySelectorAll('.prof-item').forEach(function(item){
+        item.addEventListener('click', function(){
+            const jobEl = document.getElementById('jobTitle');
+            jobEl.value = item.dataset.val;
+            jobEl.dispatchEvent(new Event('input', { bubbles:true }));
+            closeProfDropdown();
+        });
+    });
+}
+function openProfDropdown(){
+    const dd = document.getElementById('profDropdown');
+    if (!dd) return;
+    dd.classList.add('open');
+    buildProfessionDropdown(document.getElementById('profSearchInput').value);
+}
+function closeProfDropdown(){
+    const dd = document.getElementById('profDropdown');
+    if (dd) dd.classList.remove('open');
+}
+const jobTitleEl = document.getElementById('jobTitle');
+const profSearchEl = document.getElementById('profSearchInput');
+if (jobTitleEl) jobTitleEl.addEventListener('focus', openProfDropdown);
+if (profSearchEl) profSearchEl.addEventListener('input', function(){ buildProfessionDropdown(this.value); });
+document.addEventListener('click', function(e){
+    const box = document.querySelector('.prof-select-box');
+    if (box && !box.contains(e.target)) closeProfDropdown();
+});
+
 /* ---------- Landing v2: nav, hero mockup, reveal animasiya, FAQ ---------- */
 function renderHeroMockup(){
     const box = document.getElementById('heroMockupBox');
@@ -2392,10 +2506,45 @@ window.addEventListener('resize', function(){
     heroMockupResizeTimer = setTimeout(renderHeroMockup, 200);
 });
 
+/* Şablonlar bölməsi: tək böyük nümunə + pill seçici */
+function renderTplShowcase(tpl){
+    const box = document.getElementById('tplShowcasePreview');
+    if (!box) return;
+    try {
+        box.dataset.tpl = tpl;
+        const w = box.clientWidth || 420;
+        const zoomVal = Math.max(0.3, w / 780);
+        box.innerHTML = '<div class="cv-canvas tpl-' + tpl + '" style="width:780px;zoom:' + zoomVal + ';">' + renderCvHtml(SAMPLE_CV, tpl) + '</div>';
+    } catch(err) { console.error('Şablon vitrini render xətası:', err); }
+}
+let tplShowcaseResizeTimer = null;
+window.addEventListener('resize', function(){
+    clearTimeout(tplShowcaseResizeTimer);
+    tplShowcaseResizeTimer = setTimeout(function(){ renderTplShowcase(document.getElementById('tplShowcasePreview').dataset.tpl || 'modern'); }, 200);
+});
+document.querySelectorAll('#tplPillRow .tpl-pill').forEach(function(btn){
+    btn.addEventListener('click', function(){
+        document.querySelectorAll('#tplPillRow .tpl-pill').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.getElementById('tplShowcaseLabel').textContent = btn.textContent;
+        renderTplShowcase(btn.dataset.tpl);
+    });
+});
+
 function goToGallery(){ showGallery(); }
-['navCtaBtn','heroViewTplBtn','tplTeaserBtn','finalCtaBtn','priceBtn3day','priceBtn3month'].forEach(function(id){
+['navCtaBtn','heroViewTplBtn','finalCtaBtn','priceBtn3day','priceBtn3month'].forEach(function(id){
     const el = document.getElementById(id);
     if (el) el.addEventListener('click', goToGallery);
+});
+const tplTeaserBtnEl = document.getElementById('tplTeaserBtn');
+if (tplTeaserBtnEl) tplTeaserBtnEl.addEventListener('click', function(){
+    const activePill = document.querySelector('#tplPillRow .tpl-pill.active');
+    const tpl = activePill ? activePill.dataset.tpl : 'modern';
+    currentTemplate = tpl;
+    document.querySelectorAll('.template-switch button').forEach(function(b){ b.classList.toggle('active', b.dataset.tpl === tpl); });
+    saveToStorage();
+    showApp();
+    window.scrollTo({top:0, behavior:'smooth'});
 });
 
 /* Nav mobil menyu */
@@ -2433,6 +2582,7 @@ function initRevealAnimations(){
 }
 initRevealAnimations();
 renderHeroMockup();
+renderTplShowcase('modern');
 buildGalleryPreviews();
 
 showHero();
