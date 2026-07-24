@@ -3209,6 +3209,8 @@ function exportPDF(){
             body * { visibility: hidden !important; }
             #cvPreviewWrap, #cvPreviewWrap * { visibility: visible !important; }
             #cvPreviewWrap { position: absolute !important; left: 0; top: 0; width: 100% !important; box-shadow: none !important; border-radius: 0 !important; }
+            /* Mobil ekranda önizləməni kiçiltmək üçün JS ilə tətbiq olunan zoom çap zamanı sıfırlanır ki, CV kiçik künc yerinə tam səhifəni doldursun */
+            #cvPreview { zoom: 1 !important; width: 780px !important; }
             /* CV məzmunu A4 səhifəsini daha yaxşı doldursun deyə şrift və boşluqları bir qədər böyüdürük */
             .cv-canvas { font-size: 1.04rem !important; line-height: 1.7 !important; }
             .cv-canvas .cv-section { margin-top: 24px !important; }
