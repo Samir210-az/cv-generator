@@ -3215,7 +3215,11 @@ function exportPDF(){
             html, body { background: #fff !important; }
             body * { visibility: hidden !important; }
             #cvPreviewWrap, #cvPreviewWrap * { visibility: visible !important; }
-            #cvPreviewWrap { position: fixed !important; left: 0; top: 0; margin: 0 !important; width: 100% !important; box-shadow: none !important; border-radius: 0 !important; }
+            /* Qeyd: əvvəllər burada position:fixed idi ki, CV həmişə vərəqin başından başlasın —
+               amma "fixed" çap zamanı yalnız 1-ci səhifəyə bağlanır və uzun CV-lərdə aşağı hissə
+               kəsilib itirdi. "absolute" isə həm vərəqin başından başlamağı təmin edir, həm də
+               məzmun bir səhifəni keçəndə növbəti səhifəyə normal axmasına imkan verir. */
+            #cvPreviewWrap { position: absolute !important; left: 0; top: 0; margin: 0 !important; width: 100% !important; box-shadow: none !important; border-radius: 0 !important; }
             /* CV-ni çap sahəsinə tam sığacaq şəkildə miqyaslayırıq ki, sağ tərəfdəki məzmun kəsilməsin */
             #cvPreview { zoom: ${printZoom} !important; width: 780px !important; }
             /* CV məzmunu A4 səhifəsini daha yaxşı doldursun deyə şrift və boşluqları bir qədər böyüdürük */
