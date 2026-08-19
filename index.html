@@ -1451,7 +1451,7 @@ body {
 
 <nav class="site-nav" id="siteNav">
     <div class="site-nav-inner">
-        <div class="nav-brand"><img src="assets/logo.png" alt="Security Group" /><span>CV Generator</span></div>
+        <div class="nav-brand"><img src="assets/logo.png" alt="Security Group" id="navLogo" /><span>CV Generator</span></div>
         <div class="nav-links" id="navLinks">
             <a href="#features-sec" class="nav-link-item" data-i18n="ldNavFeatures">Xüsusiyyətlər</a>
             <a href="#templates-sec" class="nav-link-item" data-i18n="ldNavTemplates">Şablonlar</a>
@@ -3694,10 +3694,10 @@ function tryActivateByPhone(){
 }
 document.getElementById('activationBtn').addEventListener('click', tryActivateByPhone);
 
-/* ---------- Loqoya 5 dəfə vuranda admin panelə keçid ---------- */
+/* ---------- Loqoya 5 dəfə vuranda admin panelə keçid (həm header, həm hero loqosu) ---------- */
 let logoTapCount = 0;
 let logoTapTimer = null;
-document.getElementById('heroLogo').addEventListener('click', function(){
+function handleLogoTap(){
     logoTapCount++;
     clearTimeout(logoTapTimer);
     logoTapTimer = setTimeout(function(){ logoTapCount = 0; }, 2000);
@@ -3705,7 +3705,10 @@ document.getElementById('heroLogo').addEventListener('click', function(){
         logoTapCount = 0;
         window.location.href = 'admin.html';
     }
-});
+}
+document.getElementById('heroLogo').addEventListener('click', handleLogoTap);
+const navLogoEl = document.getElementById('navLogo');
+if (navLogoEl) navLogoEl.addEventListener('click', handleLogoTap);
 
 loadFromStorage();
 /* ---------- PWA: quraşdırma təklifi ---------- */
