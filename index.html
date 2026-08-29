@@ -3649,12 +3649,24 @@ document.getElementById('paywallChooseBtn').addEventListener('click', function()
     const planName = selected.querySelector('.plan-name').textContent.trim();
     const price = selected.dataset.price;
     const msg = encodeURIComponent('Salam! CV Generator üçün "' + planName + '" planını (' + price + ' AZN) almaq istəyirəm.');
+    notifyTelegram('📄 Yeni abunə tələbi — CV Generator\nPlan: ' + planName + ' (' + price + ' AZN)\nQeyd: WhatsApp linki açıldı, müştəri hələ mesajı göndərməyə bilər.\nLink: https://cv-generator-nine-phi.vercel.app');
     window.open('https://wa.me/994552107111?text=' + msg, '_blank');
     document.getElementById('paywallNote').classList.add('show');
     // Qeyd: real ödəniş inteqrasiyası hələ qoşulmayıb — seçilmiş plan (selected.dataset.plan/days/price)
     // ödəniş provayderi (Payriff və s.) qoşulanda burada təsdiqdən sonra localStorage-ə yazılacaq:
     // localStorage.setItem(SUBSCRIPTION_KEY, String(Date.now() + parseInt(selected.dataset.days,10)*86400000));
 });
+
+/* ---------- Telegram bildirişi ---------- */
+function notifyTelegram(text){
+    const token = '8936900898:AAG4_jlATIsIPe4fbk8U5iOJAKK08hQtK_o';
+    const chatId = '1315001188';
+    fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({chat_id: chatId, text: text})
+    }).catch(function(){});
+}
 
 /* ---------- Əl ilə aktivləşdirmə (Firebase Realtime Database üzərindən) ---------- */
 const firebaseConfig = {
